@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 'use client'
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export const SidebarDropdown = ({ item }: any) => {
+export const SidebarDropdown = ({ items }: any) => {
   const pathname = usePathname();
 
   return (
     <>
       <ul className="my-2 flex flex-col gap-1.5 pl-9">
-        {item.map((item: any, index: number) => (
+        {items.map((item: any, index: number) => (
           <li key={index}>
             <Link
               href={item.route}

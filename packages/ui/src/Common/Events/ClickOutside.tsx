@@ -18,18 +18,15 @@ export const ClickOutside: React.FC<ClickOutsideProps> = ({
 
   useEffect(() => {
     const handleClickListener = (event: MouseEvent) => {
-      let clickedInside: null | boolean = false;
+      let clickedInside: null | undefined | boolean = false;
       if (exceptionRef) {
         clickedInside =
-          (wrapperRef.current &&
-            wrapperRef.current.contains(event.target as Node)) ||
-          (exceptionRef.current && exceptionRef.current === event.target) ||
-          (exceptionRef.current &&
-            exceptionRef.current.contains(event.target as Node));
+          ((wrapperRef.current?.contains(event.target as Node)) ??
+            (exceptionRef.current && exceptionRef.current === event.target)) ??
+          (exceptionRef.current?.contains(event.target as Node));
       } else {
         clickedInside =
-          wrapperRef.current &&
-          wrapperRef.current.contains(event.target as Node);
+          wrapperRef.current?.contains(event.target as Node);
       }
 
       if (!clickedInside) onClick();
@@ -43,7 +40,7 @@ export const ClickOutside: React.FC<ClickOutsideProps> = ({
   }, [exceptionRef, onClick]);
 
   return (
-    <div ref={wrapperRef} className={`${className || ""}`}>
+    <div ref={wrapperRef} className={`${className ?? ""}`}>
       {children}
     </div>
   );

@@ -1,6 +1,4 @@
 'use client'
-import React, { useState } from "react";
-
 export const SearchForm = () => {
   return (
     <>

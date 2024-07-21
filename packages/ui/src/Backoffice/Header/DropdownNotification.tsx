@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ClickOutside } from "@app/ui";;
 import Image from "next/image";
-import { DropdownNotificationProps } from "./type";
+import type { DropdownNotificationProps } from "./type";
 export const DropdownNotification = ({ notifications }: DropdownNotificationProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);

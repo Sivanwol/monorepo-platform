@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { SidebarItem } from "./SidebarItem";
 import { useLocalStorage, ClickOutside } from "@app/ui";
-import { SidebarProps } from "./type";
+import type { SidebarProps } from "./type";
 
 export * from "./type";
 export const Sidebar = ({ sidebarOpen, setSidebarOpen, items }: SidebarProps) => {
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 

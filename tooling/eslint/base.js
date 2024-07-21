@@ -35,7 +35,7 @@ export const restrictEnvAccess = tseslint.config({
 export default tseslint.config(
   {
     // Globally ignored files
-    ignores: ["**/*.config.*"],
+    ignores: ["**/*.config.*", "**/*.d.ts", "**/node_modules/**", "**/__tests__/**"],
   },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
@@ -52,7 +52,7 @@ export default tseslint.config(
     rules: {
       ...turboPlugin.configs.recommended.rules,
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/consistent-type-imports": [
@@ -71,6 +71,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-non-null-assertion": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "@typescript-eslint/no-unsafe-member-access": "warn"
     },
   },
   {

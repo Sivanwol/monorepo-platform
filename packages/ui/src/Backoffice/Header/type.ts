@@ -3,7 +3,7 @@ export interface DropdownUserProps {
   username: string;
   fullname: string;
   userId: string | number;
-  onLogoutClick: () => void;
+  onLogoutClick?: () => void;
   profileLink: string;
   settingsLink: string;
 }
@@ -11,13 +11,13 @@ export interface DropdownUserProps {
 export interface DropdownNotificationProps {
   notifications: NotificationItem[];
 }
-export type NotificationItem = {
+export interface NotificationItem {
   icon: React.ReactNode;
   image: string;
   title: string;
   subTitle: string;
 }
-export type HeaderProps = {
+export interface HeaderProps {
   notifications: NotificationItem[];
   user: DropdownUserProps
   sidebarOpen: string | boolean | undefined;

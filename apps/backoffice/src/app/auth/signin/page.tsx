@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 // import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Signin } from "@app/ui";
 
 export const metadata: Metadata = {
@@ -70,5 +70,3 @@ const SignIn: React.FC = () => {
     </>
   );
 };
-
-export default SignIn; 1

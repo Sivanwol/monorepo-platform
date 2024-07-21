@@ -2,7 +2,7 @@ import { DarkModeSwitcher } from "./DarkModeSwitcher";
 import { DropdownNotification } from "./DropdownNotification";
 import { DropdownUser } from "./DropdownUser";
 import { SearchForm } from "./SearchForm";
-import { HeaderProps } from "./type"
+import type { HeaderProps } from "./type"
 import Link from "next/link";
 import Image from "next/image";
 

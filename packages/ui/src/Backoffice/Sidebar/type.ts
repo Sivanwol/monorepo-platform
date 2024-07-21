@@ -4,11 +4,11 @@ export interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
-export type MenuGroup = {
+export interface MenuGroup {
   name: string;
   items: MenuGroupItem[];
 }
-export type MenuGroupItem = {
+export interface MenuGroupItem {
   icon?: React.ReactNode,
   label: string;
   route: string;

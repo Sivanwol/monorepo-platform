@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ClickOutside } from "@app/ui";
-import { DropdownUserProps } from "./type";
+import type { DropdownUserProps } from "./type";
 export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsLink, fullname }: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -143,7 +143,11 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
           </ul>
           <div className="p-2.5">
             <button
-              onClick={() => onLogoutClick()}
+              onClick={() => {
+                if (typeof onLogoutClick === "function") {
+                  onLogoutClick()
+                }
+              }}
               className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
             >
               <svg

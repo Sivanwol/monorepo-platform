@@ -1,6 +1,7 @@
 
-import { DefaultLayout, DropdownUserProps, Loader, MenuGroup, NotificationItem } from "@app/ui";
-import { Metadata } from "next";
+import type { DropdownUserProps, MenuGroup } from "@app/ui";
+import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { env } from "~/env";
 export const metadata: Metadata = {
@@ -9,15 +10,6 @@ export const metadata: Metadata = {
 };
 
 import { api, HydrateClient } from "~/trpc/server";
-const user: DropdownUserProps = {
-  userAvatar: "https://ui-avatars.com/api/?format=png",
-  fullname: "John Doe",
-  username: "johndoe",
-  userId: 1,
-  onLogoutClick: () => console.log("Logged out"),
-  profileLink: "/profile",
-  settingsLink: "/settings",
-}
 const menuGroups: MenuGroup[] = [
   {
     name: "MAIN MENU",
@@ -307,7 +299,15 @@ export default function PlatformLayout({ children }: { children: any }) {
     <HydrateClient>
       <Suspense
         fallback={<Loader />}>
-        <DefaultLayout sideMenuItems={menuGroups} notifications={[]} user={user}>
+        <DefaultLayout sideMenuItems={menuGroups} notifications={[]} user={{
+          userAvatar: "https://ui-avatars.com/api/?format=png",
+          fullname: "John Doe",
+          username: "johndoe",
+          userId: 1,
+          profileLink: "/profile",
+          settingsLink: "/settings",
+          onLogoutClick: () => console.log("User logged out")
+        }}>
           {children}
         </DefaultLayout>
       </Suspense>

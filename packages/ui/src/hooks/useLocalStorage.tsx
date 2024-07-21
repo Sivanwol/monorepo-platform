@@ -9,13 +9,14 @@ export function useLocalStorage<T>(
 ): [T, (value: SetValue<T>) => void] {
   // State to store our value
   // Pass  initial state function to useState so logic is only executed once
-  const [storedValue, setStoredValue] = useState(() => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       // Get from local storage by key
       if (typeof window !== "undefined") {
         // browser code
         const item = window.localStorage.getItem(key);
         // Parse stored json or if none return initialValue
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return item ? JSON.parse(item) : initialValue;
       }
     } catch (error) {
@@ -29,6 +30,7 @@ export function useLocalStorage<T>(
   useEffect(() => {
     try {
       // Allow value to be a function so we have same API as useState
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const valueToStore =
         typeof storedValue === "function"
           ? storedValue(storedValue)

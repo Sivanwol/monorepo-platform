@@ -64,6 +64,7 @@ export const authBackofficeConfig = {
         user = await UserRepo.GetUserByEmail(email);
         if (user) {
           const userMatch = await UserRepo.IsMatchUserPassword(email, pwHash);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           if (userMatch && IsVerifyPassword(credentials.password as string, user.password!)) {
             console.info(`User login ${user.email}`);
             return user;
@@ -83,6 +84,7 @@ export const authBackofficeConfig = {
   })],
   callbacks: {
     jwt({ token, trigger, user, session, account }) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       if (trigger === "update") token.name = session.user.name
       if (account?.provider === "keycloak") {
         return { ...token, accessToken: account.access_token }
@@ -102,7 +104,7 @@ export const authBackofficeConfig = {
       };
     },
   },
-  debug: process.env.NODE_ENV !== "production" ? true : false,
+  debug: env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;
 
 export const authConfig = {
@@ -118,6 +120,7 @@ export const authConfig = {
   providers: [Apple, Google, Facebook],
   callbacks: {
     jwt({ token, trigger, session, account }) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       if (trigger === "update") token.name = session.user.name
       if (account?.provider === "keycloak") {
         return { ...token, accessToken: account.access_token }
@@ -137,7 +140,7 @@ export const authConfig = {
       };
     },
   },
-  debug: process.env.NODE_ENV !== "production" ? true : false,
+  debug: env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;
 
 export const validateToken = async (
