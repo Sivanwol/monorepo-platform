@@ -2,35 +2,25 @@ import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
-import { cn } from "@app/ui";
-import { ThemeProvider, ThemeToggle } from "@app/ui/theme";
-import { Toaster } from "@app/ui/toast";
+import { cn, AdminTheme } from "@app/ui";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
 import { env } from "~/env";
+import { ThemeProvider } from '@mui/material/styles';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
+      ? env.VERCEL_URL!
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
-  openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
-  },
+  title: "Backoffice of Sabu Platform",
+  description: "Backoffice of Sabu Platform For both mobile and web app",
 };
 
 export const viewport: Viewport = {
@@ -50,13 +40,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ThemeProvider theme={AdminTheme}>
+            <TRPCReactProvider>{props.children}</TRPCReactProvider>
+            <CssBaseline />
+            {props.children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
