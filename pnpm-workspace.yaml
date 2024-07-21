@@ -13,6 +13,7 @@ catalog:
   typescript: ^5.5.3
   zod: ^3.23.8
   bcrypt-edge: ^0.0.6
+  tailwindcss: ^3.4.4
   superjson: ^2.2.1
 catalogs:
   vercel:
@@ -22,6 +23,6 @@ catalogs:
     "@vercel/blob": ^0.23.4
   react18:
     react: 18.3.1
-    react-dom: 18.3.1
+    "react-dom": 18.3.1
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.3.0

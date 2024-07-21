@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import type { AppRouter } from "@app/api";
-import { createCaller, createTRPCContext } from "@app/api";
+import { createCaller, createTRPCContext } from "@app/backoffice-api";
 import { auth } from "@app/auth";
 
 import { createQueryClient } from "./query-client";

@@ -10,7 +10,6 @@
     },
     "./env": "./env.ts"
   },
-  "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
@@ -27,7 +26,7 @@
     "next": "^14.2.4",
     "next-auth": "5.0.0-beta.19",
     "react": "catalog:react18",
-    "react-dom": "catalog:reac18",
+    "react-dom": "catalog:react18",
     "zod": "catalog:"
   },
   "devDependencies": {
