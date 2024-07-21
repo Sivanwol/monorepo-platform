@@ -1,10 +1,20 @@
-'use client'
+"use client";
+
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 import { ClickOutside } from "@app/ui";
+
 import type { DropdownUserProps } from "./type";
-export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsLink, fullname }: DropdownUserProps) => {
+
+export const DropdownUser = ({
+  userAvatar,
+  onLogoutClick,
+  profileLink,
+  settingsLink,
+  fullname,
+}: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -28,7 +38,7 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
           />
         </span>
 
-        <span className="flex items-center gap-2 font-medium text-dark dark:text-dark-6">
+        <span className="text-dark dark:text-dark-6 flex items-center gap-2 font-medium">
           <span className="hidden lg:block">{fullname}</span>
 
           <svg
@@ -52,9 +62,9 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
       {/* <!-- Dropdown Star --> */}
       {dropdownOpen && (
         <div
-          className={`absolute right-0 mt-7.5 flex w-[280px] flex-col rounded-lg border-[0.5px] border-stroke bg-white shadow-default dark:border-dark-3 dark:bg-gray-dark`}
+          className={`mt-7.5 border-stroke shadow-default dark:border-dark-3 dark:bg-gray-dark absolute right-0 flex w-[280px] flex-col rounded-lg border-[0.5px] bg-white`}
         >
-          <div className="flex items-center gap-2.5 px-5 pb-5.5 pt-3.5">
+          <div className="pb-5.5 flex items-center gap-2.5 px-5 pt-3.5">
             <span className="relative block h-12 w-12 rounded-full">
               <Image
                 width={112}
@@ -68,23 +78,23 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
                 className="overflow-hidden rounded-full"
               />
 
-              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-green dark:border-gray-dark"></span>
+              <span className="bg-green dark:border-gray-dark absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white"></span>
             </span>
 
             <span className="block">
-              <span className="block font-medium text-dark dark:text-white">
+              <span className="text-dark block font-medium dark:text-white">
                 Jhon Smith
               </span>
-              <span className="block font-medium text-dark-5 dark:text-dark-6">
+              <span className="text-dark-5 dark:text-dark-6 block font-medium">
                 jonson@nextadmin.com
               </span>
             </span>
           </div>
-          <ul className="flex flex-col gap-1 border-y-[0.5px] border-stroke p-2.5 dark:border-dark-3">
+          <ul className="border-stroke dark:border-dark-3 flex flex-col gap-1 border-y-[0.5px] p-2.5">
             <li>
               <Link
                 href={profileLink}
-                className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
+                className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
               >
                 <svg
                   className="fill-current"
@@ -114,7 +124,7 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
             <li>
               <Link
                 href={settingsLink}
-                className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
+                className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
               >
                 <svg
                   className="fill-current"
@@ -145,10 +155,10 @@ export const DropdownUser = ({ userAvatar, onLogoutClick, profileLink, settingsL
             <button
               onClick={() => {
                 if (typeof onLogoutClick === "function") {
-                  onLogoutClick()
+                  onLogoutClick();
                 }
               }}
-              className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
+              className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
             >
               <svg
                 className="fill-current"

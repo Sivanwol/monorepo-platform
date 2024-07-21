@@ -1,5 +1,6 @@
-'use client'
-import React, { useRef, useEffect } from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 
 export interface ClickOutsideProps {
   children: React.ReactNode;
@@ -21,12 +22,11 @@ export const ClickOutside: React.FC<ClickOutsideProps> = ({
       let clickedInside: null | undefined | boolean = false;
       if (exceptionRef) {
         clickedInside =
-          ((wrapperRef.current?.contains(event.target as Node)) ??
-            (exceptionRef.current && exceptionRef.current === event.target)) ??
-          (exceptionRef.current?.contains(event.target as Node));
+          wrapperRef.current?.contains(event.target as Node) ??
+          (exceptionRef.current && exceptionRef.current === event.target) ??
+          exceptionRef.current?.contains(event.target as Node);
       } else {
-        clickedInside =
-          wrapperRef.current?.contains(event.target as Node);
+        clickedInside = wrapperRef.current?.contains(event.target as Node);
       }
 
       if (!clickedInside) onClick();

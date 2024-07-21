@@ -1,8 +1,8 @@
 import { Auth } from "@auth/core";
-import Facebook from "next-auth/providers/facebook"
-import Apple from "next-auth/providers/apple"
-import Google from "next-auth/providers/google"
 import { eventHandler, toWebRequest } from "h3";
+import Apple from "next-auth/providers/apple";
+import Facebook from "next-auth/providers/facebook";
+import Google from "next-auth/providers/google";
 
 export default eventHandler(async (event) =>
   Auth(toWebRequest(event), {
@@ -17,7 +17,7 @@ export default eventHandler(async (event) =>
       }),
       Apple({
         clientId: process.env.AUTH_APPLE_ID,
-        clientSecret: process.env.AUTH_APPLE_SECRET ?? '',
+        clientSecret: process.env.AUTH_APPLE_SECRET ?? "",
       }),
       Google({
         clientId: process.env.AUTH_GOOGLE_ID,

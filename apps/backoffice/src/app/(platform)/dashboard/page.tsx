@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { api, HydrateClient } from "~/trpc/server";
+
 // export const runtime = "edge";
 
 export default function HomePage() {
@@ -16,12 +17,8 @@ export default function HomePage() {
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
             <Suspense
-              fallback={
-                <div className="flex w-full flex-col gap-4">
-                </div>
-              }
-            >
-            </Suspense>
+              fallback={<div className="flex w-full flex-col gap-4"></div>}
+            ></Suspense>
           </div>
         </div>
       </main>

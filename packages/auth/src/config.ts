@@ -5,19 +5,24 @@ import type {
 } from "next-auth";
 import { skipCSRFCheck } from "@auth/core";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import Facebook from "next-auth/providers/facebook"
-import Apple from "next-auth/providers/apple"
-import Google from "next-auth/providers/google"
-import CredentialsProvider from 'next-auth/providers/credentials'
-
+import Apple from "next-auth/providers/apple";
+import CredentialsProvider from "next-auth/providers/credentials";
+import Facebook from "next-auth/providers/facebook";
+import Google from "next-auth/providers/google";
+import { z } from "zod";
 
 import { db, UserRepo } from "@app/db/client";
-import { Account, Session, User, VerificationTokens, Authenticators } from "@app/db/schema";
+import {
+  Account,
+  Authenticators,
+  Session,
+  User,
+  VerificationTokens,
+} from "@app/db/schema";
+import { IsVerifyPassword, saltAndHashPassword } from "@app/utils";
 import { UserValidators } from "@app/validators";
-import { saltAndHashPassword, IsVerifyPassword } from "@app/utils";
 
 import { env } from "../env";
-import { z } from "zod";
 
 declare module "next-auth" {
   interface Session {
@@ -32,64 +37,71 @@ const adapter = DrizzleAdapter(db, {
   accountsTable: Account,
   sessionsTable: Session,
   verificationTokensTable: VerificationTokens,
-  authenticatorsTable: Authenticators
+  authenticatorsTable: Authenticators,
 });
 
 export const isSecureContext = env.NODE_ENV !== "development";
-
 
 export const authBackofficeConfig = {
   adapter,
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
-  providers: [Google, Facebook, CredentialsProvider({
-    credentials: {
-      email: {},
-      password: {},
-    },
-    async authorize(credentials) {
-      let user = null;
-      try {
-        const parsedCredentials = await UserValidators.signInSchema.parseAsync(credentials);
-        const { email, password } = parsedCredentials;
+  providers: [
+    Google,
+    Facebook,
+    CredentialsProvider({
+      credentials: {
+        email: {},
+        password: {},
+      },
+      async authorize(credentials) {
+        let user = null;
+        try {
+          const parsedCredentials =
+            await UserValidators.signInSchema.parseAsync(credentials);
+          const { email, password } = parsedCredentials;
 
-        // logic to salt and hash password
-        const pwHash = saltAndHashPassword(password);
-        user = await UserRepo.GetUserByEmail(email);
-        if (user) {
-          const userMatch = await UserRepo.IsMatchUserPassword(email, pwHash);
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          if (userMatch && IsVerifyPassword(credentials.password as string, user.password!)) {
-            console.info(`User login ${user.email}`);
-            return user;
+          // logic to salt and hash password
+          const pwHash = saltAndHashPassword(password);
+          user = await UserRepo.GetUserByEmail(email);
+          if (user) {
+            const userMatch = await UserRepo.IsMatchUserPassword(email, pwHash);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            if (
+              userMatch &&
+              IsVerifyPassword(credentials.password as string, user.password!)
+            ) {
+              console.info(`User login ${user.email}`);
+              return user;
+            }
+          }
+        } catch (error: unknown) {
+          if (error instanceof z.ZodError) {
+            // Handle Zod validation errors
+            console.error("Validation error:", error.message);
+          } else {
+            // Handle other errors
+            console.error("Error:", error);
           }
         }
-      } catch (error: unknown) {
-        if (error instanceof z.ZodError) {
-          // Handle Zod validation errors
-          console.error("Validation error:", error.message);
-        } else {
-          // Handle other errors
-          console.error("Error:", error);
-        }
-      }
-      return user;
-    },
-  })],
+        return user;
+      },
+    }),
+  ],
   callbacks: {
     jwt({ token, trigger, user, session, account }) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      if (trigger === "update") token.name = session.user.name
+      if (trigger === "update") token.name = session.user.name;
       if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token }
+        return { ...token, accessToken: account.access_token };
       }
-      return token
+      return token;
     },
     session: (opts) => {
       if (!("user" in opts))
@@ -112,20 +124,20 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [Apple, Google, Facebook],
   callbacks: {
     jwt({ token, trigger, session, account }) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      if (trigger === "update") token.name = session.user.name
+      if (trigger === "update") token.name = session.user.name;
       if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token }
+        return { ...token, accessToken: account.access_token };
       }
-      return token
+      return token;
     },
     session: (opts) => {
       if (!("user" in opts))
@@ -150,11 +162,11 @@ export const validateToken = async (
   const session = await adapter.getSessionAndUser?.(sessionToken);
   return session
     ? {
-      user: {
-        ...session.user,
-      },
-      expires: session.session.expires.toISOString(),
-    }
+        user: {
+          ...session.user,
+        },
+        expires: session.session.expires.toISOString(),
+      }
     : null;
 };
 

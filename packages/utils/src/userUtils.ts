@@ -1,4 +1,4 @@
-import { genSaltSync, hashSync, compareSync } from "bcrypt-edge";
+import { compareSync, genSaltSync, hashSync } from "bcrypt-edge";
 
 // Define a function to salt and hash a password
 export const saltAndHashPassword = (password: string): string => {
@@ -8,6 +8,9 @@ export const saltAndHashPassword = (password: string): string => {
   return hashedPassword;
 };
 
-export const IsVerifyPassword = (password: string, hashedPassword: string): boolean => {
+export const IsVerifyPassword = (
+  password: string,
+  hashedPassword: string,
+): boolean => {
   return compareSync(password, hashedPassword);
-}
+};

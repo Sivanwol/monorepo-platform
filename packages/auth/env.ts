@@ -4,12 +4,24 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    AUTH_FACEBOOK_ID: process.env.NODE_ENV === "production" ? z.string().min(1) : z.string().min(1).optional(),
-    AUTH_FACEBOOK_SECRET: process.env.NODE_ENV === "production" ? z.string().min(1) : z.string().min(1).optional(),
+    AUTH_FACEBOOK_ID:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional(),
+    AUTH_FACEBOOK_SECRET:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional(),
     AUTH_GOOGLE_ID: z.string().min(1),
     AUTH_GOOGLE_SECRET: z.string().min(1),
-    AUTH_APPLE_ID: process.env.NODE_ENV === "production" ? z.string().min(1) : z.string().min(1).optional(),
-    AUTH_APPLE_SECRET: process.env.NODE_ENV === "production" ? z.string().min(1) : z.string().min(1).optional(),
+    AUTH_APPLE_ID:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional(),
+    AUTH_APPLE_SECRET:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional(),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)

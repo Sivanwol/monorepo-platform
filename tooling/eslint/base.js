@@ -35,7 +35,12 @@ export const restrictEnvAccess = tseslint.config({
 export default tseslint.config(
   {
     // Globally ignored files
-    ignores: ["**/*.config.*", "**/*.d.ts", "**/node_modules/**", "**/__tests__/**"],
+    ignores: [
+      "**/*.config.*",
+      "**/*.d.ts",
+      "**/node_modules/**",
+      "**/__tests__/**",
+    ],
   },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
@@ -71,7 +76,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-non-null-assertion": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
-      "@typescript-eslint/no-unsafe-member-access": "warn"
+      "@typescript-eslint/no-unsafe-member-access": "warn",
     },
   },
   {

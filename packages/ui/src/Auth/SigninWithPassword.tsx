@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
 
@@ -12,7 +13,7 @@ export default function SigninWithPassword() {
       <div className="mb-4">
         <label
           htmlFor="email"
-          className="mb-2.5 block font-medium text-dark dark:text-white"
+          className="text-dark mb-2.5 block font-medium dark:text-white"
         >
           Email
         </label>
@@ -21,10 +22,10 @@ export default function SigninWithPassword() {
             type="email"
             placeholder="Enter your email"
             name="email"
-            className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            className="border-stroke text-dark dark:border-dark-3 dark:bg-dark-2 w-full rounded-lg border bg-transparent py-[15px] pl-6 pr-11 font-medium outline-none focus:border-primary focus-visible:shadow-none dark:text-white dark:focus:border-primary"
           />
 
-          <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
+          <span className="right-4.5 absolute top-1/2 -translate-y-1/2">
             <svg
               className="fill-current"
               width="22"
@@ -47,7 +48,7 @@ export default function SigninWithPassword() {
       <div className="mb-5">
         <label
           htmlFor="password"
-          className="mb-2.5 block font-medium text-dark dark:text-white"
+          className="text-dark mb-2.5 block font-medium dark:text-white"
         >
           Password
         </label>
@@ -57,10 +58,10 @@ export default function SigninWithPassword() {
             name="password"
             placeholder="Enter your password"
             autoComplete="password"
-            className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            className="border-stroke text-dark dark:border-dark-3 dark:bg-dark-2 w-full rounded-lg border bg-transparent py-[15px] pl-6 pr-11 font-medium outline-none focus:border-primary focus-visible:shadow-none dark:text-white dark:focus:border-primary"
           />
 
-          <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
+          <span className="right-4.5 absolute top-1/2 -translate-y-1/2">
             <svg
               className="fill-current"
               width="22"
@@ -89,7 +90,7 @@ export default function SigninWithPassword() {
       <div className="mb-6 flex items-center justify-between gap-2 py-2">
         <label
           htmlFor="remember"
-          className="flex cursor-pointer select-none items-center font-satoshi text-base font-medium text-dark dark:text-white"
+          className="font-satoshi text-dark flex cursor-pointer select-none items-center text-base font-medium dark:text-white"
         >
           <input
             type="checkbox"
@@ -98,8 +99,9 @@ export default function SigninWithPassword() {
             className="peer sr-only"
           />
           <span
-            className={`mr-2.5 inline-flex h-5.5 w-5.5 items-center justify-center rounded-md border border-stroke bg-white text-white text-opacity-0 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-opacity-100 dark:border-stroke-dark dark:bg-white/5 ${data.remember ? "bg-primary" : ""
-              }`}
+            className={`h-5.5 w-5.5 border-stroke dark:border-stroke-dark mr-2.5 inline-flex items-center justify-center rounded-md border bg-white text-white text-opacity-0 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-opacity-100 dark:bg-white/5 ${
+              data.remember ? "bg-primary" : ""
+            }`}
           >
             <svg
               width="10"
@@ -121,7 +123,7 @@ export default function SigninWithPassword() {
 
         <Link
           href="/auth/forgot-password"
-          className="select-none font-satoshi text-base font-medium text-dark underline duration-300 hover:text-primary dark:text-white dark:hover:text-primary"
+          className="font-satoshi text-dark select-none text-base font-medium underline duration-300 hover:text-primary dark:text-white dark:hover:text-primary"
         >
           Forgot Password?
         </Link>

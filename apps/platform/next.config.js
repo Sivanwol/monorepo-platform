@@ -15,7 +15,7 @@ const config = {
     "@app/db",
     "@app/ui",
     "@app/validators",
-    "@app/utils"
+    "@app/utils",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

@@ -1,15 +1,24 @@
-'use client'
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ClickOutside } from "@app/ui";;
 import Image from "next/image";
+import Link from "next/link";
+
+import { ClickOutside } from "@app/ui";
+
 import type { DropdownNotificationProps } from "./type";
-export const DropdownNotification = ({ notifications }: DropdownNotificationProps) => {
+
+export const DropdownNotification = ({
+  notifications,
+}: DropdownNotificationProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
 
   return (
-    <ClickOutside onClick={() => setDropdownOpen(false)} className="relative hidden sm:block">
+    <ClickOutside
+      onClick={() => setDropdownOpen(false)}
+      className="relative hidden sm:block"
+    >
       <li>
         <Link
           onClick={() => {
@@ -17,7 +26,7 @@ export const DropdownNotification = ({ notifications }: DropdownNotificationProp
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
-          className="relative flex h-12 w-12 items-center justify-center rounded-full border border-stroke bg-gray-2 text-dark hover:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:hover:text-white"
+          className="border-stroke bg-gray-2 text-dark dark:border-dark-4 dark:bg-dark-3 relative flex h-12 w-12 items-center justify-center rounded-full border hover:text-primary dark:text-white dark:hover:text-white"
         >
           <span className="relative">
             <svg
@@ -37,23 +46,24 @@ export const DropdownNotification = ({ notifications }: DropdownNotificationProp
             </svg>
 
             <span
-              className={`absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3 ${!notifying ? "hidden" : "inline"
-                }`}
+              className={`z-1 border-gray-2 bg-red-light dark:border-dark-3 absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full border-2 ${
+                !notifying ? "hidden" : "inline"
+              }`}
             >
-              <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-red-light opacity-75"></span>
+              <span className="-z-1 bg-red-light absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
             </span>
           </span>
         </Link>
 
         {dropdownOpen && (
           <div
-            className={`absolute -right-27 mt-7.5 flex h-[550px] w-75 flex-col rounded-xl border-[0.5px] border-stroke bg-white px-5.5 pb-5.5 pt-5 shadow-default dark:border-dark-3 dark:bg-gray-dark sm:right-0 sm:w-[364px]`}
+            className={`-right-27 mt-7.5 w-75 border-stroke px-5.5 pb-5.5 shadow-default dark:border-dark-3 dark:bg-gray-dark absolute flex h-[550px] flex-col rounded-xl border-[0.5px] bg-white pt-5 sm:right-0 sm:w-[364px]`}
           >
             <div className="mb-5 flex items-center justify-between">
-              <h5 className="text-lg font-medium text-dark dark:text-white">
+              <h5 className="text-dark text-lg font-medium dark:text-white">
                 Notifications
               </h5>
-              <span className="rounded-md bg-primary px-2 py-0.5 text-body-xs font-medium text-white">
+              <span className="text-body-xs rounded-md bg-primary px-2 py-0.5 font-medium text-white">
                 5 new
               </span>
             </div>
@@ -62,7 +72,7 @@ export const DropdownNotification = ({ notifications }: DropdownNotificationProp
               {notifications.map((item, index) => (
                 <li key={index}>
                   <Link
-                    className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3"
+                    className="hover:bg-gray-2 dark:hover:bg-dark-3 flex items-center gap-4 rounded-[10px] p-2.5"
                     href="#"
                   >
                     <span className="block h-14 w-14 rounded-full">
@@ -79,10 +89,10 @@ export const DropdownNotification = ({ notifications }: DropdownNotificationProp
                     </span>
 
                     <span className="block">
-                      <span className="block font-medium text-dark dark:text-white">
+                      <span className="text-dark block font-medium dark:text-white">
                         {item.title}
                       </span>
-                      <span className="block text-body-sm font-medium text-dark-5 dark:text-dark-6">
+                      <span className="text-body-sm text-dark-5 dark:text-dark-6 block font-medium">
                         {item.subTitle}
                       </span>
                     </span>
@@ -92,7 +102,7 @@ export const DropdownNotification = ({ notifications }: DropdownNotificationProp
             </ul>
 
             <Link
-              className="flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:border-primary dark:hover:bg-blue-light-3 dark:hover:text-primary"
+              className="hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:bg-blue-light-3 flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary dark:hover:border-primary dark:hover:text-primary"
               href="#"
             >
               See all notifications

@@ -19,7 +19,7 @@ export interface NotificationItem {
 }
 export interface HeaderProps {
   notifications: NotificationItem[];
-  user: DropdownUserProps
+  user: DropdownUserProps;
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }

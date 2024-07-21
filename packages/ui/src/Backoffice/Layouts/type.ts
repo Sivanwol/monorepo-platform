@@ -5,5 +5,5 @@ export interface DefaultLayoutProps {
   children: any;
   sideMenuItems: MenuGroup[];
   notifications: NotificationItem[];
-  user: DropdownUserProps
+  user: DropdownUserProps;
 }

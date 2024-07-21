@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-'use client'
+"use client";
+
 import React from "react";
 import Link from "next/link";
+
 import { SidebarDropdown } from "./SidebarDropdown";
 
 export const SidebarItem = ({ item, pageName, setPageName }: any) => {
@@ -36,8 +38,9 @@ export const SidebarItem = ({ item, pageName, setPageName }: any) => {
           )} */}
           {item.children && (
             <svg
-              className={`absolute right-3.5 top-1/2 -translate-y-1/2 fill-current ${pageName !== item.label.toLowerCase() && "rotate-180"
-                }`}
+              className={`absolute right-3.5 top-1/2 -translate-y-1/2 fill-current ${
+                pageName !== item.label.toLowerCase() && "rotate-180"
+              }`}
               width="22"
               height="22"
               viewBox="0 0 22 22"
@@ -56,8 +59,9 @@ export const SidebarItem = ({ item, pageName, setPageName }: any) => {
 
         {item.children && (
           <div
-            className={`translate transform overflow-hidden ${pageName !== item.label.toLowerCase() && "hidden"
-              }`}
+            className={`translate transform overflow-hidden ${
+              pageName !== item.label.toLowerCase() && "hidden"
+            }`}
           >
             <SidebarDropdown items={item.children} />
           </div>

@@ -1,4 +1,3 @@
-
 export interface SidebarProps {
   items: MenuGroup[];
   sidebarOpen: boolean;
@@ -9,7 +8,7 @@ export interface MenuGroup {
   items: MenuGroupItem[];
 }
 export interface MenuGroupItem {
-  icon?: React.ReactNode,
+  icon?: React.ReactNode;
   label: string;
   route: string;
   children?: MenuGroupItem[];

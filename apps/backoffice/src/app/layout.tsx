@@ -1,23 +1,24 @@
 import type { Metadata, Viewport } from "next";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import CssBaseline from "@mui/material/CssBaseline";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
-import { cn, AdminTheme } from "@app/ui";
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import CssBaseline from '@mui/material/CssBaseline';
+import { AdminTheme, cn } from "@app/ui";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
+import { ThemeProvider } from "@mui/material/styles";
+
 import { env } from "~/env";
-import { ThemeProvider } from '@mui/material/styles';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      ? env.VERCEL_URL!
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        env.VERCEL_URL!
       : "http://localhost:3000",
   ),
   title: "Backoffice of Sabu Platform",

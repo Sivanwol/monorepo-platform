@@ -1,15 +1,17 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import type { DropdownUserProps, MenuGroup } from "@app/ui";
 import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
-import type { Metadata } from "next";
-import { Suspense } from "react";
+
 import { env } from "~/env";
+import { api, HydrateClient } from "~/trpc/server";
+
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
   description: "Simple monorepo with shared backend for web & mobile apps",
 };
 
-import { api, HydrateClient } from "~/trpc/server";
 const menuGroups: MenuGroup[] = [
   {
     name: "MAIN MENU",
@@ -38,9 +40,7 @@ const menuGroups: MenuGroup[] = [
         ),
         label: "Dashboard",
         route: "#",
-        children: [
-          { label: "eCommerce", route: "/" },
-        ],
+        children: [{ label: "eCommerce", route: "/" }],
       },
       {
         icon: (
@@ -159,9 +159,7 @@ const menuGroups: MenuGroup[] = [
         ),
         label: "Tables",
         route: "#",
-        children: [
-          { label: "Tables", route: "/tables" },
-        ],
+        children: [{ label: "Tables", route: "/tables" }],
       },
       {
         icon: (
@@ -183,9 +181,7 @@ const menuGroups: MenuGroup[] = [
         ),
         label: "Pages",
         route: "#",
-        children: [
-          { label: "Settings", route: "/pages/settings" },
-        ],
+        children: [{ label: "Settings", route: "/pages/settings" }],
       },
     ],
   },
@@ -216,9 +212,7 @@ const menuGroups: MenuGroup[] = [
         ),
         label: "Charts",
         route: "#",
-        children: [
-          { label: "Basic Chart", route: "/charts/basic-chart" },
-        ],
+        children: [{ label: "Basic Chart", route: "/charts/basic-chart" }],
       },
       {
         icon: (
@@ -285,9 +279,7 @@ const menuGroups: MenuGroup[] = [
         ),
         label: "Authentication",
         route: "#",
-        children: [
-          { label: "Sign In", route: "/auth/signin" },
-        ],
+        children: [{ label: "Sign In", route: "/auth/signin" }],
       },
     ],
   },
@@ -297,19 +289,23 @@ export default function PlatformLayout({ children }: { children: any }) {
   void api.post.all.prefetch();
   return (
     <HydrateClient>
-      <Suspense
-        fallback={<Loader />}>
-        <DefaultLayout sideMenuItems={menuGroups} notifications={[]} user={{
-          userAvatar: "https://ui-avatars.com/api/?format=png",
-          fullname: "John Doe",
-          username: "johndoe",
-          userId: 1,
-          profileLink: "/profile",
-          settingsLink: "/settings",
-          onLogoutClick: () => console.log("User logged out")
-        }}>
+      <Suspense fallback={<Loader />}>
+        <DefaultLayout
+          sideMenuItems={menuGroups}
+          notifications={[]}
+          user={{
+            userAvatar: "https://ui-avatars.com/api/?format=png",
+            fullname: "John Doe",
+            username: "johndoe",
+            userId: 1,
+            profileLink: "/profile",
+            settingsLink: "/settings",
+            onLogoutClick: () => console.log("User logged out"),
+          }}
+        >
           {children}
         </DefaultLayout>
       </Suspense>
-    </HydrateClient>)
+    </HydrateClient>
+  );
 }
