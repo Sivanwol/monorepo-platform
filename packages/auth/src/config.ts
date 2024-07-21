@@ -51,9 +51,9 @@ export const authBackofficeConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -127,9 +127,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [Apple, Google, Facebook],
@@ -165,11 +165,11 @@ export const validateToken = async (
   const session = await adapter.getSessionAndUser?.(sessionToken);
   return session
     ? {
-      user: {
-        ...session.user,
-      },
-      expires: session.session.expires.toISOString(),
-    }
+        user: {
+          ...session.user,
+        },
+        expires: session.session.expires.toISOString(),
+      }
     : null;
 };
 
