@@ -1,0 +1,11 @@
+{
+    "framework": "nextjs",
+    "cleanUrls": true,
+    "crons": [],
+    "git": {
+        "deploymentEnabled": {
+            "master": false,
+            "development": true
+        }
+    }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "sabu-platform-monorepo",
+  "private": true,
+  "engines": {
+    "node": ">=20.12.0"
+  },
+  "packageManager": "pnpm@9.5.0",
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo run clean",
+    "uuid": "openssl rand -base64 32",
+    "db:generate": "turbo -F @app/db generate",
+    "db:migrate": "turbo -F @app/db migrate",
+    "db:push": "turbo -F @app/db push",
+    "db:studio": "turbo -F @app/db studio",
+    "dev": "turbo watch dev",
+    "dev:platform": "turbo watch dev -F @app/platform",
+    "dev:backoffice": "turbo watch dev -F @app/backoffice",
+    "format": "turbo run format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
+    "format:fix": "turbo run format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "lint": "turbo run lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:ws": "pnpm dlx sherif@latest",
+    "postinstall": "pnpm lint:ws",
+    "typecheck": "turbo run typecheck",
+    "prepare": "husky",
+    "ui-add": "turbo run ui-add"
+  },
+  "devDependencies": {
+    "@app/prettier-config": "workspace:*",
+    "@turbo/gen": "^2.0.8",
+    "prettier": "catalog:",
+    "husky": "^9.0.11",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "turbo": "^2.0.8",
+    "typescript": "catalog:"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "prettier": "@app/prettier-config"
+}

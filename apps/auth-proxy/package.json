@@ -1,0 +1,28 @@
+{
+  "name": "@app/auth-proxy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nitro build",
+    "clean": "rm -rf .turbo .output .nitro node_modules",
+    "lint": "eslint",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@auth/core": "0.32.0"
+  },
+  "devDependencies": {
+    "@app/eslint-config": "workspace:*",
+    "@app/prettier-config": "workspace:*",
+    "@app/tailwind-config": "workspace:*",
+    "@app/tsconfig": "workspace:*",
+    "@types/node": "^20.14.9",
+    "eslint": "catalog:",
+    "h3": "^1.12.0",
+    "nitropack": "^2.9.7",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  },
+  "prettier": "@app/prettier-config"
+}
