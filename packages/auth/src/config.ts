@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+// TODO fix this eslint error and see how better handle
 import type {
   DefaultSession,
   NextAuthConfig,
@@ -47,9 +51,9 @@ export const authBackofficeConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -72,7 +76,6 @@ export const authBackofficeConfig = {
           user = await UserRepo.GetUserByEmail(email);
           if (user) {
             const userMatch = await UserRepo.IsMatchUserPassword(email, pwHash);
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if (
               userMatch &&
               IsVerifyPassword(credentials.password as string, user.password!)
@@ -124,9 +127,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [Apple, Google, Facebook],
@@ -162,11 +165,11 @@ export const validateToken = async (
   const session = await adapter.getSessionAndUser?.(sessionToken);
   return session
     ? {
-        user: {
-          ...session.user,
-        },
-        expires: session.session.expires.toISOString(),
-      }
+      user: {
+        ...session.user,
+      },
+      expires: session.session.expires.toISOString(),
+    }
     : null;
 };
 
