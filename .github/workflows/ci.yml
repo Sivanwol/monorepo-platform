@@ -66,4 +66,4 @@ jobs:
       - name: Setup
         uses: ./tooling/github/setup
       - name: Build
-        uses: pnpm build
+        run: pnpm build
