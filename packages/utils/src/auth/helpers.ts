@@ -13,4 +13,5 @@ export function auth(): null | AuthenticationInfo {
   return sessionRes;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function user() {}
