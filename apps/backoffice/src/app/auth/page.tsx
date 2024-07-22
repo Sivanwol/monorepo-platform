@@ -1,19 +1,16 @@
-// import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import type { Metadata } from "next";
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@app/auth";
 import { Signin } from "@app/ui";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next.js Login Page | NextAdmin - Next.js Dashboard Kit",
+  title: "Sabu backoffice Login Page",
   description: "This is Next.js Login Page NextAdmin Dashboard Kit",
 };
 
-export default async function SignIn() {
+export default async function SignInPage() {
   const session = await auth();
   console.log("session", session);
   if (session) redirect("/platform/dashboard");

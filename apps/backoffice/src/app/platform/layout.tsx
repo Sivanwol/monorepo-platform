@@ -288,6 +288,7 @@ const menuGroups: MenuGroup[] = [
 ];
 export default async function PlatformLayout({ children }: { children: any }) {
   const session = await auth();
+  console.log("session", session);
   if (!session) redirect("/auth");
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
@@ -310,7 +311,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
               Current Session
             </div>
             <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {JSON.stringify(session, null, 2)}
+              {JSON.stringify(user, null, 2)}
             </pre>
           </div>
           {children}
