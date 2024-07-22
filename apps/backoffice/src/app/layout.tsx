@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        env.VERCEL_URL!
-      : "http://localhost:3000",
+      env.VERCEL_URL!
+      : "http://localhost:3001",
   ),
   title: "Backoffice of Sabu Platform",
   description: "Backoffice of Sabu Platform For both mobile and web app",
@@ -32,7 +32,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -44,9 +44,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={AdminTheme}>
-            <TRPCReactProvider>{props.children}</TRPCReactProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
             <CssBaseline />
-            {props.children}
+            {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

@@ -6,6 +6,7 @@ import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
+import { signOut } from "@app/auth";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -296,11 +297,9 @@ export default function PlatformLayout({ children }: { children: any }) {
           user={{
             userAvatar: "https://ui-avatars.com/api/?format=png",
             fullname: "John Doe",
-            username: "johndoe",
-            userId: 1,
-            profileLink: "/profile",
-            settingsLink: "/settings",
-            onLogoutClick: () => console.log("User logged out"),
+            profileLink: "/platform/user/me",
+            settingsLink: "/platform/user/settings",
+            logoutLink: "/platform/user/logout",
           }}
         >
           {children}

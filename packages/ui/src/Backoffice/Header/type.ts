@@ -1,9 +1,7 @@
 export interface DropdownUserProps {
   userAvatar: string;
-  username: string;
   fullname: string;
-  userId: string | number;
-  onLogoutClick?: () => void;
+  logoutLink: string;
   profileLink: string;
   settingsLink: string;
 }

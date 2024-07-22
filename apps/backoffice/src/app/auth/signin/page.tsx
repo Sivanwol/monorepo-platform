@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "This is Next.js Login Page NextAdmin Dashboard Kit",
 };
 
-const SignIn: React.FC = () => {
+export default function SignIn() {
   return (
     <>
       {/* <Breadcrumb pageName="Sign In" /> */}

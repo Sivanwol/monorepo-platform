@@ -10,7 +10,7 @@ import type { DropdownUserProps } from "./type";
 
 export const DropdownUser = ({
   userAvatar,
-  onLogoutClick,
+  logoutLink,
   profileLink,
   settingsLink,
   fullname,
@@ -152,12 +152,8 @@ export const DropdownUser = ({
             </li>
           </ul>
           <div className="p-2.5">
-            <button
-              onClick={() => {
-                if (typeof onLogoutClick === "function") {
-                  onLogoutClick();
-                }
-              }}
+            <Link
+              href={logoutLink}
               className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
             >
               <svg
@@ -185,7 +181,7 @@ export const DropdownUser = ({
                 </defs>
               </svg>
               Logout
-            </button>
+            </Link>
           </div>
         </div>
       )}
