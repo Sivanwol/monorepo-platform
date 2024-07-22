@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import { GeistMono } from "geist/font/mono";
@@ -46,12 +47,14 @@ export default function RootLayout({
           GeistMono.variable,
         )}
       >
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={AdminTheme}>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-            <CssBaseline />
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <AuthProvider projectId={env.NEXT_PUBLIC_AUTH_DESCOPE_ID}>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <ThemeProvider theme={AdminTheme}>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+              <CssBaseline />
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </AuthProvider>
       </body>
     </html>
   );

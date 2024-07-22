@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 // TODO fix this eslint error and see how better handle
 import type {
   DefaultSession,
@@ -8,11 +8,12 @@ import type {
   Session as NextAuthSession,
 } from "next-auth";
 import { skipCSRFCheck } from "@auth/core";
+// import Apple from "next-auth/providers/apple";
+// import CredentialsProvider from "next-auth/providers/credentials";
+// import Facebook from "next-auth/providers/facebook";
+// import Google from "next-auth/providers/google";
+import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import Apple from "next-auth/providers/apple";
-import CredentialsProvider from "next-auth/providers/credentials";
-import Facebook from "next-auth/providers/facebook";
-import Google from "next-auth/providers/google";
 import { z } from "zod";
 
 import { db, UserRepo } from "@app/db/client";
@@ -23,8 +24,9 @@ import {
   User,
   VerificationTokens,
 } from "@app/db/schema";
-import { IsVerifyPassword, saltAndHashPassword } from "@app/utils";
-import { UserValidators } from "@app/validators";
+
+// import { IsVerifyPassword, saltAndHashPassword } from "@app/utils";
+// import { UserValidators } from "@app/validators";
 
 import { env } from "../env";
 
@@ -56,47 +58,7 @@ export const authBackofficeConfig = {
       }
     : {}),
   secret: env.AUTH_SECRET,
-  providers: [
-    Google,
-    Facebook,
-    CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
-      },
-      async authorize(credentials) {
-        let user = null;
-        try {
-          const parsedCredentials =
-            await UserValidators.signInSchema.parseAsync(credentials);
-          const { email, password } = parsedCredentials;
-
-          // logic to salt and hash password
-          const pwHash = saltAndHashPassword(password);
-          user = await UserRepo.GetUserByEmail(email);
-          if (user) {
-            const userMatch = await UserRepo.IsMatchUserPassword(email, pwHash);
-            if (
-              userMatch &&
-              IsVerifyPassword(credentials.password as string, user.password!)
-            ) {
-              console.info(`User login ${user.email}`);
-              return user;
-            }
-          }
-        } catch (error: unknown) {
-          if (error instanceof z.ZodError) {
-            // Handle Zod validation errors
-            console.error("Validation error:", error.message);
-          } else {
-            // Handle other errors
-            console.error("Error:", error);
-          }
-        }
-        return user;
-      },
-    }),
-  ],
+  providers: [Descope],
   callbacks: {
     jwt({ token, trigger, user, session, account }) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -132,7 +94,7 @@ export const authConfig = {
       }
     : {}),
   secret: env.AUTH_SECRET,
-  providers: [Apple, Google, Facebook],
+  providers: [Descope],
   callbacks: {
     jwt({ token, trigger, session, account }) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

@@ -18,10 +18,11 @@
   },
   "dependencies": {
     "@app/db": "workspace:*",
-    "@app/validators": "workspace:*",
     "@app/utils": "workspace:*",
+    "@app/validators": "workspace:*",
     "@auth/core": "0.32.0",
     "@auth/drizzle-adapter": "^1.4.1",
+    "@descope/nextjs-sdk": "catalog:",
     "@t3-oss/env-nextjs": "^0.10.1",
     "next": "^14.2.4",
     "next-auth": "5.0.0-beta.19",
