@@ -6,7 +6,6 @@ import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
-import { signOut } from "@app/auth";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -287,7 +286,7 @@ const menuGroups: MenuGroup[] = [
 ];
 export default function PlatformLayout({ children }: { children: any }) {
   // You can await this here if you don't want to show Suspense fallback below
-  void api.post.all.prefetch();
+  // void api.post.all.prefetch();
   return (
     <HydrateClient>
       <Suspense fallback={<Loader />}>

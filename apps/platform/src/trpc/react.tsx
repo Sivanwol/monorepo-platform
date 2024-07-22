@@ -1,7 +1,7 @@
 "use client";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -11,6 +11,8 @@ import type { AppRouter } from "@app/api";
 
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";
+import React from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
@@ -23,10 +25,23 @@ const getQueryClient = () => {
   }
 };
 
+const ReactQueryDevtoolsProduction = lazy(() =>
+  import('@tanstack/react-query-devtools/build/modern/production.js').then(
+    (d) => ({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      default: d.ReactQueryDevtools,
+    }),
+  ),
+)
 export const api = createTRPCReact<AppRouter>();
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
+  const [showDevtools, setShowDevtools] = useState(false)
+  useEffect(() => {
+    // @ts-expect-error('ReactQueryDevtools' is not defined in non-production environments')
+    window.toggleDevtools = () => setShowDevtools((old) => !old)
+  }, [])
 
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -54,6 +69,12 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {props.children}
       </api.Provider>
+      <ReactQueryDevtools initialIsOpen={false} />
+      {showDevtools && (
+        <React.Suspense fallback={null}>
+          <ReactQueryDevtoolsProduction />
+        </React.Suspense>
+      )}
     </QueryClientProvider>
   );
 }

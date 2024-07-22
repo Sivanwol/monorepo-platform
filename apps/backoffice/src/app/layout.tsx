@@ -46,7 +46,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider theme={AdminTheme}>
             <TRPCReactProvider>{children}</TRPCReactProvider>
             <CssBaseline />
-            {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
