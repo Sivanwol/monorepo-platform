@@ -672,6 +672,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@descope/nextjs-sdk':
+        specifier: 'catalog:'
+        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.7.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
