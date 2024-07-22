@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { LoadingPage } from "@app/ui";
+
 import { api, HydrateClient } from "~/trpc/server";
 
 // export const runtime = "edge";
@@ -17,9 +19,7 @@ export default function HomePage() {
             Create <span className="text-primary">T3</span> Turbo
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
-            <Suspense
-              fallback={<div className="flex w-full flex-col gap-4"></div>}
-            >
+            <Suspense fallback={<LoadingPage />}>
               <></>
             </Suspense>
           </div>

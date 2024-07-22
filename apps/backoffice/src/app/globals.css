@@ -48,3 +48,21 @@
     --ring: 240 4.9% 83.9%;
   }
 }
+
+/* Loading spinner stuff */
+.spinner_ZC {
+  animation: spinner 1.2s cubic-bezier(0.52, 0.6, 0.25, 0.99) infinite;
+}
+.spinner_ga {
+  animation-delay: 0.6s;
+}
+@keyframes spinner {
+  0% {
+    r: 0;
+    opacity: 1;
+  }
+  100% {
+    r: 11px;
+    opacity: 0;
+  }
+}
