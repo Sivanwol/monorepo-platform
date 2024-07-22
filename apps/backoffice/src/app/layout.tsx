@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      env.VERCEL_URL!
+        env.VERCEL_URL!
       : "http://localhost:3001",
   ),
   title: "Backoffice of Sabu Platform",
@@ -32,7 +32,11 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body

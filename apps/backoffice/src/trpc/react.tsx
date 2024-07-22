@@ -3,6 +3,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
@@ -11,7 +12,6 @@ import type { AppRouter } from "@app/backoffice-api";
 
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
