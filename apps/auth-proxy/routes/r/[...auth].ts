@@ -27,6 +27,7 @@ export default eventHandler(async (event) =>
       Descope({
         clientId: process.env.AUTH_DESCOPE_ID,
         clientSecret: process.env.AUTH_DESCOPE_SECRET,
+        issuer: process.env.AUTH_DESCOPE_ISSUER,
       }),
     ],
   }),

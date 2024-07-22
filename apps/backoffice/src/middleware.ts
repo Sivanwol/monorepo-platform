@@ -1,4 +1,12 @@
-export { auth as middleware } from "@app/auth";
+import { authMiddleware } from "@descope/nextjs-sdk/server";
+
+import { env } from "./env";
+
+export default authMiddleware({
+  projectId: env.AUTH_DESCOPE_ID,
+  redirectUrl: "/auth",
+  publicRoutes: ["/", "/auth"],
+});
 // Or like this if you need to do something here.
 // export default auth((req) => {
 //   console.log(req.auth) //  { session: { user: { ... } } }

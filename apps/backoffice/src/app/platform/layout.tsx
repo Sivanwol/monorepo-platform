@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { session } from "@descope/nextjs-sdk/server";
 
 import type { DropdownUserProps, MenuGroup } from "@app/ui";
-import { auth } from "@app/auth";
 import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
 
 import { env } from "~/env";
@@ -286,10 +286,12 @@ const menuGroups: MenuGroup[] = [
     ],
   },
 ];
-export default async function PlatformLayout({ children }: { children: any }) {
-  const session = await auth();
-  console.log("session", session);
-  if (!session) redirect("/auth");
+export default function PlatformLayout({ children }: { children: any }) {
+  const currSession = session();
+  console.log("layout session", currSession);
+  if (!currSession) {
+    redirect("/auth");
+  }
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   return (
@@ -311,7 +313,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
               Current Session
             </div>
             <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {JSON.stringify(user, null, 2)}
+              {JSON.stringify(currSession, null, 2)}
             </pre>
           </div>
           {children}

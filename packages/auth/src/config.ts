@@ -6,6 +6,9 @@ import type {
   NextAuthConfig,
   Session as NextAuthSession,
 } from "next-auth";
+
+import "next-auth/jwt";
+
 import { skipCSRFCheck } from "@auth/core";
 // import Apple from "next-auth/providers/apple";
 // import CredentialsProvider from "next-auth/providers/credentials";
@@ -57,8 +60,26 @@ export const authConfig = {
       }
     : {}),
   secret: env.AUTH_SECRET,
-  providers: [Descope],
+  providers: [
+    Descope({
+      clientId: env.AUTH_DESCOPE_ID,
+      clientSecret: env.AUTH_DESCOPE_SECRET,
+    }),
+  ],
   callbacks: {
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+      if (pathname.startsWith("/platform")) return !!auth;
+      return true;
+    },
+    jwt({ token, trigger, session, account }) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      if (trigger === "update") token.name = session.user.name;
+      if (account?.provider === "keycloak") {
+        return { ...token, accessToken: account.access_token };
+      }
+      return token;
+    },
     session: (opts) => {
       if (!("user" in opts))
         throw new Error("unreachable with session strategy");

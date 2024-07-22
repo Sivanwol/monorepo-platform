@@ -25,6 +25,7 @@ export const env = createEnv({
 
     AUTH_DESCOPE_ID: z.string().min(1),
     AUTH_DESCOPE_SECRET: z.string().min(1),
+    AUTH_DESCOPE_ISSUER: z.string().min(1),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
