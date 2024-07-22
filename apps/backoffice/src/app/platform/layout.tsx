@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 
 import type { DropdownUserProps, MenuGroup } from "@app/ui";
-import { DefaultLayout, Loader, NotificationItem } from "@app/ui";
+import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
@@ -296,7 +296,7 @@ export default function PlatformLayout({ children }: { children: any }) {
   // void api.post.all.prefetch();
   return (
     <HydrateClient>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<LoadingPage />}>
         <DefaultLayout
           sideMenuItems={menuGroups}
           notifications={[]}
