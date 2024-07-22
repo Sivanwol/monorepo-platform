@@ -25,22 +25,22 @@ const getQueryClient = () => {
 };
 
 const ReactQueryDevtoolsProduction = lazy(() =>
-  import('@tanstack/react-query-devtools/build/modern/production.js').then(
+  import("@tanstack/react-query-devtools/build/modern/production.js").then(
     (d) => ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       default: d.ReactQueryDevtools,
     }),
   ),
-)
+);
 export const api = createTRPCReact<AppRouter>();
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const [showDevtools, setShowDevtools] = useState(false)
+  const [showDevtools, setShowDevtools] = useState(false);
   useEffect(() => {
     // @ts-expect-error('ReactQueryDevtools' is not defined in non-production environments')
-    window.toggleDevtools = () => setShowDevtools((old) => !old)
-  }, [])
+    window.toggleDevtools = () => setShowDevtools((old) => !old);
+  }, []);
 
   const [trpcClient] = useState(() =>
     api.createClient({
