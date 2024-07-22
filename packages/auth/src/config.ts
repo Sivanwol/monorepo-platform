@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 // TODO fix this eslint error and see how better handle
 import type {
@@ -48,42 +47,6 @@ const adapter = DrizzleAdapter(db, {
 
 export const isSecureContext = env.NODE_ENV !== "development";
 
-export const authBackofficeConfig = {
-  adapter,
-  // In development, we need to skip checks to allow Expo to work
-  ...(!isSecureContext
-    ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
-    : {}),
-  secret: env.AUTH_SECRET,
-  providers: [Descope],
-  callbacks: {
-    jwt({ token, trigger, user, session, account }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
-    },
-    session: (opts) => {
-      if (!("user" in opts))
-        throw new Error("unreachable with session strategy");
-
-      return {
-        ...opts.session,
-        user: {
-          ...opts.session.user,
-          id: opts.user.id,
-        },
-      };
-    },
-  },
-  debug: env.NODE_ENV !== "production" ? true : false,
-} satisfies NextAuthConfig;
-
 export const authConfig = {
   adapter,
   // In development, we need to skip checks to allow Expo to work
@@ -96,14 +59,6 @@ export const authConfig = {
   secret: env.AUTH_SECRET,
   providers: [Descope],
   callbacks: {
-    jwt({ token, trigger, session, account }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
-    },
     session: (opts) => {
       if (!("user" in opts))
         throw new Error("unreachable with session strategy");
