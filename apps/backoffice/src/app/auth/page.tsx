@@ -17,18 +17,20 @@ export default function SignInPage() {
     redirect("/platform/dashboard");
   }
   return (
-    <>
+    <div className="relative w-full h-full py-40 min-h-screen">
       {/* <Breadcrumb pageName="Sign In" /> */}
 
-      <div className="shadow-1 dark:bg-gray-dark rounded-[10px] bg-white dark:shadow-card">
-        <div className="flex w-full flex-wrap items-center">
-          <div className="w-full xl:w-1/2">
-            <div className="sm:p-12.5 xl:p-15 w-full p-4">
-              <Signin />
+      <div className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full">
+        <div className="container mx-auto px-4 h-full">
+          <div className="flex content-center items-center justify-center h-full">
+            <div className="w-full lg:w-4/12 px-4">
+              <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+                <Signin />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

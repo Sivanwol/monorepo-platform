@@ -51,7 +51,20 @@ catalogs:
     zod:
       specifier: ^3.23.8
       version: 3.23.8
-  mui:
+  react18:
+    '@types/react':
+      specifier: ^18.3.3
+      version: 18.3.3
+    '@types/react-dom':
+      specifier: ^18.3.0
+      version: 18.3.0
+    react:
+      specifier: 18.3.1
+      version: 18.3.1
+    react-dom:
+      specifier: 18.3.1
+      version: 18.3.1
+  ui:
     '@emotion/cache':
       specifier: ^11.13.0
       version: 11.13.0
@@ -73,19 +86,6 @@ catalogs:
     '@mui/styled-engine-sc':
       specifier: 6.0.0-alpha.18
       version: 6.0.0-alpha.18
-  react18:
-    '@types/react':
-      specifier: ^18.3.3
-      version: 18.3.3
-    '@types/react-dom':
-      specifier: ^18.3.0
-      version: 18.3.0
-    react:
-      specifier: 18.3.1
-      version: 18.3.1
-    react-dom:
-      specifier: 18.3.1
-      version: 18.3.1
 
 importers:
 
@@ -183,25 +183,25 @@ importers:
         specifier: 'catalog:'
         version: 2.0.57(@types/react@18.3.3)(react@18.3.1)
       '@emotion/cache':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 11.13.0
       '@emotion/react':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 11.13.0(@types/react@18.3.3)(react@18.3.1)
       '@emotion/styled':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
       '@mui/icons-material':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 5.16.4(@mui/material@5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
       '@mui/material':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material-nextjs':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 5.16.4(@emotion/cache@11.13.0)(@mui/material@5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@mui/styled-engine-sc':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 6.0.0-alpha.18(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
@@ -731,10 +731,10 @@ importers:
         specifier: ^3.7.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
       '@mui/icons-material':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 5.16.4(@mui/material@5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
       '@mui/material':
-        specifier: catalog:mui
+        specifier: catalog:ui
         version: 5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.1
