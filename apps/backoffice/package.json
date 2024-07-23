@@ -30,6 +30,7 @@
     "@mui/material": "catalog:ui",
     "@mui/material-nextjs": "catalog:ui",
     "@mui/styled-engine-sc": "catalog:ui",
+    "flowbite-react": "catalog:ui",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "catalog:",

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
@@ -40,6 +41,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeModeScript />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",

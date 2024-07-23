@@ -26,6 +26,8 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@mui/icons-material": "catalog:ui",
     "@mui/material": "catalog:ui",
+    "flowbite-react": "catalog:ui",
+    "react-icons": "catalog:ui",
     "class-variance-authority": "^0.7.0",
     "next-themes": "^0.3.0",
     "react-hook-form": "^7.52.1",

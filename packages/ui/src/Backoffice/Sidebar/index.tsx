@@ -2,24 +2,31 @@
 
 import React from "react";
 import Image from "next/image";
-// import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Sidebar } from "flowbite-react";
 
-import { ClickOutside, useLocalStorage } from "@app/ui";
+import { ClickOutside } from "@app/ui";
 
-import type { SidebarProps } from "./type";
-import { SidebarItem } from "./SidebarItem";
+import type { MenuGroup, SidebarProps } from "./type";
 
 export * from "./type";
-export const Sidebar = ({
+export const SidebarArea = ({
   sidebarOpen,
   setSidebarOpen,
   items,
 }: SidebarProps) => {
-  // const pathname = usePathname();
-
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-
+  const renderSideItemNoCollapsed = (item: MenuGroup) => (
+    <Sidebar.Item href={item.route} icon={item.icon}>
+      {item.label}
+    </Sidebar.Item>
+  );
+  const renderSideItemWithChildren = (item: MenuGroup) => (
+    <Sidebar.Collapse icon={item.icon} label={item.label}>
+      {item.items.map((t) => (
+        <Sidebar.Item href={t.route}>{t.label}</Sidebar.Item>
+      ))}
+    </Sidebar.Collapse>
+  );
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
@@ -74,31 +81,16 @@ export const Sidebar = ({
         </div>
         {/* <!-- SIDEBAR HEADER --> */}
 
-        <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-          {/* <!-- Sidebar Menu --> */}
-          <nav className="mt-1 px-4 lg:px-6">
+        <Sidebar aria-label="Default sidebar example">
+          <Sidebar.Items>
             {items.map((group, groupIndex) => (
-              <div key={groupIndex}>
-                <h3 className="text-dark-4 dark:text-dark-6 mb-5 text-sm font-medium">
-                  {group.name}
-                </h3>
-                {group.items.length > 0 && (
-                  <ul className="mb-6 flex flex-col gap-2">
-                    {group.items.map((menuItem, menuIndex) => (
-                      <SidebarItem
-                        key={menuIndex}
-                        item={menuItem}
-                        pageName={pageName}
-                        setPageName={setPageName}
-                      />
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <Sidebar.ItemGroup>
+                {group.items.length === 0 && renderSideItemNoCollapsed(group)}
+                {group.items.length > 0 && renderSideItemWithChildren(group)}
+              </Sidebar.ItemGroup>
             ))}
-          </nav>
-          {/* <!-- Sidebar Menu --> */}
-        </div>
+          </Sidebar.Items>
+        </Sidebar>
       </aside>
     </ClickOutside>
   );
