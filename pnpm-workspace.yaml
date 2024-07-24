@@ -15,7 +15,9 @@ catalog:
   zod: ^3.23.8
   bcrypt-edge: ^0.0.6
   recharts: ^2.12.7
+  "tailwindcss-animate": ^1.0.7
   tailwindcss: ^3.4.4
+  "@svgr/webpack": ^8.1.0
   superjson: ^2.2.1
   formik: ^2.4.6
   "framer-motion": ^11.2.3
@@ -31,7 +33,12 @@ catalogs:
     "@uploadthing": ^6.10.4
     "@uploadthing/react": ^6.5.4
   vercel:
+    "server-only": ^0.0.1
     "hypertune": ^2.3.8
+    "@opentelemetry/sdk-logs": ^0.52.1
+    "@opentelemetry/instrumentation": ^0.52.1
+    "@opentelemetry/api": ^1.9.0
+    "@opentelemetry/api-logs": ^0.52.1
     "@vercel/otel": ^1.9.1
     "@vercel/analytics": ^0.9.0
     "@vercel/edge-config": ^1.2.0
@@ -42,6 +49,8 @@ catalogs:
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.3.0
   ui:
+    "postcss": ^8
+    "autoprefixer": ^10.4.19
     "react-icons": ^5.2.1
     "@tanstack/react-table": ^8.19.2
     "flowbite": 1.7.0

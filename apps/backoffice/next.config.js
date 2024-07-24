@@ -8,6 +8,13 @@ createJiti(fileURLToPath(import.meta.url))("./src/env");
 const config = {
   reactStrictMode: true,
 
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@app/api",
@@ -17,7 +24,14 @@ const config = {
     "@app/validators",
     "@app/utils",
   ],
-
+  experimental: {
+    // turbo: {
+    //   resolveAlias: {
+    //     'next-intl/config': './src/i18n.ts',
+    //   },
+    // },
+    instrumentationHook: true,
+  },
   images: {
     remotePatterns: [
       {

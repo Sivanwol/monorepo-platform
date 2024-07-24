@@ -2,17 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
-import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
-} from "react-icons/hi";
 
-import type { DropdownUserProps, MenuGroup } from "@app/ui";
+import type { MenuGroup } from "@app/ui";
 import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
@@ -26,13 +17,13 @@ export const metadata: Metadata = {
 const menuGroups: MenuGroup[] = [
   {
     label: "Dashboard",
-    icon: <HiViewBoards />,
+    icon: "HiViewBoards",
     route: "/platform/dashboard",
     items: [],
   },
   {
     label: "Subscriptions",
-    icon: <HiShoppingBag />,
+    icon: "HiShoppingBag",
     items: [
       { label: "Plans", route: "/platform/subscriptions/plans" },
       { label: "Products", route: "/platform/subscriptions/products" },
@@ -41,7 +32,7 @@ const menuGroups: MenuGroup[] = [
   },
   {
     label: "Reports",
-    icon: <HiChartPie />,
+    icon: "HiChartPie",
     items: [
       { label: "Overview", route: "/platform/reports" },
       { label: "Analytics", route: "/platform/reports/analytics" },

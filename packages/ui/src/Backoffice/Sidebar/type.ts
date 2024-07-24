@@ -8,12 +8,12 @@ export interface SidebarProps {
 }
 export interface MenuGroup {
   label: string;
-  icon: any;
+  icon: string;
   route?: string;
   items: MenuGroupItem[];
 }
 export interface MenuGroupItem {
-  icon?: IconType;
+  icon: string | null;
   label: string;
   route: string;
   children?: MenuGroupItem[];

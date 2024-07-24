@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import React from "react";
+import React, { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 
-import { Signin } from "@app/ui";
+import { LoadingSpinner, Signin } from "@app/ui";
 
 export const metadata: Metadata = {
   title: "Sabu backoffice Login Page",
@@ -25,7 +25,9 @@ export default function SignInPage() {
           <div className="flex h-full content-center items-center justify-center">
             <div className="w-full px-4 lg:w-4/12">
               <div className="bg-blueGray-200 relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg border-0 shadow-lg">
-                <Signin />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Signin />
+                </Suspense>
               </div>
             </div>
           </div>
