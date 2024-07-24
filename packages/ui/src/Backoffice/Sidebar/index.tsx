@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Sidebar } from "flowbite-react";
 import { BiBuoy } from "react-icons/bi";
 import * as Icons from "react-icons/hi2";
+import { v4 as uuidv4 } from "uuid";
 
 import type { MenuGroup, SidebarProps } from "./type";
 
@@ -18,7 +19,7 @@ const SideItemNoCollapsed = ({
 }) => {
   const Icon = Icons[group.icon as keyof typeof Icons];
   return (
-    <Sidebar.Item href={group.route} icon={Icon}>
+    <Sidebar.Item key={uuidv4()} href={group.route} icon={Icon}>
       {group.label}
     </Sidebar.Item>
   );
@@ -32,9 +33,11 @@ const SideItemWithChildren = ({
 }) => {
   const Icon = Icons[group.icon as keyof typeof Icons];
   return (
-    <Sidebar.Collapse icon={Icon} label={group.label}>
+    <Sidebar.Collapse key={uuidv4()} icon={Icon} label={group.label}>
       {group.items.map((t, index) => (
-        <Sidebar.Item href={t.route}>{t.label}</Sidebar.Item>
+        <Sidebar.Item key={uuidv4()} href={t.route}>
+          {t.label}
+        </Sidebar.Item>
       ))}
     </Sidebar.Collapse>
   );
@@ -102,7 +105,7 @@ export const SidebarArea = ({
           Sabo Backoffice
         </Sidebar.Logo>
         <Sidebar.Items>
-          <Sidebar.ItemGroup>
+          <Sidebar.ItemGroup key={uuidv4()}>
             {items.map((group, groupIndex) => (
               <>
                 {group.items.length === 0 && (
@@ -114,7 +117,7 @@ export const SidebarArea = ({
               </>
             ))}
           </Sidebar.ItemGroup>
-          <Sidebar.ItemGroup>
+          <Sidebar.ItemGroup key={uuidv4()}>
             <Sidebar.Item href="#" icon={Icons.HiChartPie}>
               Upgrade to Pro
             </Sidebar.Item>

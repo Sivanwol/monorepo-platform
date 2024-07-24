@@ -2,17 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from '@mui/material/styles';
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-
 import { AdminTheme, cn } from "@app/ui";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
-
-import { ThemeProvider } from "@mui/material/styles";
 
 import { env } from "~/env";
 
@@ -54,12 +52,13 @@ export default function RootLayout({
         <AuthProvider projectId={env.NEXT_PUBLIC_AUTH_DESCOPE_ID}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={AdminTheme}>
-              <TRPCReactProvider>{children}</TRPCReactProvider>
               <CssBaseline />
+              <TRPCReactProvider>{children}</TRPCReactProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </AuthProvider>
       </body>
+      <Analytics />
     </html>
   );
 }

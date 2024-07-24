@@ -10,10 +10,9 @@ export function Signin() {
         flowId="sign-up-or-in"
         onSuccess={(e) => {
           console.log("Logged in!", e);
-          window.location.href = "/platform";
         }}
         onError={(e) => console.log("Could not logged in!")}
-        // redirectAfterSuccess="/"
+        redirectAfterSuccess="/platform/dashboard"
         // redirectAfterError="/error-page"
       />
     </div>
