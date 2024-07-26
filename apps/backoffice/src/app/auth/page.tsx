@@ -6,7 +6,7 @@ import { session } from "@descope/nextjs-sdk/server";
 import { LoadingSpinner, Signin } from "@app/ui";
 
 export const metadata: Metadata = {
-  title: "Sabu backoffice Login Page",
+  title: "monorepo backoffice Login Page",
   description: "This is Next.js Login Page NextAdmin Dashboard Kit",
 };
 

@@ -32,31 +32,26 @@ export const Header = ({
             <span className="h-5.5 w-5.5 relative block cursor-pointer">
               <span className="du-block absolute right-0 h-full w-full">
                 <span
-                  className={`bg-dark delay-[0] relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!w-full delay-300"
-                  }`}
+                  className={`bg-dark delay-[0] relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!w-full delay-300"
+                    }`}
                 ></span>
                 <span
-                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-150 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "delay-400 !w-full"
-                  }`}
+                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-150 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "delay-400 !w-full"
+                    }`}
                 ></span>
                 <span
-                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-200 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!w-full delay-500"
-                  }`}
+                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-200 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!w-full delay-500"
+                    }`}
                 ></span>
               </span>
               <span className="absolute right-0 h-full w-full rotate-45">
                 <span
-                  className={`bg-dark absolute left-2.5 top-0 block h-full w-0.5 rounded-sm delay-300 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!delay-[0] !h-0"
-                  }`}
+                  className={`bg-dark absolute left-2.5 top-0 block h-full w-0.5 rounded-sm delay-300 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!delay-[0] !h-0"
+                    }`}
                 ></span>
                 <span
-                  className={`delay-400 bg-dark absolute left-0 top-2.5 block h-0.5 w-full rounded-sm duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!h-0 !delay-200"
-                  }`}
+                  className={`delay-400 bg-dark absolute left-0 top-2.5 block h-0.5 w-full rounded-sm duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!h-0 !delay-200"
+                    }`}
                 ></span>
               </span>
             </span>
@@ -78,7 +73,7 @@ export const Header = ({
             <h1 className="text-heading-5 text-dark mb-0.5 font-bold dark:text-white">
               Dashboard
             </h1>
-            <p className="font-medium">Sabu Platform Backoffice</p>
+            <p className="font-medium">monorepo Platform Backoffice</p>
           </div>
         </div>
 

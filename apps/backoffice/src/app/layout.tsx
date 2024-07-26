@@ -21,8 +21,8 @@ export const metadata: Metadata = {
       env.VERCEL_URL!
       : "http://localhost:3001",
   ),
-  title: "Backoffice of Sabu Platform",
-  description: "Backoffice of Sabu Platform For both mobile and web app",
+  title: "Backoffice of monorepo Platform",
+  description: "Backoffice of monorepo Platform For both mobile and web app",
 };
 
 export const viewport: Viewport = {

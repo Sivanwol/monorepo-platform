@@ -1,5 +1,5 @@
 {
-  "name": "sabu-platform-monorepo",
+  "name": "monorepo-platform-monorepo",
   "private": true,
   "engines": {
     "node": ">=20.12.0"
