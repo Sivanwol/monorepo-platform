@@ -2,20 +2,30 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  decimal,
   pgTable,
+  json,
   primaryKey,
   text,
   timestamp,
   uuid,
   varchar,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const Post = pgTable("post", {
+export const genderEnum = pgEnum('gender', ['male', 'female', 'other']);
+export const userStatusEnum = pgEnum('status', ['marry', 'willow', 'diverse', 'single']);
+export const userTypeEnum = pgEnum('type', ['personal', 'business', 'driver', 'driver+business']);
+export const driverLicenseCodeEnum = pgEnum('license_code', ['None', 'A', 'B', 'C1', 'C', 'D', 'C+E']);
+
+export const Media = pgTable("media", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
-  title: varchar("name", { length: 256 }).notNull(),
-  content: text("content").notNull(),
+  alias: varchar("alias", { length: 100 }).notNull(),
+  path: varchar("path", { length: 500 }).notNull(),
+  mineType: varchar("mine_type", { length: 100 }).notNull(),
+  size: decimal("size").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", {
     mode: "date",
@@ -23,9 +33,11 @@ export const Post = pgTable("post", {
   }).$onUpdateFn(() => sql`now()`),
 });
 
-export const CreatePostSchema = createInsertSchema(Post, {
-  title: z.string().max(256),
-  content: z.string().max(256),
+export const CreateMediaSchema = createInsertSchema(Media, {
+  alias: z.string().min(2).max(100),
+  path: z.string().min(5).max(500),
+  mineType: z.string().min(5).max(100),
+  size: z.number().gt(0)
 }).omit({
   id: true,
   createdAt: true,
@@ -34,48 +46,55 @@ export const CreatePostSchema = createInsertSchema(Post, {
 
 export const User = pgTable("user", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }),
-  password: varchar("password", { length: 255 }),
+  externalId: varchar("external_id", { length: 255 }).unique(),
+  firstName: varchar("first_name", { length: 100 }),
+  lastName: varchar("last_name", { length: 100 }),
+  aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
-  emailVerified: timestamp("emailVerified", {
+  phone: varchar("phone", { length: 20 }),
+  avatarMediaId: uuid("avatar_media_id")
+    .references(() => Media.id, {}),
+  hasWhatsup: boolean("has_whatsup").default(false),
+  gender: genderEnum("gender").notNull(),
+  country: varchar("country", { length: 4 }).notNull().default("IL"),
+  state: varchar("state", { length: 4 }),
+  city: varchar("city", { length: 255 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  status: userStatusEnum("status").default("single"),
+  type: userTypeEnum("type").notNull().default("driver"),
+  blockedAt: timestamp("created_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", {
     mode: "date",
     withTimezone: true,
-  }),
-  image: varchar("image", { length: 255 }),
+  }).$onUpdateFn(() => sql`now()`),
 });
 
-export const UserRelations = relations(User, ({ many }) => ({
-  accounts: many(Account),
+export const UserRelations = relations(User, ({ many, one }) => ({
+  // driver: one(Driver),
 }));
 
-export const Account = pgTable(
-  "account",
+export const Driver = pgTable(
+  "driver",
   {
+    id: uuid("id").notNull().primaryKey().defaultRandom(),
     userId: uuid("userId")
       .notNull()
       .references(() => User.id, { onDelete: "cascade" }),
-    type: varchar("type", { length: 255 })
-      .$type<"email" | "oauth" | "oidc" | "webauthn">()
-      .notNull(),
-    provider: varchar("provider", { length: 255 }).notNull(),
-    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
-    refresh_token: varchar("refresh_token", { length: 255 }),
-    access_token: text("access_token"),
-    expires_at: integer("expires_at"),
-    token_type: varchar("token_type", { length: 255 }),
-    scope: varchar("scope", { length: 255 }),
-    id_token: text("id_token"),
-    session_state: varchar("session_state", { length: 255 }),
-  },
-  (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
-  }),
+    driverLicenseCode: driverLicenseCodeEnum("license_code").default("A"),
+    tzNumber: integer("tz_number").default(9),
+    tzMediaId: uuid("tz_media_id").references(() => Media.id, {}),
+    businessNumber: varchar("business_numbers", { length: 255 }),
+    haveVehicles: boolean("have_vehicles").default(false),
+    displayLanguage: json("display_language")
+      .$type<string[]>()
+      .notNull()
+      .default(sql`('[]')`),
+  }
 );
 
-export const AccountRelations = relations(Account, ({ one }) => ({
-  user: one(User, { fields: [Account.userId], references: [User.id] }),
+export const DriverRelations = relations(Driver, ({ one }) => ({
+  user: one(User, { fields: [Driver.userId], references: [User.id] }),
 }));
 
 export const Session = pgTable("session", {
