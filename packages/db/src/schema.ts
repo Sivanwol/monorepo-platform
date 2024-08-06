@@ -57,6 +57,7 @@ export const Vehicles = pgTable("vehicles", {
   vehicleTypeOther: varchar("vehicle_type_other", { length: 255 }),
   hasCooling: boolean("has_cooling").default(false),
   hasInsurance: boolean("has_insurance").default(false),
+  isManual: boolean("is_manual").default(false),
   year: integer("year").default(0),
   licensePlate: varchar("license_plate", { length: 20 }).default(""),
   mileage: integer("mileage").default(0),
@@ -168,6 +169,7 @@ export const DriverLicenses = pgTable("driver_licenses", {
   userId: serial("user_id")
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
+  IncludeManualLicense: boolean("include_manual_license").default(false),
   driverLicenseCode: driverLicenseCodeEnum("license_code").default("A"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
