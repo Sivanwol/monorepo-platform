@@ -1,5 +1,5 @@
 {
-  "id": "c908a12e-e096-46a1-a486-f9307c109acf",
+  "id": "3e6cbeb0-2bf9-4d1a-b7eb-955c1f3884be",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -25,6 +25,13 @@
           "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true
+        },
+        "business_register_type": {
+          "name": "business_register_type",
+          "type": "business_register_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
         },
         "business_type_id": {
           "name": "business_type_id",
@@ -629,8 +636,8 @@
           "notNull": false,
           "default": "'single'"
         },
-        "type": {
-          "name": "type",
+        "user_type": {
+          "name": "user_type",
           "type": "type",
           "typeSchema": "public",
           "primaryKey": false,
@@ -883,8 +890,8 @@
     }
   },
   "enums": {
-    "public.business_type": {
-      "name": "business_type",
+    "public.business_register_type": {
+      "name": "business_register_type",
       "schema": "public",
       "values": [
         "Pature",
@@ -955,7 +962,6 @@
         "car",
         "motorcycle",
         "bus",
-        "car",
         "van",
         "truck-sm",
         "truck-big",

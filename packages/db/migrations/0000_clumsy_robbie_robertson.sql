@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "public"."business_type" AS ENUM('Pature', 'Mass', 'Company');
+ CREATE TYPE "public"."business_register_type" AS ENUM('Pature', 'Mass', 'Company');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -35,7 +35,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."vehicle_type" AS ENUM('bike', 'car', 'motorcycle', 'bus', 'car', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other');
+ CREATE TYPE "public"."vehicle_type" AS ENUM('bike', 'car', 'motorcycle', 'bus', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS "business" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"owner_user_id" serial NOT NULL,
 	"name" varchar(100) NOT NULL,
+	"business_register_type" "business_register_type",
 	"business_type_id" serial NOT NULL,
 	"logo_media_id" serial NOT NULL,
 	"country" varchar(4) DEFAULT 'IL' NOT NULL,
@@ -127,7 +128,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"city" varchar(255) NOT NULL,
 	"address" varchar(255) NOT NULL,
 	"status" "status" DEFAULT 'single',
-	"type" "type" DEFAULT 'driver' NOT NULL,
+	"user_type" "type" DEFAULT 'driver' NOT NULL,
 	"blocked_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone,

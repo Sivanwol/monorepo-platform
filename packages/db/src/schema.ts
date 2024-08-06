@@ -19,8 +19,8 @@ export const genderEnum = pgEnum('gender', ['male', 'female', 'other']);
 export const userStatusEnum = pgEnum('status', ['marry', 'willow', 'diverse', 'single']);
 export const userTypeEnum = pgEnum('type', ['personal', 'business', 'driver', 'driver+business']);
 export const driverLicenseCodeEnum = pgEnum('license_code', ['None', 'A1', 'A', 'B', 'C1', 'F', 'C', 'D', 'C+E']);
-export const businessTypeEnum = pgEnum('business_type', ['Pature', 'Mass', 'Company']);
-export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'car', 'motorcycle', 'bus', 'car', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other']);
+export const businessRegisterTypeEnum = pgEnum('business_register_type', ['Pature', 'Mass', 'Company']);
+export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'car', 'motorcycle', 'bus', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other']);
 export const totalEmployeeRangeEnum = pgEnum('total_employee_range', ['1-10', '10-50', '50-100', '100-200', '200+']);
 
 export const Media = pgTable("media", {
@@ -109,7 +109,7 @@ export const User = pgTable("user", {
   city: varchar("city", { length: 255 }).notNull(),
   address: varchar("address", { length: 255 }).notNull(),
   status: userStatusEnum("status").default("single"),
-  type: userTypeEnum("type").notNull().default("driver"),
+  type: userTypeEnum("user_type").notNull().default("driver"),
   blockedAt: timestamp("blocked_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", {
@@ -186,6 +186,7 @@ export const Business = pgTable("business", {
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
   name: varchar("name", { length: 100 }).notNull(),
+  businessRegisterType: businessRegisterTypeEnum('business_register_type'),
   businessTypeId: serial("business_type_id")
     .references(() => BusinessType.id, { onDelete: "cascade" }),
   logoMediaId: serial("logo_media_id")
