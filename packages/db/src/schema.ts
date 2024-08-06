@@ -11,6 +11,7 @@ import {
   varchar,
   pgEnum,
   serial,
+  time,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -22,6 +23,8 @@ export const driverLicenseCodeEnum = pgEnum('license_code', ['None', 'A1', 'A', 
 export const businessRegisterTypeEnum = pgEnum('business_register_type', ['Pature', 'Mass', 'Company']);
 export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'car', 'motorcycle', 'bus', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other']);
 export const totalEmployeeRangeEnum = pgEnum('total_employee_range', ['1-10', '10-50', '50-100', '100-200', '200+']);
+export const operationAreaEnum = pgEnum('operation_area', ['north', 'sharon', 'west', 'south', 'jerusalem area', 'all country']);
+export const daysEnum = pgEnum('days', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
 
 export const Media = pgTable("media", {
   id: serial("id").primaryKey(),
@@ -68,8 +71,9 @@ export const Vehicles = pgTable("vehicles", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 })
 
-export const VehiclesRelations = relations(Vehicles, ({ one }) => ({
-  media: one(Media, { fields: [Vehicles.id], references: [Media.id] })
+export const VehiclesRelations = relations(Vehicles, ({ many, one }) => ({
+  media: one(Media, { fields: [Vehicles.id], references: [Media.id] }),
+  businessVehicles: many(BusinessVehicles)
 }));
 
 export const VehicleAudits = pgTable("vehicle_audits", {
@@ -198,21 +202,23 @@ export const Business = pgTable("business", {
   phone: varchar("phone", { length: 20 }),
   fax: varchar("phone", { length: 20 }),
   email: varchar("email", { length: 255 }),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", {
     mode: "date",
     withTimezone: true,
   }).$onUpdateFn(() => sql`now()`),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const BusinessRelations = relations(Business, ({ one }) => ({
+export const BusinessRelations = relations(Business, ({ many, one }) => ({
   user: one(User, { fields: [Business.ownerUserId], references: [User.id] }),
+  businessVehicles: many(BusinessVehicles),
+  businessOperateDaysHours: many(BusinessOperateDaysHours),
 }));
 
 export const BusinessMetaData = pgTable("business_metadata", {
   id: serial("id").primaryKey(),
-  allowReceivedJobs: boolean("allow_received_jobs").default(false),
   businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  allowReceivedJobs: boolean("allow_received_jobs").default(false),
   totalEmployeeRange: totalEmployeeRangeEnum("total_employee_range").default("1-10"),
   whatsup: varchar("phone", { length: 20 }),
   tiktok: varchar('tiktok', { length: 255 }),
@@ -229,3 +235,53 @@ export const BusinessMetaDataRelations = relations(BusinessMetaData, ({ one }) =
   business: one(Business, { fields: [BusinessMetaData.businessId], references: [Business.id] })
 }));
 
+export const BusinessOperationArea = pgTable("business_operation_area", {
+  id: serial("id").primaryKey(),
+  businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  operationArea: operationAreaEnum("operation_area").default("all country"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const BusinessOperationAreaRelations = relations(BusinessOperationArea, ({ one }) => ({
+  business: one(Business, { fields: [BusinessOperationArea.businessId], references: [Business.id] })
+}));
+
+export const BusinessOperateDaysHours = pgTable("business_operate_days_hours", {
+  id: serial("id").primaryKey(),
+  businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  day: daysEnum('day').notNull(),
+  open24Hour: boolean("open_24_hour").default(false),
+  openFrom1: time("open_from1"),
+  openTo1: time("open_to1"),
+  openFrom2: time("open_from2"),
+  openTo2: time("open_to2"),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+    withTimezone: true,
+  }).$onUpdateFn(() => sql`now()`),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const BusinessOperateDaysHoursRelations = relations(BusinessOperateDaysHours, ({ many }) => ({
+  business: many(Business)
+}));
+
+export const BusinessVehicles = pgTable("business_vehicles", {
+  vehicleId: serial("vehicle_id")
+    .references(() => Vehicles.id, { onDelete: "cascade" }),
+  businessId: serial("business_id")
+    .notNull()
+    .references(() => Business.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+},
+  (entity) => ({
+    compositePK: primaryKey({
+      columns: [entity.businessId, entity.vehicleId],
+    }),
+  })
+);
+
+export const BusinessVehiclesRelations = relations(BusinessVehicles, ({ many }) => ({
+  business: many(Business),
+  vehicles: many(Vehicles),
+}));
