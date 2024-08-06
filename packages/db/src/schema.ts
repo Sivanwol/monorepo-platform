@@ -8,7 +8,6 @@ import {
   primaryKey,
   text,
   timestamp,
-  uuid,
   varchar,
   pgEnum,
   serial,
@@ -22,6 +21,7 @@ export const userTypeEnum = pgEnum('type', ['personal', 'business', 'driver', 'd
 export const driverLicenseCodeEnum = pgEnum('license_code', ['None', 'A1', 'A', 'B', 'C1', 'F', 'C', 'D', 'C+E']);
 export const businessTypeEnum = pgEnum('business_type', ['Pature', 'Mass', 'Company']);
 export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'car', 'motorcycle', 'bus', 'car', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other']);
+
 export const Media = pgTable("media", {
   id: serial("id").primaryKey(),
   alias: varchar("alias", { length: 100 }).notNull(),
@@ -79,6 +79,7 @@ export const VehicleAudits = pgTable("vehicle_audits", {
 export const VehicleAuditsRelations = relations(Vehicles, ({ one }) => ({
   audit: one(VehicleAudits, { fields: [Vehicles.id], references: [VehicleAudits.vehicleId] }),
 }));
+
 export const User = pgTable("user", {
   id: serial("id").primaryKey(),
   externalId: varchar("external_id", { length: 255 }).unique(),
@@ -87,8 +88,10 @@ export const User = pgTable("user", {
   aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),
-  avatarMediaId: uuid("avatar_media_id")
+  avatarMediaId: serial("avatar_media_id")
     .references(() => Media.id, {}),
+  IsWorker: boolean("is_worker").default(false),
+  IsPrivate: boolean("is_private").default(false),
   hasWhatsup: boolean("has_whatsup").default(false),
   gender: genderEnum("gender").notNull(),
   country: varchar("country", { length: 4 }).notNull().default("IL"),
@@ -162,12 +165,7 @@ export const DriverRelations = relations(Driver, ({ one }) => ({
 
 export const BusinessType = pgTable("business_type", {
   id: serial("id").primaryKey(),
-  sessionToken: varchar("sessionToken", { length: 255 }).notNull().primaryKey(),
-  userId: serial("user_id")
-    .notNull()
-    .references(() => User.id, { onDelete: "cascade" }),
-  expires: timestamp("expires", {
-    mode: "date",
-    withTimezone: true,
-  }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  logo_media_id: serial("logo_media_id")
+    .references(() => Media.id, {}),
 });
