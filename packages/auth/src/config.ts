@@ -52,26 +52,6 @@ export const authConfig = {
       if (pathname.startsWith("/platform")) return !!auth;
       return true;
     },
-    jwt({ token, trigger, session, account }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
-    },
-    session: (opts) => {
-      if (!("user" in opts))
-        throw new Error("unreachable with session strategy");
-
-      return {
-        ...opts.session,
-        user: {
-          ...opts.session.user,
-          id: opts.user.id,
-        },
-      };
-    },
   },
   debug: env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;

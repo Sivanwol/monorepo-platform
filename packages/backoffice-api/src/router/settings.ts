@@ -5,6 +5,7 @@ import { get } from "@vercel/edge-config";
 
 export const settingsRouter = {
   maintenanceStatus: protectedProcedure.query(async () => {
+    console.log("Getting maintenance status");
     const res = await get(EdgeConfig.backofficeMaintenance)
     return { status: res === "true" };
   }),

@@ -1,59 +1,39 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1)
- * 2. You want to create a new middleware or type of procedure (see Part 3)
- *
- * tl;dr - this is where all the tRPC server stuff is created and plugged in.
- * The pieces you will need to use are documented accordingly near the end
- */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { AuthenticationInfo } from "@descope/node-sdk";
+import DescopeClient from '@descope/node-sdk';
 
-import type { Session } from "@app/auth";
 import { auth, validateToken } from "@app/auth";
 import { db } from "@app/db/client";
+let descopeClient = undefined
+try {
+  //  baseUrl="<URL>" // When initializing the Descope clientyou can also configure the baseUrl ex: https://auth.company.com  - this is useful when you utilize CNAME within your Descope project.
+  descopeClient = DescopeClient({ projectId: process.env.DESCOPE_PROJECT_ID || '' });
+} catch (error) {
+  // handle the error
+  console.log("failed to initialize: " + error)
+}
 
-/**
- * Isomorphic Session getter for API requests
- * - Expo requests will have a session token in the Authorization header
- * - Next.js requests will have a session token in cookies
- */
-const isomorphicGetSession = async (headers: Headers) => {
-  const authToken = headers.get("Authorization") ?? null;
-  if (authToken) return validateToken(authToken);
-  return auth();
-};
-
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the database, the session, etc.
- *
- * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
- * wrap this and provides the required context.
- *
- * @see https://trpc.io/docs/server/context
- */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  session: Session | null;
+  jwt?: string;
 }) => {
-  const authToken = opts.headers.get("Authorization") ?? null;
-  const session = await isomorphicGetSession(opts.headers);
+  const session = await descopeClient?.validateSession(opts.jwt ?? '') as AuthenticationInfo | null;
+  const authToken = session?.token;
 
+  const user = await descopeClient?.me()
+  opts.headers.set("Authorization", `Bearer ${opts.jwt}`);
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  console.log(">>> tRPC Request from", source, "by", session?.user);
+  console.log(">>> tRPC Request from", source, "by", user?.data);
 
   return {
     session,
     db,
     token: authToken,
+    user: user?.data,
   };
 };
-
 /**
  * 2. INITIALIZATION
  *
@@ -108,13 +88,13 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      session: { ...ctx.session, user: ctx.user },
     },
   });
 });

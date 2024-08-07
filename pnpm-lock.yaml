@@ -744,6 +744,9 @@ importers:
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
+      '@descope/node-sdk':
+        specifier: 'catalog:'
+        version: 1.6.9
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
@@ -982,7 +985,7 @@ importers:
         version: 7.35.0(eslint@9.7.0)
       eslint-plugin-react-hooks:
         specifier: rc
-        version: 5.1.0-rc-187dd6a7-20240806(eslint@9.7.0)
+        version: 5.1.0-rc-e948a5ac-20240807(eslint@9.7.0)
       eslint-plugin-turbo:
         specifier: ^2.0.8
         version: 2.0.9(eslint@9.7.0)
@@ -5501,8 +5504,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
 
-  eslint-plugin-react-hooks@5.1.0-rc-187dd6a7-20240806:
-    resolution: {integrity: sha512-glBBlHhCbg/Jm50sSKiYj2aAa6Bf1IvHHg/sChrXudGHzhYPc3+0i0scSBzgxHEy5CNkA7sQwy8GM46yaSj5wA==}
+  eslint-plugin-react-hooks@5.1.0-rc-e948a5ac-20240807:
+    resolution: {integrity: sha512-cc94nzLi7ZC4ZetSaA5z5bH5o1dYBxfPckudUT3Ddn1d5WXTk9Cn1NpM+HE+OZ5zrmbq/oBLxovfllOm0P9KXg==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -14861,7 +14864,7 @@ snapshots:
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
 
-  eslint-plugin-react-hooks@5.1.0-rc-187dd6a7-20240806(eslint@9.7.0):
+  eslint-plugin-react-hooks@5.1.0-rc-e948a5ac-20240807(eslint@9.7.0):
     dependencies:
       eslint: 9.7.0
 

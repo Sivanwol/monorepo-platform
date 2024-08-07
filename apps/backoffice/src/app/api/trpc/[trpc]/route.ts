@@ -2,7 +2,8 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
-
+import { session } from "@descope/nextjs-sdk/server";
+import { AuthenticationInfo } from "@descope/node-sdk";
 export const runtime = "edge";
 
 /**
@@ -25,13 +26,14 @@ export const OPTIONS = () => {
 };
 
 const handler = auth(async (req) => {
+  const sessionRes = session();
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
     createContext: () =>
       createTRPCContext({
-        session: req.auth,
+        jwt: sessionRes?.jwt,
         headers: req.headers,
       }),
     onError({ error, path }) {

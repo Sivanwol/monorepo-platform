@@ -23,6 +23,7 @@
     "@app/utils": "workspace:*",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
+    "@descope/node-sdk": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
     "zod": "catalog:"
   },

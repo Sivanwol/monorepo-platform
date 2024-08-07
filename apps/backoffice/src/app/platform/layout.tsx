@@ -64,6 +64,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
       taskedCheckerMaintenance()
     };
   }
+  await checkMaintenance();
   if (maintenance) {
     return (
       <HydrateClient>
