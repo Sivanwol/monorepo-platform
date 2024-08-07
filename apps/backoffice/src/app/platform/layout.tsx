@@ -8,6 +8,7 @@ import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
+import useTimeout from "@app/ui";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -25,29 +26,57 @@ const menuGroups: MenuGroup[] = [
     label: "Subscriptions",
     icon: "HiShoppingBag",
     items: [
-      { label: "Plans", route: "/platform/subscriptions/plans" },
-      { label: "Products", route: "/platform/subscriptions/products" },
-      { label: "Transactions", route: "/platform/subscriptions/transactions" },
+      { label: "Plans", route: "/platform/subscriptions/plans", icon: null },
+      { label: "Products", route: "/platform/subscriptions/products", icon: null },
+      { label: "Transactions", route: "/platform/subscriptions/transactions", icon: null },
     ],
   },
   {
     label: "Reports",
     icon: "HiChartPie",
     items: [
-      { label: "Overview", route: "/platform/reports" },
-      { label: "Analytics", route: "/platform/reports/analytics" },
-      { label: "Sales", route: "/platform/reports/sales" },
+      { label: "Overview", route: "/platform/reports", icon: null },
+      { label: "Analytics", route: "/platform/reports/analytics", icon: null },
+      { label: "Sales", route: "/platform/reports/sales", icon: null },
     ],
   },
 ];
-export default function PlatformLayout({ children }: { children: any }) {
+export default async function PlatformLayout({ children }: { children: any }) {
   const currSession = session();
   console.log("layout session", currSession);
+  // api.
   if (!currSession) {
     redirect("/auth");
   }
+  let maintenance = false;
+  const taskedCheckerMaintenance = () => {
+    setTimeout(checkMaintenance, 5000);
+  }
+  const checkMaintenance = async () => {
+    try {
+      const res = await api.settings?.maintenanceStatus();
+      maintenance = res.status;
+      if (maintenance) {
+        taskedCheckerMaintenance()
+      }
+    } catch (error) {
+      console.error("Error fetching maintenance status", error);
+      taskedCheckerMaintenance()
+    };
+  }
+  if (maintenance) {
+    return (
+      <HydrateClient>
+        <div className="flex flex-col rounded-md bg-gray-100">
+          <div className="rounded-t-md bg-gray-200 p-4 font-bold">
+            Platform on Maintenance Mode please contact the platform admin
+          </div>
+        </div>
+      </HydrateClient>)
+  }
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
+
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
@@ -62,14 +91,6 @@ export default function PlatformLayout({ children }: { children: any }) {
             logoutLink: "/platform/user/logout",
           }}
         >
-          <div className="flex flex-col rounded-md bg-gray-100">
-            <div className="rounded-t-md bg-gray-200 p-4 font-bold">
-              Current Session
-            </div>
-            <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {JSON.stringify(currSession, null, 2)}
-            </pre>
-          </div>
           {children}
         </DefaultLayout>
       </Suspense>

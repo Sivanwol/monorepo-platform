@@ -10,25 +10,11 @@ import type {
 import "next-auth/jwt";
 
 import { skipCSRFCheck } from "@auth/core";
-// import Apple from "next-auth/providers/apple";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import Facebook from "next-auth/providers/facebook";
-// import Google from "next-auth/providers/google";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { z } from "zod";
 
 import { db, UserRepo } from "@app/db/client";
-import {
-  Account,
-  Authenticators,
-  Session,
-  User,
-  VerificationTokens,
-} from "@app/db/schema";
-
-// import { IsVerifyPassword, saltAndHashPassword } from "@app/utils";
-// import { UserValidators } from "@app/validators";
 
 import { env } from "../env";
 
@@ -40,13 +26,7 @@ declare module "next-auth" {
   }
 }
 
-const adapter = DrizzleAdapter(db, {
-  usersTable: User,
-  accountsTable: Account,
-  sessionsTable: Session,
-  verificationTokensTable: VerificationTokens,
-  authenticatorsTable: Authenticators,
-});
+const adapter = DrizzleAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
 
@@ -55,9 +35,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -103,11 +83,11 @@ export const validateToken = async (
   const session = await adapter.getSessionAndUser?.(sessionToken);
   return session
     ? {
-        user: {
-          ...session.user,
-        },
-        expires: session.session.expires.toISOString(),
-      }
+      user: {
+        ...session.user,
+      },
+      expires: session.session.expires.toISOString(),
+    }
     : null;
 };
 

@@ -1,11 +1,13 @@
 {
-    "framework": "nextjs",
-    "cleanUrls": true,
-    "crons": [],
-    "git": {
-        "deploymentEnabled": {
-            "master": false,
-            "development": true
-        }
+  "framework": "nextjs",
+  "cleanUrls": true,
+  "crons": [],
+  "git": {
+    "deploymentEnabled": {
+      "master": false,
+      "development": true,
+      "production": true,
+      "staging": true
     }
+  }
 }

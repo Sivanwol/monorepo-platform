@@ -20,8 +20,10 @@
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
+    "@app/utils": "workspace:*",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
+    "@vercel/edge-config": "catalog:vercel",
     "zod": "catalog:"
   },
   "devDependencies": {

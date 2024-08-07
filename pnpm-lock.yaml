@@ -129,6 +129,9 @@ catalogs:
     '@vercel/analytics':
       specifier: ^1.3.1
       version: 1.3.1
+    '@vercel/edge-config':
+      specifier: ^1.2.0
+      version: 1.2.1
     '@vercel/otel':
       specifier: ^1.9.1
       version: 1.9.1
@@ -224,7 +227,7 @@ importers:
         version: link:../../packages/validators
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@descope/node-sdk':
         specifier: 'catalog:'
         version: 1.6.9
@@ -691,7 +694,7 @@ importers:
         version: 1.4.1
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.3)(zod@3.23.8)
@@ -738,9 +741,15 @@ importers:
       '@app/db':
         specifier: workspace:*
         version: link:../db
+      '@app/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
+      '@vercel/edge-config':
+        specifier: catalog:vercel
+        version: 1.2.1(@opentelemetry/api@1.9.0)
       superjson:
         specifier: 'catalog:'
         version: 2.2.1
@@ -814,7 +823,7 @@ importers:
     dependencies:
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.7.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
@@ -908,7 +917,7 @@ importers:
     dependencies:
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.16(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       bcrypt-edge:
         specifier: 'catalog:'
         version: 0.0.6
@@ -4088,6 +4097,18 @@ packages:
       next:
         optional: true
       react:
+        optional: true
+
+  '@vercel/edge-config-fs@0.1.0':
+    resolution: {integrity: sha512-NRIBwfcS0bUoUbRWlNGetqjvLSwgYH/BqKqDN7vK1g32p7dN96k0712COgaz6VFizAm9b0g6IG6hR6+hc0KCPg==}
+
+  '@vercel/edge-config@1.2.1':
+    resolution: {integrity: sha512-SsRHAe22GfVXsEVJggvTdwsvAWZTrLNuy6lqb4dNE4IibHKKZplnt2s5aCdeVpLTM45xvj/6xaTYkkXCZsqSrw==}
+    engines: {node: '>=14.6'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.7.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
         optional: true
 
   '@vercel/nft@0.26.5':
@@ -10700,7 +10721,7 @@ snapshots:
     dependencies:
       jwt-decode: 3.1.2
 
-  '@descope/nextjs-sdk@0.0.16(@types/react@18.3.3)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@descope/nextjs-sdk@0.0.16(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/node-sdk': 1.6.8
       '@descope/react-sdk': 2.0.39(@types/react@18.3.3)(react@18.3.1)
@@ -13282,6 +13303,14 @@ snapshots:
     optionalDependencies:
       next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
+
+  '@vercel/edge-config-fs@0.1.0': {}
+
+  '@vercel/edge-config@1.2.1(@opentelemetry/api@1.9.0)':
+    dependencies:
+      '@vercel/edge-config-fs': 0.1.0
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.0
 
   '@vercel/nft@0.26.5':
     dependencies:

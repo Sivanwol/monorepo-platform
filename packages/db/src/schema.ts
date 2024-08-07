@@ -6,7 +6,7 @@ import {
   pgTable,
   json,
   primaryKey,
-  text,
+  bigint,
   timestamp,
   varchar,
   pgEnum,
@@ -31,9 +31,9 @@ export const Media = pgTable("media", {
   alias: varchar("alias", { length: 100 }).notNull(),
   path: varchar("path", { length: 500 }).notNull(),
   mineType: varchar("mine_type", { length: 100 }).notNull(),
-  size: decimal("size").notNull(),
+  size: bigint("size", { mode: 'number' }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     mode: "date",
     withTimezone: true,
   }).$onUpdateFn(() => sql`now()`),
@@ -43,7 +43,7 @@ export const CreateMediaSchema = createInsertSchema(Media, {
   alias: z.string().min(2).max(100),
   path: z.string().min(5).max(500),
   mineType: z.string().min(5).max(100),
-  size: z.number().gt(0)
+  size: z.number().int().positive().gt(0),
 }).omit({
   id: true,
   createdAt: true,

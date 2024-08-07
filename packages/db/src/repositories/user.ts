@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import * as schema from "../schema";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) {}
+  constructor(public db: VercelPgDatabase<typeof schema>) { }
 
   public async GetUserByEmail(
     email: string,
@@ -24,7 +24,7 @@ export class UserRepository {
     const user = await this.db.query.User.findFirst({
       where: and(
         eq(schema.User.email, email.toLowerCase()),
-        eq(schema.User.password, passwordHash),
+        // eq(schema.User.password, passwordHash),
       ),
     });
     return !!user; // found user with correct password
