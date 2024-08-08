@@ -6,6 +6,23 @@ import * as schema from "../schema";
 export class UserRepository {
   constructor(public db: VercelPgDatabase<typeof schema>) { }
 
+  public async GetUserById(user_id: number): Promise<typeof schema.User.$inferSelect | null> {
+    const user = await this.db.query.User.findFirst({
+      where: eq(schema.User.id, user_id),
+    });
+    return user ?? null;
+  }
+  public async GetUserByExternalId(external_id: string): Promise<typeof schema.User.$inferSelect | null> {
+    const user = await this.db.query.User.findFirst({
+      where: eq(schema.User.externalId, external_id),
+    });
+    return user ?? null;
+  }
+
+  public async GetUsers(): Promise<typeof schema.User.$inferSelect[]> {
+    const users = await this.db.query.User.findMany();
+    return users;
+  }
   public async GetUserByEmail(
     email: string,
   ): Promise<typeof schema.User.$inferSelect | null> {

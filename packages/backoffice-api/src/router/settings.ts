@@ -1,12 +1,11 @@
 import { EdgeConfig } from "@app/utils";
-import { protectedProcedure } from "../trpc";
-import type { TRPCRouterRecord } from "@trpc/server";
 import { get } from "@vercel/edge-config";
+import { protectedProcedure } from "../trpc";
 
 export const settingsRouter = {
-  maintenanceStatus: protectedProcedure.query(async () => {
-    console.log("Getting maintenance status");
+  checkMaintenanceStatus: protectedProcedure.query(async () => {
+    console.log("checking maintenance status");
     const res = await get(EdgeConfig.backofficeMaintenance)
     return { status: res === "true" };
   }),
-} satisfies TRPCRouterRecord;
+}

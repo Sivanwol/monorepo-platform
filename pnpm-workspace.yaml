@@ -25,7 +25,7 @@ catalog:
   "framer-motion": ^11.2.3
   "@descope/node-sdk": ^1.6.9
   "@descope/react-sdk": ^2.0.56
-  "@descope/nextjs-sdk": ^0.0.16
+  "@descope/nextjs-sdk": ^0.0.23
   inngest: ^3.21.1
   date-fns": ^3.6.0"
   next-plausible": ^3.12.0

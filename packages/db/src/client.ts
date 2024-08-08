@@ -1,9 +1,10 @@
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-
-import { UserRepository } from "./repositories/user";
 import * as schema from "./schema";
+import { UserRepository } from "./repositories";
 
 export const db = drizzle(sql, { schema });
 
-export const UserRepo = new UserRepository(db);
+export const repositories = {
+  user: new UserRepository(db)
+}

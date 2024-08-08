@@ -12,24 +12,13 @@ import "next-auth/jwt";
 import { skipCSRFCheck } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { z } from "zod";
 
-import { db, UserRepo } from "@app/db/client";
+import { db } from "@app/db/client";
 
 import { env } from "../env";
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-}
-
 const adapter = DrizzleAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
-
 export const authConfig = {
   adapter,
   // In development, we need to skip checks to allow Expo to work
@@ -41,8 +30,9 @@ export const authConfig = {
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
+
     Descope({
-      clientId: env.AUTH_DESCOPE_ID,
+      clientId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
       clientSecret: env.AUTH_DESCOPE_SECRET,
     }),
   ],
@@ -56,20 +46,6 @@ export const authConfig = {
   debug: env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;
 
-export const validateToken = async (
-  token: string,
-): Promise<NextAuthSession | null> => {
-  const sessionToken = token.slice("Bearer ".length);
-  const session = await adapter.getSessionAndUser?.(sessionToken);
-  return session
-    ? {
-      user: {
-        ...session.user,
-      },
-      expires: session.session.expires.toISOString(),
-    }
-    : null;
-};
 
 export const invalidateSessionToken = async (token: string) => {
   await adapter.deleteSession?.(token);

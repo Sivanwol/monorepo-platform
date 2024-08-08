@@ -3,7 +3,7 @@ import { authMiddleware } from "@descope/nextjs-sdk/server";
 import { env } from "./env";
 
 export default authMiddleware({
-  projectId: env.AUTH_DESCOPE_ID,
+  projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
   redirectUrl: "/auth",
   publicRoutes: ["/", "/auth"],
 });

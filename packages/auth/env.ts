@@ -23,7 +23,7 @@ export const env = createEnv({
     //     ? z.string().min(1)
     //     : z.string().min(1).optional(),
 
-    AUTH_DESCOPE_ID: z.string().min(1),
+    // AUTH_DESCOPE_ID: z.string().min(1),
     AUTH_DESCOPE_SECRET: z.string().min(1),
     AUTH_DESCOPE_ISSUER: z.string().min(1),
     AUTH_SECRET:

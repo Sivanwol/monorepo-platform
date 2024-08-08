@@ -1,37 +1,26 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import type { AuthenticationInfo } from "@descope/node-sdk";
-import DescopeClient from '@descope/node-sdk';
-
-import { auth, validateToken } from "@app/auth";
-import { db } from "@app/db/client";
-let descopeClient = undefined
-try {
-  //  baseUrl="<URL>" // When initializing the Descope clientyou can also configure the baseUrl ex: https://auth.company.com  - this is useful when you utilize CNAME within your Descope project.
-  descopeClient = DescopeClient({ projectId: process.env.DESCOPE_PROJECT_ID || '' });
-} catch (error) {
-  // handle the error
-  console.log("failed to initialize: " + error)
-}
+import { session } from '@descope/nextjs-sdk/server'
+import { db, repositories } from "@app/db/client";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
   jwt?: string;
 }) => {
-  const session = await descopeClient?.validateSession(opts.jwt ?? '') as AuthenticationInfo | null;
-  const authToken = session?.token;
-
-  const user = await descopeClient?.me()
+  const sessionRes = session();
+  const authToken = sessionRes?.token;
+  const userId = authToken?.sub;
+  const user = (!sessionRes) ? null : await repositories.user.GetUserByExternalId(userId!);
   opts.headers.set("Authorization", `Bearer ${opts.jwt}`);
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  console.log(">>> tRPC Request from", source, "by", user?.data);
+  console.log(">>> tRPC Request from", source, "by", user);
 
   return {
     session,
     db,
-    token: authToken,
-    user: user?.data,
+    token: superjson.stringify(authToken),
+    user,
   };
 };
 /**
