@@ -18,7 +18,7 @@
     },
     "dev": {
       "cache": false,
-      "persistent": false
+      "persistent": true
     },
     "format": {
       "outputs": [
@@ -65,6 +65,10 @@
   },
   "globalEnv": [
     "POSTGRES_URL",
+    "KV_URL",
+    "KV_REST_API_URL",
+    "KV_REST_API_TOKEN",
+    "KV_REST_API_READ_ONLY_TOKEN",
     "BLOB_READ_WRITE_TOKEN",
     "AUTH_FACEBOOK_ID",
     "AUTH_FACEBOOK_SECRET",

@@ -13,7 +13,7 @@ catalog:
   prettier: ^3.3.2
   typescript: ^5.5.3
   zod: ^3.23.8
-  bcrypt-edge: ^0.0.6
+  "bcrypt-edge": ^0.0.6
   uuid: ^10.0.0
   "@types/uuid": ^10.0.0
   recharts: ^2.12.7
@@ -27,9 +27,9 @@ catalog:
   "@descope/react-sdk": ^2.0.56
   "@descope/nextjs-sdk": ^0.0.23
   inngest: ^3.21.1
-  date-fns": ^3.6.0"
-  next-plausible": ^3.12.0
-  next-intl": ^3.15.3
+  "date-fns": ^3.6.0
+  "next-plausible": ^3.12.0
+  "next-intl": ^3.15.3
 catalogs:
   uploadthing:
     "@uploadthing": ^6.10.4
@@ -45,6 +45,7 @@ catalogs:
     "@vercel/analytics": ^1.3.1
     "@vercel/edge-config": ^1.2.0
     "@vercel/blob": ^0.23.4
+    "@vercel/kv": ^2.0.0
   react18:
     react: 18.3.1
     "react-dom": 18.3.1

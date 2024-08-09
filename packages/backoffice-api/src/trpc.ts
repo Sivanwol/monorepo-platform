@@ -2,27 +2,39 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { session } from '@descope/nextjs-sdk/server'
+import type { AuthenticationInfo } from '@descope/node-sdk';
 import { db, repositories } from "@app/db/client";
+import type { User } from "@app/db/schema";
+import { auth, validateToken } from "@app/auth";
+import type { UserModel } from '@app/db/client';
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  jwt?: string;
-}) => {
-  const sessionRes = session();
-  const authToken = sessionRes?.token;
-  const userId = authToken?.sub;
-  const user = (!sessionRes) ? null : await repositories.user.GetUserByExternalId(userId!);
-  opts.headers.set("Authorization", `Bearer ${opts.jwt}`);
+}): Promise<{
+  session: AuthenticationInfo | null,
+  db: typeof db,
+  user: UserModel | null,
+}> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  console.log(">>> tRPC Request from", source, "by", user);
-
+  console.log(">>> tRPC Request from", source, "at", new Date().toISOString() + "\n");
   return {
-    session,
+    session: session() ?? null,
     db,
-    token: superjson.stringify(authToken),
-    user,
+    user: null,
   };
 };
+/**
+* Isomorphic Session getter for API requests
+* - Expo requests will have a session token in the Authorization header
+* - Next.js requests will have a session token in cookies
+*/
+const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
+  // const authToken = headers.get("Authorization") ?? null;
+  console.log(`checking session... ${session?.token.sub}`);
+  if (session) return validateToken(session.jwt);
+  return auth();
+};
+
 /**
  * 2. INITIALIZATION
  *
@@ -76,14 +88,30 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  const auth = await isomorphicGetSession(ctx.session);
+  console.log(`incoming protected procedure... ${auth?.user.id}...`);
+  // if (!ctx.user) {
+  //   throw new TRPCError({ code: "UNAUTHORIZED" });
+  // }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.user },
+      // session: { ...ctx.session, user: ctx.user },
+      session: {
+        user: {
+          id: 0,
+          firstName: "test",
+          lastName: "user",
+          email: "test@test.com",
+          phone: "1234567890",
+          country: 'israel',
+          city: 'tel aviv',
+          type: 'private',
+          createdAt: new Date(),
+          gender: "male",
+        }
+      },
     },
   });
 });

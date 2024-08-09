@@ -2,6 +2,8 @@ import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq } from "drizzle-orm";
 
 import * as schema from "../schema";
+import type { UserModel } from "../Models/user.model";
+import { convertToUserModel } from "../Models/user.model";
 
 export class UserRepository {
   constructor(public db: VercelPgDatabase<typeof schema>) { }
@@ -12,11 +14,11 @@ export class UserRepository {
     });
     return user ?? null;
   }
-  public async GetUserByExternalId(external_id: string): Promise<typeof schema.User.$inferSelect | null> {
+  public async GetUserShortInfoByExternalId(external_id: string): Promise<UserModel | null> {
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, external_id),
     });
-    return user ?? null;
+    return user ? convertToUserModel(user) : null;
   }
 
   public async GetUsers(): Promise<typeof schema.User.$inferSelect[]> {

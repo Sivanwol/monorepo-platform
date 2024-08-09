@@ -98,8 +98,8 @@ export const VehicleAuditsRelations = relations(Vehicles, ({ one }) => ({
 export const User = pgTable("user", {
   id: serial("id").primaryKey(),
   externalId: varchar("external_id", { length: 255 }).unique(),
-  firstName: varchar("first_name", { length: 100 }),
-  lastName: varchar("last_name", { length: 100 }),
+  firstName: varchar("first_name", { length: 100 }).notNull(),
+  lastName: varchar("last_name", { length: 100 }).notNull(),
   aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),

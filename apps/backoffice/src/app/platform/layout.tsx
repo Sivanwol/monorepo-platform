@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
-
+import { getSessionToken, useDescope } from '@descope/react-sdk'
 import type { MenuGroup } from "@app/ui";
 import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
-import useTimeout from "@app/ui";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -54,7 +53,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
   }
   const checkMaintenance = async () => {
     try {
-      const res = await api.settings?.maintenanceStatus();
+      const res = await api.settings.checkMaintenanceStatus();
       maintenance = res.status;
       if (maintenance) {
         taskedCheckerMaintenance()
