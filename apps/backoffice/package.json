@@ -27,6 +27,7 @@
     "@opentelemetry/api": "catalog:vercel",
     "@opentelemetry/api-logs": "catalog:vercel",
     "@vercel/analytics": "catalog:vercel",
+    "@vercel/flags": "catalog:vercel",
     "@descope/node-sdk": "catalog:",
     "@descope/react-sdk": "catalog:",
     "@descope/nextjs-sdk": "catalog:",

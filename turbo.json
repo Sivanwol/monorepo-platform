@@ -2,11 +2,6 @@
   "$schema": "https://turborepo.org/schema.json",
   "ui": "tui",
   "tasks": {
-    "topo": {
-      "dependsOn": [
-        "^topo"
-      ]
-    },
     "build": {
       "dependsOn": [
         "^build"
@@ -28,7 +23,6 @@
     },
     "lint": {
       "dependsOn": [
-        "^topo",
         "^build"
       ],
       "outputs": [
@@ -37,7 +31,6 @@
     },
     "typecheck": {
       "dependsOn": [
-        "^topo",
         "^build"
       ],
       "outputs": [
