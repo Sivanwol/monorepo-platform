@@ -1,52 +1,46 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1)
- * 2. You want to create a new middleware or type of procedure (see Part 3)
- *
- * tl;dr - this is where all the tRPC server stuff is created and plugged in.
- * The pieces you will need to use are documented accordingly near the end
- */
+import type { AuthenticationInfo } from "@descope/node-sdk";
+import { cookies } from "next/headers";
+import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { Session } from "@app/auth";
-import { auth } from "@app/auth";
-import { db } from "@app/db/client";
+import type { UserModel } from "@app/db/client";
+import type { User } from "@app/db/schema";
+import { auth, validateToken } from "@app/auth";
+import { db, repositories } from "@app/db/client";
 
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the database, the session, etc.
- *
- * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
- * wrap this and provides the required context.
- *
- * @see https://trpc.io/docs/server/context
- */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  session: Session | null;
-}) => {
-  const authToken = opts.headers.get("Authorization") ?? null;
-  // const session = await isomorphicGetSession(opts.headers);
-
+}): Promise<{
+  session: AuthenticationInfo | null;
+  db: typeof db;
+  user: UserModel | null;
+  // eslint-disable-next-line @typescript-eslint/require-await
+}> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  console.log(">>> tRPC Request from", source, "by", {
-    id: "123",
-    name: "John Doe",
-  });
-
+  console.log(
+    ">>> tRPC Request from",
+    source,
+    "at",
+    new Date().toISOString() + "\n",
+  );
   return {
-    // session,
+    session: session() ?? null,
     db,
-    token: authToken,
-    session: {
-      user: { id: "123", name: "John Doe" },
-    },
+    user: null,
   };
+};
+/**
+ * Isomorphic Session getter for API requests
+ * - Expo requests will have a session token in the Authorization header
+ * - Next.js requests will have a session token in cookies
+ */
+const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
+  // const authToken = headers.get("Authorization") ?? null;
+  console.log(`checking session... ${session?.token.sub} `);
+  if (session) return validateToken(session.jwt);
+  return auth();
 };
 
 /**
@@ -102,14 +96,29 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  // if (!ctx.session?.user) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  const auth = await isomorphicGetSession(ctx.session);
+
+  console.log(
+    `incoming protected procedure... ${JSON.stringify(auth?.userProfile)}... at $}{new Date().toISOString()}`,
+  );
+
+  if (!auth?.userProfile) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: `Sync issue ${ctx.user?.id} has no db record or not existed user`,
+    });
+  }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // session: { ...ctx.session },
+      session: {
+        cookies: { ...ctx.session?.cookies },
+        jwt: ctx.session?.jwt,
+        token: { ...ctx.session?.token },
+        user: auth.userProfile,
+      },
     },
   });
 });

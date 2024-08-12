@@ -29,9 +29,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -64,13 +64,21 @@ export const validateToken = async (
   token: string,
 ): Promise<NextAuthSession | null> => {
   console.log(`validate token`);
-  const sessionRes = await descopeSdk.validateJwt(token);
-  console.log("session", sessionRes);
-  if (!sessionRes) return null;
+  let sessionRes = null;
+  try {
+    sessionRes = await descopeSdk.validateJwt(token);
+    console.log(`user validated to user ${sessionRes.token.sub}`);
+  } catch (error) {
+    console.log("Could not validate user session ", error);
+    return null;
+  }
   const authToken = sessionRes.token;
-  const userId = authToken.sub;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const userId = authToken.sub!;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const authExpDate = authToken.exp!;
   console.log(`locate user ${userId}`);
-  const user = await repositories.user.GetUserShortInfoByExternalId(userId!);
+  const user = await repositories.user.GetUserShortInfoByExternalId(userId);
   if (!user) {
     console.error(`User not found for id ${userId}`);
     return null;
@@ -82,19 +90,17 @@ export const validateToken = async (
     media = await repositories.media.GetMediaById(user.avatar);
     avatarUrl = env.BLOB_STORAGE_URL + media?.path;
   }
-  return sessionRes
-    ? {
-        user: {
-          id: userId!,
-          name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-          imageMedia: media,
-          image: user.avatar ? avatarUrl : null,
-        },
-        userProfile: user ?? null,
-        expires: fromUnixTime(authToken.exp!).toISOString(),
-      }
-    : null;
+  return {
+    user: {
+      id: userId,
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      imageMedia: media,
+      image: user.avatar ? avatarUrl : null,
+    },
+    userProfile: user,
+    expires: fromUnixTime(authExpDate).toISOString(),
+  }
 };
 
 export const invalidateSessionToken = async (token: string) => {

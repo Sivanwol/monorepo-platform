@@ -58,12 +58,13 @@ export default async function PlatformLayout({ children }: { children: any }) {
   }
   let maintenance = false;
   const taskedCheckerMaintenance = () => {
-    setTimeout(checkMaintenance, 50000);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    setTimeout(() => checkMaintenance(), 50000);
   };
   const checkMaintenance = async () => {
     try {
       const res = await api.settings.checkMaintenanceStatus();
-      maintenance = res.status;
+      maintenance = res.status || false;
       if (maintenance) {
         taskedCheckerMaintenance();
       }
@@ -73,6 +74,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
     }
   };
   await checkMaintenance();
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (maintenance) {
     return (
       <HydrateClient>

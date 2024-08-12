@@ -31,7 +31,7 @@ export const postRouter = {
   create: protectedProcedure
     .input(CreateMediaSchema)
     .mutation(({ ctx, input }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+       
       return ctx.db.insert(Media).values(input);
     }),
 

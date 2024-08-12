@@ -5,7 +5,8 @@ import superjson from "superjson";
 
 import { CacheConfig } from "@app/utils";
 
-import { convertToMediaModel, MediaModel } from "../Models";
+import type { MediaModel } from "../Models";
+import { convertToMediaModel } from "../Models";
 import * as schema from "../schema";
 
 export class MediaRepository {

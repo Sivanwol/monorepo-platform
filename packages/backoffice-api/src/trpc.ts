@@ -16,6 +16,7 @@ export const createTRPCContext = async (opts: {
   session: AuthenticationInfo | null;
   db: typeof db;
   user: UserModel | null;
+  // eslint-disable-next-line @typescript-eslint/require-await
 }> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
   console.log(
