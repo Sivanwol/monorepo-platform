@@ -17,6 +17,7 @@ env:
   FORCE_COLOR: 3
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
   # REGISTRY: ghcr.io
   # IMAGE_NAME: ${{ github.repository }}
 jobs:
@@ -56,14 +57,14 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
-  build:
-    # You can leverage Vercel's Builders to build your application
-    runs-on: ubuntu-latest
-    name: Build
-    needs: [typecheck, format, lint]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup
-        uses: ./tooling/github/setup
-      - name: Build
-        run: pnpm build
+  # build:
+  #   # You can leverage Vercel's Builders to build your application
+  #   runs-on: ubuntu-latest
+  #   name: Build
+  #   needs: [typecheck, format, lint]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Setup
+  #       uses: ./tooling/github/setup
+  #     - name: Build
+  #       run: pnpm build
