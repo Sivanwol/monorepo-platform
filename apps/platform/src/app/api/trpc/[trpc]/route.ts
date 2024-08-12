@@ -31,7 +31,6 @@ const handler = auth(async (req) => {
     req,
     createContext: () =>
       createTRPCContext({
-        session: req.auth,
         headers: req.headers,
       }),
     onError({ error, path }) {
