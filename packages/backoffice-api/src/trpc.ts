@@ -7,6 +7,7 @@ import { db, repositories } from "@app/db/client";
 import type { User } from "@app/db/schema";
 import { auth, validateToken } from "@app/auth";
 import type { UserModel } from '@app/db/client';
+import { cookies } from 'next/headers';
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }): Promise<{
@@ -90,27 +91,20 @@ export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
 
-  console.log(`incoming protected procedure... ${JSON.stringify(auth)}...`);
-  // if (!ctx.user) {
-  //   throw new TRPCError({ code: "UNAUTHORIZED" });
-  // }
+  console.log(`incoming protected procedure... ${JSON.stringify(auth?.userProfile)}...`);
+
+  if (!auth?.userProfile) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: `Sync issue ${ctx.user?.id} has no db record or not existed user` });
+  }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      // session: { ...ctx.session, user: ctx.user },
+      // session: { ...ctx.session },
       session: {
-        user: {
-          id: 0,
-          firstName: "test",
-          lastName: "user",
-          email: "test@test.com",
-          phone: "1234567890",
-          country: 'israel',
-          city: 'tel aviv',
-          type: 'private',
-          createdAt: new Date(),
-          gender: "male",
-        }
+        cookies: { ...ctx.session?.cookies },
+        jwt: ctx.session?.jwt,
+        token: { ...ctx.session?.token },
+        user: auth.userProfile,
       },
     },
   });

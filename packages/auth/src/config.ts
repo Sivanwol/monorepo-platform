@@ -57,7 +57,7 @@ declare module "next-auth" {
       image: string | null;
       imageMedia: MediaModel | null;
     } & DefaultSession["user"];
-    userProfile: UserModel;
+    userProfile: UserModel | null;
   }
 }
 
@@ -92,7 +92,7 @@ export const validateToken = async (
         imageMedia: media,
         image: (user.avatar) ? avatarUrl : null,
       },
-      userProfile: user,
+      userProfile: user ?? null,
       expires: fromUnixTime(authToken.exp!).toISOString(),
     }
     : null;

@@ -49,7 +49,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
   }
   let maintenance = false;
   const taskedCheckerMaintenance = () => {
-    setTimeout(checkMaintenance, 5000);
+    setTimeout(checkMaintenance, 50000);
   }
   const checkMaintenance = async () => {
     try {

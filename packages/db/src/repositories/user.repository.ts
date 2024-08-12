@@ -14,6 +14,12 @@ export class UserRepository {
     });
     return user ?? null;
   }
+  public async locateUserByExternalId(external_id: string): Promise<boolean> {
+    const user = await this.db.query.User.findFirst({
+      where: eq(schema.User.externalId, external_id),
+    });
+    return !!user;
+  }
   public async GetUserShortInfoByExternalId(external_id: string): Promise<UserModel | null> {
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, external_id),
