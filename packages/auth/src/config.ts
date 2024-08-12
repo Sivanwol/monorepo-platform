@@ -22,7 +22,7 @@ const adapter = DrizzleAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
 export const descopeSdk = createSdk({
-  projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
+  projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID || "",
 });
 export const authConfig = {
   adapter,
