@@ -11,6 +11,9 @@ export const authRouter = {
   getSecretMessage: protectedProcedure.query(() => {
     return "you can see this secret message!";
   }),
+  getUser: protectedProcedure.query(({ ctx }) => {
+    return ctx.user;
+  }),
   // eslint-disable-next-line @typescript-eslint/require-await
   signOut: protectedProcedure.mutation(async (opts) => {
     // if (!opts.ctx.session.user) {
