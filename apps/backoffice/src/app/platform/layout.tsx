@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
-import { getSessionToken, useDescope } from '@descope/react-sdk'
+import { getSessionToken, useDescope } from "@descope/react-sdk";
+
 import type { MenuGroup } from "@app/ui";
 import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -26,8 +27,16 @@ const menuGroups: MenuGroup[] = [
     icon: "HiShoppingBag",
     items: [
       { label: "Plans", route: "/platform/subscriptions/plans", icon: null },
-      { label: "Products", route: "/platform/subscriptions/products", icon: null },
-      { label: "Transactions", route: "/platform/subscriptions/transactions", icon: null },
+      {
+        label: "Products",
+        route: "/platform/subscriptions/products",
+        icon: null,
+      },
+      {
+        label: "Transactions",
+        route: "/platform/subscriptions/transactions",
+        icon: null,
+      },
     ],
   },
   {
@@ -50,19 +59,19 @@ export default async function PlatformLayout({ children }: { children: any }) {
   let maintenance = false;
   const taskedCheckerMaintenance = () => {
     setTimeout(checkMaintenance, 50000);
-  }
+  };
   const checkMaintenance = async () => {
     try {
       const res = await api.settings.checkMaintenanceStatus();
       maintenance = res.status;
       if (maintenance) {
-        taskedCheckerMaintenance()
+        taskedCheckerMaintenance();
       }
     } catch (error) {
       console.error("Error fetching maintenance status", error);
-      taskedCheckerMaintenance()
-    };
-  }
+      taskedCheckerMaintenance();
+    }
+  };
   await checkMaintenance();
   if (maintenance) {
     return (
@@ -72,7 +81,8 @@ export default async function PlatformLayout({ children }: { children: any }) {
             Platform on Maintenance Mode please contact the platform admin
           </div>
         </div>
-      </HydrateClient>)
+      </HydrateClient>
+    );
   }
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();

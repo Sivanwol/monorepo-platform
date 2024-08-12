@@ -2,12 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from "@mui/material/styles";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+
 import { AdminTheme, cn } from "@app/ui";
+
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      env.VERCEL_URL!
+        env.VERCEL_URL!
       : "http://localhost:3001",
   ),
   title: "Backoffice of monorepo Platform",

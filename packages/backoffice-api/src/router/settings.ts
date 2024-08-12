@@ -1,7 +1,9 @@
-import { EdgeConfig } from "@app/utils";
 import { get } from "@vercel/edge-config";
-import { protectedProcedure } from "../trpc";
+
 import { env } from "@app/auth/env";
+import { EdgeConfig } from "@app/utils";
+
+import { protectedProcedure } from "../trpc";
 
 export const settingsRouter = {
   checkMaintenanceStatus: protectedProcedure.query(async () => {

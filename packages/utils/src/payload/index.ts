@@ -1,1 +1,1 @@
-export * from './BaseResponse';
+export * from "./BaseResponse";

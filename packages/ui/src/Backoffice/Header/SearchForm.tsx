@@ -1,7 +1,7 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, TextField, Box } from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 
 export const SearchForm = () => {
   return (

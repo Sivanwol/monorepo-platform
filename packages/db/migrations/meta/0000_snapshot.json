@@ -102,12 +102,8 @@
           "name": "business_owner_user_id_user_id_fk",
           "tableFrom": "business",
           "tableTo": "user",
-          "columnsFrom": [
-            "owner_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -115,12 +111,8 @@
           "name": "business_business_type_id_business_type_id_fk",
           "tableFrom": "business",
           "tableTo": "business_type",
-          "columnsFrom": [
-            "business_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["business_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -128,12 +120,8 @@
           "name": "business_logo_media_id_media_id_fk",
           "tableFrom": "business",
           "tableTo": "media",
-          "columnsFrom": [
-            "logo_media_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["logo_media_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -237,12 +225,8 @@
           "name": "business_metadata_business_id_business_id_fk",
           "tableFrom": "business_metadata",
           "tableTo": "business",
-          "columnsFrom": [
-            "business_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["business_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -324,12 +308,8 @@
           "name": "business_operate_days_hours_business_id_business_id_fk",
           "tableFrom": "business_operate_days_hours",
           "tableTo": "business",
-          "columnsFrom": [
-            "business_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["business_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -375,12 +355,8 @@
           "name": "business_operation_area_business_id_business_id_fk",
           "tableFrom": "business_operation_area",
           "tableTo": "business",
-          "columnsFrom": [
-            "business_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["business_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -417,12 +393,8 @@
           "name": "business_type_logo_media_id_media_id_fk",
           "tableFrom": "business_type",
           "tableTo": "media",
-          "columnsFrom": [
-            "logo_media_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["logo_media_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -460,12 +432,8 @@
           "name": "business_vehicles_vehicle_id_vehicles_id_fk",
           "tableFrom": "business_vehicles",
           "tableTo": "vehicles",
-          "columnsFrom": [
-            "vehicle_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vehicle_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -473,12 +441,8 @@
           "name": "business_vehicles_business_id_business_id_fk",
           "tableFrom": "business_vehicles",
           "tableTo": "business",
-          "columnsFrom": [
-            "business_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["business_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -486,10 +450,7 @@
       "compositePrimaryKeys": {
         "business_vehicles_business_id_vehicle_id_pk": {
           "name": "business_vehicles_business_id_vehicle_id_pk",
-          "columns": [
-            "business_id",
-            "vehicle_id"
-          ]
+          "columns": ["business_id", "vehicle_id"]
         }
       },
       "uniqueConstraints": {}
@@ -531,12 +492,8 @@
           "name": "driver_userId_user_id_fk",
           "tableFrom": "driver",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -589,12 +546,8 @@
           "name": "driver_licenses_driver_id_driver_id_fk",
           "tableFrom": "driver_licenses",
           "tableTo": "driver",
-          "columnsFrom": [
-            "driver_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["driver_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -602,12 +555,8 @@
           "name": "driver_licenses_user_id_user_id_fk",
           "tableFrom": "driver_licenses",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -615,10 +564,7 @@
       "compositePrimaryKeys": {
         "driver_licenses_driver_id_user_id_pk": {
           "name": "driver_licenses_driver_id_user_id_pk",
-          "columns": [
-            "driver_id",
-            "user_id"
-          ]
+          "columns": ["driver_id", "user_id"]
         }
       },
       "uniqueConstraints": {}
@@ -653,12 +599,8 @@
           "name": "driver_vehicles_vehicle_id_vehicles_id_fk",
           "tableFrom": "driver_vehicles",
           "tableTo": "vehicles",
-          "columnsFrom": [
-            "vehicle_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vehicle_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -666,12 +608,8 @@
           "name": "driver_vehicles_driver_id_driver_id_fk",
           "tableFrom": "driver_vehicles",
           "tableTo": "driver",
-          "columnsFrom": [
-            "driver_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["driver_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -679,10 +617,7 @@
       "compositePrimaryKeys": {
         "driver_vehicles_driver_id_vehicle_id_pk": {
           "name": "driver_vehicles_driver_id_vehicle_id_pk",
-          "columns": [
-            "driver_id",
-            "vehicle_id"
-          ]
+          "columns": ["driver_id", "vehicle_id"]
         }
       },
       "uniqueConstraints": {}
@@ -888,12 +823,8 @@
           "name": "user_avatar_media_id_media_id_fk",
           "tableFrom": "user",
           "tableTo": "media",
-          "columnsFrom": [
-            "avatar_media_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["avatar_media_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -903,9 +834,7 @@
         "user_external_id_unique": {
           "name": "user_external_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "external_id"
-          ]
+          "columns": ["external_id"]
         }
       }
     },
@@ -970,12 +899,8 @@
           "name": "vehicle_audits_vehicle_id_vehicles_id_fk",
           "tableFrom": "vehicle_audits",
           "tableTo": "vehicles",
-          "columnsFrom": [
-            "vehicle_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vehicle_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -983,12 +908,8 @@
           "name": "vehicle_audits_vehicle_image_id_media_id_fk",
           "tableFrom": "vehicle_audits",
           "tableTo": "media",
-          "columnsFrom": [
-            "vehicle_image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vehicle_image_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1100,12 +1021,8 @@
           "name": "vehicles_vehicle_image_id_media_id_fk",
           "tableFrom": "vehicles",
           "tableTo": "media",
-          "columnsFrom": [
-            "vehicle_image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vehicle_image_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1118,11 +1035,7 @@
     "public.business_register_type": {
       "name": "business_register_type",
       "schema": "public",
-      "values": [
-        "Pature",
-        "Mass",
-        "Company"
-      ]
+      "values": ["Pature", "Mass", "Company"]
     },
     "public.days": {
       "name": "days",
@@ -1140,26 +1053,12 @@
     "public.license_code": {
       "name": "license_code",
       "schema": "public",
-      "values": [
-        "None",
-        "A1",
-        "A",
-        "B",
-        "C1",
-        "F",
-        "C",
-        "D",
-        "C+E"
-      ]
+      "values": ["None", "A1", "A", "B", "C1", "F", "C", "D", "C+E"]
     },
     "public.gender": {
       "name": "gender",
       "schema": "public",
-      "values": [
-        "male",
-        "female",
-        "other"
-      ]
+      "values": ["male", "female", "other"]
     },
     "public.operation_area": {
       "name": "operation_area",
@@ -1176,33 +1075,17 @@
     "public.total_employee_range": {
       "name": "total_employee_range",
       "schema": "public",
-      "values": [
-        "1-10",
-        "10-50",
-        "50-100",
-        "100-200",
-        "200+"
-      ]
+      "values": ["1-10", "10-50", "50-100", "100-200", "200+"]
     },
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": [
-        "marry",
-        "willow",
-        "diverse",
-        "single"
-      ]
+      "values": ["marry", "willow", "diverse", "single"]
     },
     "public.type": {
       "name": "type",
       "schema": "public",
-      "values": [
-        "private",
-        "business",
-        "driver",
-        "driver+business"
-      ]
+      "values": ["private", "business", "driver", "driver+business"]
     },
     "public.vehicle_type": {
       "name": "vehicle_type",

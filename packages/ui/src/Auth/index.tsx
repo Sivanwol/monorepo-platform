@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { SignUpOrInFlow } from '@descope/nextjs-sdk';
+import { SignUpOrInFlow } from "@descope/nextjs-sdk";
 
 export function Signin() {
   return (
@@ -12,7 +12,7 @@ export function Signin() {
         }}
         onError={(e) => console.log("Could not logged in!")}
         redirectAfterSuccess="/platform/dashboard"
-      // redirectAfterError="/error-page"
+        // redirectAfterError="/error-page"
       />
     </div>
   );

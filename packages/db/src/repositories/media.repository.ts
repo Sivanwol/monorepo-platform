@@ -1,14 +1,15 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
-import { and, eq } from "drizzle-orm";
 import { kv } from "@vercel/kv";
-import * as schema from "../schema";
-import superjson from 'superjson';
-import { convertToMediaModel, MediaModel } from "../Models";
+import { and, eq } from "drizzle-orm";
+import superjson from "superjson";
+
 import { CacheConfig } from "@app/utils";
 
+import { convertToMediaModel, MediaModel } from "../Models";
+import * as schema from "../schema";
 
 export class MediaRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) { }
+  constructor(public db: VercelPgDatabase<typeof schema>) {}
 
   public async GetMediaById(media_id: number): Promise<MediaModel | null> {
     if (await kv.exists(`media:${media_id}`)) {
@@ -18,8 +19,12 @@ export class MediaRepository {
       where: eq(schema.Media.id, media_id),
     });
     if (!media) throw new Error(`Media with id ${media_id} not found.`);
-    const model = convertToMediaModel(media)
-    await kv.set(CacheConfig.keys.mediaId(media_id), superjson.stringify(model), { ex: 100, nx: true });
-    return model
+    const model = convertToMediaModel(media);
+    await kv.set(
+      CacheConfig.keys.mediaId(media_id),
+      superjson.stringify(model),
+      { ex: 100, nx: true },
+    );
+    return model;
   }
 }

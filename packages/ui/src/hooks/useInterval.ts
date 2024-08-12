@@ -1,7 +1,11 @@
-'use client'
-import { useEffect, useRef } from 'react';
+"use client";
 
-export default function useInterval(callback: () => void, delay: number | null) {
+import { useEffect, useRef } from "react";
+
+export default function useInterval(
+  callback: () => void,
+  delay: number | null,
+) {
   const callbacRef = useRef<() => void>();
 
   // update callback function with current render callback that has access to latest props and state
@@ -11,7 +15,7 @@ export default function useInterval(callback: () => void, delay: number | null) 
 
   useEffect(() => {
     if (!delay) {
-      return () => { };
+      return () => {};
     }
 
     const interval = setInterval(() => {

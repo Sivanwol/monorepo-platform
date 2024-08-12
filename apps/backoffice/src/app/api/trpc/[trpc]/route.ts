@@ -1,9 +1,10 @@
+import { session } from "@descope/nextjs-sdk/server";
+import { AuthenticationInfo } from "@descope/node-sdk";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
-import { session } from "@descope/nextjs-sdk/server";
-import { AuthenticationInfo } from "@descope/node-sdk";
+
 export const runtime = "edge";
 
 /**

@@ -1,5 +1,6 @@
-'use client'
-import { useEffect, useRef } from 'react';
+"use client";
+
+import { useEffect, useRef } from "react";
 
 export default function useTimeout(callback: () => void, delay: number | null) {
   const callbackRef = useRef<() => void>();
@@ -10,7 +11,7 @@ export default function useTimeout(callback: () => void, delay: number | null) {
 
   useEffect(() => {
     if (!delay) {
-      return () => { };
+      return () => {};
     }
 
     const timeout = setTimeout(() => {

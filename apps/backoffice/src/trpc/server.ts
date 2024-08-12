@@ -1,13 +1,14 @@
 import { cache } from "react";
 import { headers } from "next/headers";
+import { NextRequest } from "next/server";
+import DescopeClient from "@descope/node-sdk";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
-import DescopeClient from '@descope/node-sdk';
 import type { AppRouter } from "@app/backoffice-api";
 import { auth } from "@app/auth";
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
+
 import { createQueryClient } from "./query-client";
-import { NextRequest } from "next/server";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -21,7 +22,6 @@ const createContext = cache(async () => {
     headers: heads,
   });
 });
-
 
 const getQueryClient = cache(createQueryClient);
 const caller = createCaller(createContext);

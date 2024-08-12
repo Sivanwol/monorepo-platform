@@ -25,7 +25,7 @@ export default eventHandler(async (event) =>
       //   clientSecret: process.env.AUTH_GOOGLE_SECRET,
       // }),
       Descope({
-        clientId: process.env.AUTH_DESCOPE_ID,
+        clientId: process.env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
         clientSecret: process.env.AUTH_DESCOPE_SECRET,
         issuer: process.env.AUTH_DESCOPE_ISSUER,
       }),
