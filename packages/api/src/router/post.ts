@@ -31,7 +31,6 @@ export const postRouter = {
   create: protectedProcedure
     .input(CreateMediaSchema)
     .mutation(({ ctx, input }) => {
-       
       return ctx.db.insert(Media).values(input);
     }),
 

@@ -29,9 +29,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -100,7 +100,7 @@ export const validateToken = async (
     },
     userProfile: user,
     expires: fromUnixTime(authExpDate).toISOString(),
-  }
+  };
 };
 
 export const invalidateSessionToken = async (token: string) => {
