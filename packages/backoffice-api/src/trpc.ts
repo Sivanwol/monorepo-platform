@@ -7,7 +7,6 @@ import { db, repositories } from "@app/db/client";
 import type { User } from "@app/db/schema";
 import { auth, validateToken } from "@app/auth";
 import type { UserModel } from '@app/db/client';
-
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }): Promise<{
@@ -30,7 +29,7 @@ export const createTRPCContext = async (opts: {
 */
 const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
   // const authToken = headers.get("Authorization") ?? null;
-  console.log(`checking session... ${session?.token.sub}`);
+  console.log(`checking session... ${session?.token.sub} `);
   if (session) return validateToken(session.jwt);
   return auth();
 };
@@ -90,7 +89,8 @@ export const publicProcedure = t.procedure;
  */
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
-  console.log(`incoming protected procedure... ${auth?.user.id}...`);
+
+  console.log(`incoming protected procedure... ${JSON.stringify(auth)}...`);
   // if (!ctx.user) {
   //   throw new TRPCError({ code: "UNAUTHORIZED" });
   // }

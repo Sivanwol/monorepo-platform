@@ -18,7 +18,7 @@ import { z } from "zod";
 
 export const genderEnum = pgEnum('gender', ['male', 'female', 'other']);
 export const userStatusEnum = pgEnum('status', ['marry', 'willow', 'diverse', 'single']);
-export const userTypeEnum = pgEnum('type', ['personal', 'business', 'driver', 'driver+business']);
+export const userTypeEnum = pgEnum('type', ['private', 'business', 'driver', 'driver+business']);
 export const driverLicenseCodeEnum = pgEnum('license_code', ['None', 'A1', 'A', 'B', 'C1', 'F', 'C', 'D', 'C+E']);
 export const businessRegisterTypeEnum = pgEnum('business_register_type', ['Pature', 'Mass', 'Company']);
 export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'car', 'motorcycle', 'bus', 'van', 'truck-sm', 'truck-big', 'semi-truck', 'other']);
@@ -103,18 +103,18 @@ export const User = pgTable("user", {
   aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),
-  avatarMediaId: serial("avatar_media_id")
+  avatarMediaId: integer("avatar_media_id")
     .references(() => Media.id, { onDelete: "cascade" }),
   IsWorker: boolean("is_worker").default(false), // is this user is a worker (will not open a business entry)
   IsPrivate: boolean("is_private").default(false), // is this a private user
   hasWhatsup: boolean("has_whatsup").default(false),
-  gender: genderEnum("gender").notNull(),
-  country: varchar("country", { length: 4 }).notNull().default("IL"),
+  gender: genderEnum("gender").default('other'),
+  country: varchar("country", { length: 4 }).default("IL"),
   state: varchar("state", { length: 4 }),
-  city: varchar("city", { length: 255 }).notNull(),
-  address: varchar("address", { length: 255 }).notNull(),
+  city: varchar("city", { length: 255 }),
+  address: varchar("address", { length: 255 }),
   status: userStatusEnum("status").default("single"),
-  type: userTypeEnum("user_type").notNull().default("driver"),
+  type: userTypeEnum("user_type").default("driver"),
   blockedAt: timestamp("blocked_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", {
@@ -131,7 +131,7 @@ export const Driver = pgTable(
   "driver",
   {
     id: serial("id").primaryKey(),
-    userId: serial("userId")
+    userId: integer("userId")
       .notNull()
       .references(() => User.id, { onDelete: "cascade" }),
     haveVehicles: boolean("have_vehicles").default(false),
@@ -143,9 +143,9 @@ export const Driver = pgTable(
 );
 
 export const DriverVehicles = pgTable("driver_vehicles", {
-  vehicleId: serial("vehicle_id")
+  vehicleId: integer("vehicle_id")
     .references(() => Vehicles.id, { onDelete: "cascade" }),
-  driverId: serial("driver_id")
+  driverId: integer("driver_id")
     .notNull()
     .references(() => Driver.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -163,16 +163,21 @@ export const DriverVehiclesRelations = relations(DriverVehicles, ({ many }) => (
 }));
 
 export const DriverLicenses = pgTable("driver_licenses", {
-  driverId: serial("driver_id")
+  driverId: integer("driver_id")
     .notNull()
     .references(() => Driver.id, { onDelete: "cascade" }),
-  userId: serial("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
   IncludeManualLicense: boolean("include_manual_license").default(false),
   driverLicenseCode: driverLicenseCodeEnum("license_code").default("A"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+},
+  (entity) => ({
+    compositePK: primaryKey({
+      columns: [entity.driverId, entity.userId],
+    }),
+  }));
 
 export const DriverRelations = relations(Driver, ({ one }) => ({
   user: one(User, { fields: [Driver.userId], references: [User.id] }),
@@ -182,13 +187,13 @@ export const DriverRelations = relations(Driver, ({ one }) => ({
 export const BusinessType = pgTable("business_type", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  logo_media_id: serial("logo_media_id")
+  logo_media_id: integer("logo_media_id")
     .references(() => Media.id, { onDelete: "cascade" }),
 });
 
 export const Business = pgTable("business", {
   id: serial("id").primaryKey(),
-  ownerUserId: serial("owner_user_id")
+  ownerUserId: integer("owner_user_id")
     .notNull()
     .references(() => User.id, { onDelete: "cascade" }),
   name: varchar("name", { length: 100 }).notNull(),
@@ -219,7 +224,7 @@ export const BusinessRelations = relations(Business, ({ many, one }) => ({
 
 export const BusinessMetaData = pgTable("business_metadata", {
   id: serial("id").primaryKey(),
-  businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => Business.id, { onDelete: "cascade" }),
   allowReceivedJobs: boolean("allow_received_jobs").default(false),
   totalEmployeeRange: totalEmployeeRangeEnum("total_employee_range").default("1-10"),
   whatsup: varchar("phone", { length: 20 }),
@@ -239,7 +244,7 @@ export const BusinessMetaDataRelations = relations(BusinessMetaData, ({ one }) =
 
 export const BusinessOperationArea = pgTable("business_operation_area", {
   id: serial("id").primaryKey(),
-  businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => Business.id, { onDelete: "cascade" }),
   operationArea: operationAreaEnum("operation_area").default("all country"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -250,7 +255,7 @@ export const BusinessOperationAreaRelations = relations(BusinessOperationArea, (
 
 export const BusinessOperateDaysHours = pgTable("business_operate_days_hours", {
   id: serial("id").primaryKey(),
-  businessId: serial("business_id").references(() => Business.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => Business.id, { onDelete: "cascade" }),
   day: daysEnum('day').notNull(),
   open24Hour: boolean("open_24_hour").default(false),
   openFrom1: time("open_from1"),
@@ -269,9 +274,9 @@ export const BusinessOperateDaysHoursRelations = relations(BusinessOperateDaysHo
 }));
 
 export const BusinessVehicles = pgTable("business_vehicles", {
-  vehicleId: serial("vehicle_id")
+  vehicleId: integer("vehicle_id")
     .references(() => Vehicles.id, { onDelete: "cascade" }),
-  businessId: serial("business_id")
+  businessId: integer("business_id")
     .notNull()
     .references(() => Business.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),

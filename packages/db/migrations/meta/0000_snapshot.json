@@ -1,5 +1,5 @@
 {
-  "id": "3e6cbeb0-2bf9-4d1a-b7eb-955c1f3884be",
+  "id": "f5983af7-b1fb-4eec-8f57-7b8ce745bc86",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,7 +16,7 @@
         },
         "owner_user_id": {
           "name": "owner_user_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -82,18 +82,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -151,18 +151,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "business_id": {
+          "name": "business_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "allow_received_jobs": {
           "name": "allow_received_jobs",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "default": false
-        },
-        "business_id": {
-          "name": "business_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
         },
         "total_employee_range": {
           "name": "total_employee_range",
@@ -250,6 +250,144 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.business_operate_days_hours": {
+      "name": "business_operate_days_hours",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "business_id": {
+          "name": "business_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "day": {
+          "name": "day",
+          "type": "days",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "open_24_hour": {
+          "name": "open_24_hour",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "open_from1": {
+          "name": "open_from1",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "open_to1": {
+          "name": "open_to1",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "open_from2": {
+          "name": "open_from2",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "open_to2": {
+          "name": "open_to2",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "business_operate_days_hours_business_id_business_id_fk": {
+          "name": "business_operate_days_hours_business_id_business_id_fk",
+          "tableFrom": "business_operate_days_hours",
+          "tableTo": "business",
+          "columnsFrom": [
+            "business_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.business_operation_area": {
+      "name": "business_operation_area",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "business_id": {
+          "name": "business_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operation_area": {
+          "name": "operation_area",
+          "type": "operation_area",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'all country'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "business_operation_area_business_id_business_id_fk": {
+          "name": "business_operation_area_business_id_business_id_fk",
+          "tableFrom": "business_operation_area",
+          "tableTo": "business",
+          "columnsFrom": [
+            "business_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.business_type": {
       "name": "business_type",
       "schema": "",
@@ -268,9 +406,9 @@
         },
         "logo_media_id": {
           "name": "logo_media_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -292,6 +430,70 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.business_vehicles": {
+      "name": "business_vehicles",
+      "schema": "",
+      "columns": {
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_id": {
+          "name": "business_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "business_vehicles_vehicle_id_vehicles_id_fk": {
+          "name": "business_vehicles_vehicle_id_vehicles_id_fk",
+          "tableFrom": "business_vehicles",
+          "tableTo": "vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "business_vehicles_business_id_business_id_fk": {
+          "name": "business_vehicles_business_id_business_id_fk",
+          "tableFrom": "business_vehicles",
+          "tableTo": "business",
+          "columnsFrom": [
+            "business_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "business_vehicles_business_id_vehicle_id_pk": {
+          "name": "business_vehicles_business_id_vehicle_id_pk",
+          "columns": [
+            "business_id",
+            "vehicle_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "public.driver": {
       "name": "driver",
       "schema": "",
@@ -304,7 +506,7 @@
         },
         "userId": {
           "name": "userId",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -348,15 +550,22 @@
       "columns": {
         "driver_id": {
           "name": "driver_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "include_manual_license": {
+          "name": "include_manual_license",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "license_code": {
           "name": "license_code",
@@ -403,7 +612,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "driver_licenses_driver_id_user_id_pk": {
+          "name": "driver_licenses_driver_id_user_id_pk",
+          "columns": [
+            "driver_id",
+            "user_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.driver_vehicles": {
@@ -412,13 +629,13 @@
       "columns": {
         "vehicle_id": {
           "name": "vehicle_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "driver_id": {
           "name": "driver_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -500,7 +717,7 @@
         },
         "size": {
           "name": "size",
-          "type": "numeric",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
@@ -511,8 +728,8 @@
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
@@ -543,13 +760,13 @@
           "name": "first_name",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "last_name": {
           "name": "last_name",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "about_me": {
           "name": "about_me",
@@ -571,9 +788,9 @@
         },
         "avatar_media_id": {
           "name": "avatar_media_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "is_worker": {
           "name": "is_worker",
@@ -601,13 +818,14 @@
           "type": "gender",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "'other'"
         },
         "country": {
           "name": "country",
           "type": "varchar(4)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "'IL'"
         },
         "state": {
@@ -620,13 +838,13 @@
           "name": "city",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "address": {
           "name": "address",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "status": {
           "name": "status",
@@ -641,7 +859,7 @@
           "type": "type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "'driver'"
         },
         "blocked_at": {
@@ -816,6 +1034,13 @@
           "notNull": false,
           "default": false
         },
+        "is_manual": {
+          "name": "is_manual",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
         "year": {
           "name": "year",
           "type": "integer",
@@ -899,6 +1124,19 @@
         "Company"
       ]
     },
+    "public.days": {
+      "name": "days",
+      "schema": "public",
+      "values": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
     "public.license_code": {
       "name": "license_code",
       "schema": "public",
@@ -921,6 +1159,18 @@
         "male",
         "female",
         "other"
+      ]
+    },
+    "public.operation_area": {
+      "name": "operation_area",
+      "schema": "public",
+      "values": [
+        "north",
+        "sharon",
+        "west",
+        "south",
+        "jerusalem area",
+        "all country"
       ]
     },
     "public.total_employee_range": {
@@ -948,7 +1198,7 @@
       "name": "type",
       "schema": "public",
       "values": [
-        "personal",
+        "private",
         "business",
         "driver",
         "driver+business"

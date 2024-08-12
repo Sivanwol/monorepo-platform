@@ -11,7 +11,7 @@ export interface UserModel {
   isPrivate: boolean,
   avatar: number | null,
   gender: "male" | "female" | "other",
-  type: "personal" | "business" | "driver" | "driver+business",
+  type: "private" | "business" | "driver" | "driver+business" | null,
   createdAt: Date
 }
 export const convertToUserModel = (data: typeof schema.User.$inferSelect): UserModel => ({
@@ -20,12 +20,12 @@ export const convertToUserModel = (data: typeof schema.User.$inferSelect): UserM
   lastName: data.lastName,
   email: data.email,
   phone: data.phone,
-  country: data.country,
-  city: data.city,
+  country: data.country ?? 'IL',
+  city: data.city ?? '',
   avatar: data.avatarMediaId,
   isWorker: data.IsWorker ?? false,
   isPrivate: data.IsPrivate ?? false,
-  gender: data.gender,
+  gender: data.gender ?? 'other',
   type: data.type,
   createdAt: data.createdAt,
 });
