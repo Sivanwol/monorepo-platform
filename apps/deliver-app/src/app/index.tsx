@@ -24,9 +24,9 @@ function PostCard(props: {
         >
           <Pressable className="">
             <Text className="text-xl font-semibold text-primary">
-              {props.post.title}
+              {/* {props.post.title} */}
             </Text>
-            <Text className="mt-2 text-foreground">{props.post.content}</Text>
+            {/* <Text className="mt-2 text-foreground">{props.post.content}</Text> */}
           </Pressable>
         </Link>
       </View>
@@ -75,17 +75,17 @@ function CreatePost() {
           {error.data.zodError.fieldErrors.content}
         </Text>
       )}
-      <Pressable
+      {/* <Pressable
         className="flex items-center rounded bg-primary p-2"
         onPress={() => {
           mutate({
-            title,
-            content,
+            // title,
+            // content,
           });
         }}
       >
         <Text className="text-foreground">Create</Text>
-      </Pressable>
+      </Pressable> */}
       {error?.data?.code === "UNAUTHORIZED" && (
         <Text className="mt-2 text-destructive">
           You need to be logged in to create a post
@@ -103,7 +103,7 @@ function MobileAuth() {
   return (
     <>
       <Text className="pb-2 text-center text-xl font-semibold text-white">
-        {user?.name ?? "Not logged in"}
+        {/* {user?.name ?? "Not logged in"} */}
       </Text>
       <Button
         onPress={() => (user ? signOut() : signIn())}
@@ -140,7 +140,7 @@ export default function Index() {
           </Text>
         </View>
 
-        <FlashList
+        {/* <FlashList
           data={postQuery.data}
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
@@ -150,7 +150,7 @@ export default function Index() {
               onDelete={() => deletePostMutation.mutate(p.item.id)}
             />
           )}
-        />
+        /> */}
 
         <CreatePost />
       </View>
