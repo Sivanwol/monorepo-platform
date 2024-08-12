@@ -99,7 +99,8 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
 
   console.log(
-    `incoming protected procedure... ${JSON.stringify(auth?.userProfile)}...`,
+    `incoming protected procedure... ${JSON.stringify(auth?.userProfile)}...`, "at",
+    new Date().toISOString()
   );
 
   if (!auth?.userProfile) {
