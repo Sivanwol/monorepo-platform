@@ -1,11 +1,9 @@
-import type { NextRequest} from "next/server";
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
 import { repositories } from "@app/db/client";
 
 export const runtime = "edge";
 
-export const POST = async (_req: NextRequest) => {
+export async function POST(_req: NextRequest) {
   const formData = await _req.json();
   const externalId = formData.get("externalId");
   const firstName = formData.get("firstName");
