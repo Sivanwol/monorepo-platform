@@ -1,5 +1,6 @@
-import type { NextRequest} from "next/server";
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
 import { repositories } from "@app/db/client";
 
 export const runtime = "edge";
@@ -21,4 +22,4 @@ export async function POST(_req: NextRequest) {
     });
   }
   return NextResponse.json({ status: true, data: true });
-};
+}
