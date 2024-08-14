@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { repositories } from "@app/db/client";
+
+export const runtime = "edge";
+
 export const POST = async (
   _req: NextRequest
 ) => {
