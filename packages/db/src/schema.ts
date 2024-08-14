@@ -134,11 +134,11 @@ export const VehiclesRelations = relations(Vehicles, ({ many, one }) => ({
 
 export const VehicleAudits = pgTable("vehicle_audits", {
   id: serial("id").primaryKey(),
-  vehicleId: serial("vehicle_id").references(() => Vehicles.id, {
+  vehicleId: integer("vehicle_id").references(() => Vehicles.id, {
     onDelete: "cascade",
   }),
   note: varchar("note", { length: 500 }),
-  vehicleImageId: serial("vehicle_image_id").references(() => Media.id, {
+  vehicleImageId: integer("vehicle_image_id").references(() => Media.id, {
     onDelete: "cascade",
   }),
   mileage: integer("mileage").default(0),
@@ -182,6 +182,18 @@ export const User = pgTable("user", {
     mode: "date",
     withTimezone: true,
   }).$onUpdateFn(() => sql`now()`),
+});
+
+export const CreateUserSchema = createInsertSchema(User, {
+  externalId: z.string().min(2).max(255),
+  firstName: z.string().min(2).max(100),
+  lastName: z.string().min(2).max(100),
+  email: z.string().email(),
+  phone: z.string().min(2).max(20).optional()
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const UserRelations = relations(User, ({ many, one }) => ({

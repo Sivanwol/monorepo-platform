@@ -4,9 +4,11 @@ import { and, eq } from "drizzle-orm";
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
 import * as schema from "../schema";
+import { CreateUserSchema, User } from "../schema";
+import type { RegisterUserRequest } from "@app/utils";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) {}
+  constructor(public db: VercelPgDatabase<typeof schema>) { }
 
   public async GetUserById(
     user_id: number,
@@ -16,6 +18,7 @@ export class UserRepository {
     });
     return user ?? null;
   }
+
   public async locateUserByExternalId(external_id: string): Promise<boolean> {
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, external_id),
@@ -57,5 +60,12 @@ export class UserRepository {
       ),
     });
     return !!user; // found user with correct password
+  }
+
+  public async register(userData: RegisterUserRequest) {
+    const result = CreateUserSchema.safeParse(userData);
+    if (result.success) {
+      await this.db.insert(User).values(result.data)
+    }
   }
 }
