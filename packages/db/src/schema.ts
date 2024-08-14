@@ -189,7 +189,7 @@ export const CreateUserSchema = createInsertSchema(User, {
   firstName: z.string().min(2).max(100),
   lastName: z.string().min(2).max(100),
   email: z.string().email(),
-  phone: z.string().min(2).max(20).optional()
+  phone: z.string().min(2).max(20).optional(),
 }).omit({
   id: true,
   createdAt: true,

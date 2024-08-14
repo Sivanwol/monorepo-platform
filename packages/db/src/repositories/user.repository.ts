@@ -1,14 +1,15 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq } from "drizzle-orm";
 
+import type { RegisterUserRequest } from "@app/utils";
+
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
 import * as schema from "../schema";
 import { CreateUserSchema, User } from "../schema";
-import type { RegisterUserRequest } from "@app/utils";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) { }
+  constructor(public db: VercelPgDatabase<typeof schema>) {}
 
   public async GetUserById(
     user_id: number,
@@ -65,7 +66,7 @@ export class UserRepository {
   public async register(userData: RegisterUserRequest) {
     const result = CreateUserSchema.safeParse(userData);
     if (result.success) {
-      await this.db.insert(User).values(result.data)
+      await this.db.insert(User).values(result.data);
     }
   }
 }
