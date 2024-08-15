@@ -1,5 +1,7 @@
 import { cache } from "react";
 import { headers } from "next/headers";
+import { NextRequest } from "next/server";
+import DescopeClient from "@descope/node-sdk";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import type { AppRouter } from "@app/backoffice-api";
@@ -17,7 +19,6 @@ const createContext = cache(async () => {
   heads.set("x-trpc-source", "rsc");
 
   return createTRPCContext({
-    session: await auth(),
     headers: heads,
   });
 });

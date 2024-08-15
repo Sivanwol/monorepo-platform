@@ -13,35 +13,49 @@ catalog:
   prettier: ^3.3.2
   typescript: ^5.5.3
   zod: ^3.23.8
-  bcrypt-edge: ^0.0.6
+  "bcrypt-edge": ^0.0.6
+  uuid: ^10.0.0
+  "@types/uuid": ^10.0.0
   recharts: ^2.12.7
+  "tailwindcss-animate": ^1.0.7
   tailwindcss: ^3.4.4
+  "@svgr/webpack": ^8.1.0
   superjson: ^2.2.1
   formik: ^2.4.6
   "framer-motion": ^11.2.3
   "@descope/node-sdk": ^1.6.9
   "@descope/react-sdk": ^2.0.56
-  "@descope/nextjs-sdk": ^0.0.16
+  "@descope/nextjs-sdk": ^0.0.23
   inngest: ^3.21.1
-  date-fns": ^3.6.0"
-  next-plausible": ^3.12.0
-  next-intl": ^3.15.3
+  "date-fns": ^3.6.0
+  "next-plausible": ^3.12.0
+  "next-intl": ^3.15.3
 catalogs:
   uploadthing:
     "@uploadthing": ^6.10.4
     "@uploadthing/react": ^6.5.4
   vercel:
+    "server-only": ^0.0.1
     "hypertune": ^2.3.8
+    "@opentelemetry/sdk-logs": ^0.52.1
+    "@opentelemetry/instrumentation": ^0.52.1
+    "@opentelemetry/api": ^1.9.0
+    "@opentelemetry/api-logs": ^0.52.1
     "@vercel/otel": ^1.9.1
-    "@vercel/analytics": ^0.9.0
+    "@vercel/analytics": ^1.3.1
     "@vercel/edge-config": ^1.2.0
     "@vercel/blob": ^0.23.4
+    "@vercel/kv": ^2.0.0
+    "@vercel/flags": ^2.6.0
   react18:
     react: 18.3.1
     "react-dom": 18.3.1
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.3.0
   ui:
+    "postcss": ^8
+    "autoprefixer": ^10.4.19
+    "react-icons": ^5.2.1
     "@tanstack/react-table": ^8.19.2
     "flowbite": 1.7.0
     "flowbite-react": ^0.10.1

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { HeaderProps } from "./type";
-import { DarkModeSwitcher } from "./DarkModeSwitcher";
 import { DropdownNotification } from "./DropdownNotification";
 import { DropdownUser } from "./DropdownUser";
 import { SearchForm } from "./SearchForm";
@@ -79,7 +78,7 @@ export const Header = ({
             <h1 className="text-heading-5 text-dark mb-0.5 font-bold dark:text-white">
               Dashboard
             </h1>
-            <p className="font-medium">Next.js Admin Dashboard Solution</p>
+            <p className="font-medium">monorepo Platform Backoffice</p>
           </div>
         </div>
 
@@ -88,10 +87,6 @@ export const Header = ({
             {/* <!-- Search Form --> */}
             <SearchForm />
             {/* <!-- Search Form --> */}
-
-            {/* <!-- Dark Mode Toggle --> */}
-            <DarkModeSwitcher />
-            {/* <!-- Dark Mode Toggle --> */}
 
             {/* <!-- Notification Menu Area --> */}
             <DropdownNotification notifications={notifications} />

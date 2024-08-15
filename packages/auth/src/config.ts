@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 // TODO fix this eslint error and see how better handle
 import type {
   DefaultSession,
@@ -10,46 +8,22 @@ import type {
 import "next-auth/jwt";
 
 import { skipCSRFCheck } from "@auth/core";
-// import Apple from "next-auth/providers/apple";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import Facebook from "next-auth/providers/facebook";
-// import Google from "next-auth/providers/google";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { z } from "zod";
+import { createSdk } from "@descope/nextjs-sdk/server";
+import { fromUnixTime } from "date-fns";
 
-import { db, UserRepo } from "@app/db/client";
-import {
-  Account,
-  Authenticators,
-  Session,
-  User,
-  VerificationTokens,
-} from "@app/db/schema";
-
-// import { IsVerifyPassword, saltAndHashPassword } from "@app/utils";
-// import { UserValidators } from "@app/validators";
+import type { MediaModel, UserModel } from "@app/db/client";
+import { db, repositories } from "@app/db/client";
 
 import { env } from "../env";
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-}
-
-const adapter = DrizzleAdapter(db, {
-  usersTable: User,
-  accountsTable: Account,
-  sessionsTable: Session,
-  verificationTokensTable: VerificationTokens,
-  authenticatorsTable: Authenticators,
-});
+const adapter = DrizzleAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
-
+export const descopeSdk = createSdk({
+  projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID || "",
+});
 export const authConfig = {
   adapter,
   // In development, we need to skip checks to allow Expo to work
@@ -62,7 +36,7 @@ export const authConfig = {
   secret: env.AUTH_SECRET,
   providers: [
     Descope({
-      clientId: env.AUTH_DESCOPE_ID,
+      clientId: env.AUTH_DESCOPE_ISSUER,
       clientSecret: env.AUTH_DESCOPE_SECRET,
     }),
   ],
@@ -72,43 +46,61 @@ export const authConfig = {
       if (pathname.startsWith("/platform")) return !!auth;
       return true;
     },
-    jwt({ token, trigger, session, account }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
-    },
-    session: (opts) => {
-      if (!("user" in opts))
-        throw new Error("unreachable with session strategy");
-
-      return {
-        ...opts.session,
-        user: {
-          ...opts.session.user,
-          id: opts.user.id,
-        },
-      };
-    },
   },
   debug: env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      image: string | null;
+      imageMedia: MediaModel | null;
+    } & DefaultSession["user"];
+    userProfile: UserModel | null;
+  }
+}
+
 export const validateToken = async (
   token: string,
 ): Promise<NextAuthSession | null> => {
-  const sessionToken = token.slice("Bearer ".length);
-  const session = await adapter.getSessionAndUser?.(sessionToken);
-  return session
-    ? {
-        user: {
-          ...session.user,
-        },
-        expires: session.session.expires.toISOString(),
-      }
-    : null;
+  console.log(`validate token`);
+  let sessionRes = null;
+  try {
+    sessionRes = await descopeSdk.validateJwt(token);
+    console.log(`user validated to user ${sessionRes.token.sub}`);
+  } catch (error) {
+    console.log("Could not validate user session ", error);
+    return null;
+  }
+  const authToken = sessionRes.token;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const userId = authToken.sub!;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const authExpDate = authToken.exp!;
+  console.log(`locate user ${userId}`);
+  const user = await repositories.user.GetUserShortInfoByExternalId(userId);
+  if (!user) {
+    console.error(`User not found for id ${userId}`);
+    return null;
+  }
+  console.log("sessionToken", authToken);
+  let avatarUrl = "";
+  let media = null;
+  if (user.avatar) {
+    media = await repositories.media.GetMediaById(user.avatar);
+    avatarUrl = env.BLOB_STORAGE_URL + media?.path;
+  }
+  return {
+    user: {
+      id: userId,
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      imageMedia: media,
+      image: user.avatar ? avatarUrl : null,
+    },
+    userProfile: user,
+    expires: fromUnixTime(authExpDate).toISOString(),
+  };
 };
 
 export const invalidateSessionToken = async (token: string) => {

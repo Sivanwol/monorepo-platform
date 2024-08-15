@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { Header, Sidebar } from "@app/ui";
+import { Header, SidebarArea } from "@app/ui";
 
 import type { DefaultLayoutProps } from "./type";
 
@@ -18,7 +18,7 @@ export function DefaultLayout({
       {/* <!-- ===== Page Wrapper Star ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Star ===== --> */}
-        <Sidebar
+        <SidebarArea
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           items={sideMenuItems}

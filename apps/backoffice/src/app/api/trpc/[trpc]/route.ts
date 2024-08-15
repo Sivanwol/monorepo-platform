@@ -1,3 +1,5 @@
+import { session } from "@descope/nextjs-sdk/server";
+import { AuthenticationInfo } from "@descope/node-sdk";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { auth } from "@app/auth";
@@ -25,13 +27,13 @@ export const OPTIONS = () => {
 };
 
 const handler = auth(async (req) => {
+  const sessionRes = session();
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
     createContext: () =>
       createTRPCContext({
-        session: req.auth,
         headers: req.headers,
       }),
     onError({ error, path }) {

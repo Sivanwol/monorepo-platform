@@ -2,11 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Next.js",
+      "name": "platform",
       "type": "node-terminal",
       "request": "launch",
       "command": "pnpm dev",
-      "cwd": "${workspaceFolder}/apps/nextjs/",
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}/",
       "skipFiles": ["<node_internals>/**"]
     }
   ]

@@ -23,7 +23,12 @@ export const env = createEnv({
     //     ? z.string().min(1)
     //     : z.string().min(1).optional(),
 
-    AUTH_DESCOPE_ID: z.string().min(1),
+    // AUTH_DESCOPE_ID: z.string().min(1),
+    BLOB_STORAGE_URL: z.string().min(1),
+    KV_URL: z.string().min(1),
+    KV_REST_API_URL: z.string().min(1),
+    KV_REST_API_TOKEN: z.string().min(1),
+    KV_REST_API_READ_ONLY_TOKEN: z.string().min(1),
     AUTH_DESCOPE_SECRET: z.string().min(1),
     AUTH_DESCOPE_ISSUER: z.string().min(1),
     AUTH_SECRET:

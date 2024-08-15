@@ -27,7 +27,6 @@ const getQueryClient = () => {
 const ReactQueryDevtoolsProduction = lazy(() =>
   import("@tanstack/react-query-devtools/build/modern/production.js").then(
     (d) => ({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       default: d.ReactQueryDevtools,
     }),
   ),
