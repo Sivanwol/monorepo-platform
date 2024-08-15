@@ -2,7 +2,6 @@ import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   boolean,
-  decimal,
   integer,
   json,
   pgEnum,
@@ -17,18 +16,21 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const genderEnum = pgEnum("gender", ["male", "female", "other"]);
+
 export const userStatusEnum = pgEnum("status", [
   "marry",
   "willow",
   "diverse",
   "single",
 ]);
+
 export const userTypeEnum = pgEnum("type", [
   "private",
   "business",
   "driver",
   "driver+business",
 ]);
+
 export const driverLicenseCodeEnum = pgEnum("license_code", [
   "None",
   "A1",
@@ -40,11 +42,13 @@ export const driverLicenseCodeEnum = pgEnum("license_code", [
   "D",
   "C+E",
 ]);
+
 export const businessRegisterTypeEnum = pgEnum("business_register_type", [
   "Pature",
   "Mass",
   "Company",
 ]);
+
 export const vehicleTypeEnum = pgEnum("vehicle_type", [
   "bike",
   "car",
@@ -63,6 +67,7 @@ export const totalEmployeeRangeEnum = pgEnum("total_employee_range", [
   "100-200",
   "200+",
 ]);
+
 export const operationAreaEnum = pgEnum("operation_area", [
   "north",
   "sharon",
@@ -71,6 +76,7 @@ export const operationAreaEnum = pgEnum("operation_area", [
   "jerusalem area",
   "all country",
 ]);
+
 export const daysEnum = pgEnum("days", [
   "monday",
   "tuesday",
@@ -189,7 +195,7 @@ export const CreateUserSchema = createInsertSchema(User, {
   firstName: z.string().min(2).max(100),
   lastName: z.string().min(2).max(100),
   email: z.string().email(),
-  phone: z.string().min(2).max(20).optional(),
+  phone: z.string().min(2).max(20).optional().or(z.literal("")),
 }).omit({
   id: true,
   createdAt: true,
