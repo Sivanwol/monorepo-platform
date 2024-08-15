@@ -74,7 +74,7 @@ jobs:
         run: pnpm build
   deploy:
     runs-on: ubuntu-latest
-    name: Build
+    name: Deploy To Vercel
     needs: [build]
     steps:
       - name: Pull Vercel Environment Information
