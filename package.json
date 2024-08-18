@@ -13,7 +13,7 @@
     "db:migrate": "turbo -F @app/db migrate",
     "db:push": "turbo -F @app/db push",
     "db:studio": "turbo -F @app/db studio",
-    "dev": "turbo watch dev",
+    "dev": "turbo watch dev --concurrency=20",
     "dev:platform": "turbo watch dev -F @app/platform",
     "dev:backoffice": "turbo watch dev -F @app/backoffice",
     "format": "turbo run format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",

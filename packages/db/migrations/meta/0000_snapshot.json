@@ -1,5 +1,5 @@
 {
-  "id": "f5983af7-b1fb-4eec-8f57-7b8ce745bc86",
+  "id": "09376e1c-a257-4459-b6fa-04b985f19ae9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -695,13 +695,13 @@
           "name": "first_name",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "last_name": {
           "name": "last_name",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "about_me": {
           "name": "about_me",
@@ -797,9 +797,15 @@
           "notNull": false,
           "default": "'driver'"
         },
-        "blocked_at": {
-          "name": "blocked_at",
-          "type": "timestamp",
+        "onboarding": {
+          "name": "onboarding",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "blocked": {
+          "name": "blocked",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         },
@@ -850,9 +856,9 @@
         },
         "vehicle_id": {
           "name": "vehicle_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "note": {
           "name": "note",
@@ -862,9 +868,9 @@
         },
         "vehicle_image_id": {
           "name": "vehicle_image_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "mileage": {
           "name": "mileage",

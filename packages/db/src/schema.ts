@@ -164,8 +164,8 @@ export const VehicleAuditsRelations = relations(Vehicles, ({ one }) => ({
 export const User = pgTable("user", {
   id: serial("id").primaryKey(),
   externalId: varchar("external_id", { length: 255 }).unique(),
-  firstName: varchar("first_name", { length: 100 }).notNull(),
-  lastName: varchar("last_name", { length: 100 }).notNull(),
+  firstName: varchar("first_name", { length: 100 }),
+  lastName: varchar("last_name", { length: 100 }),
   aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),
@@ -182,7 +182,8 @@ export const User = pgTable("user", {
   address: varchar("address", { length: 255 }),
   status: userStatusEnum("status").default("single"),
   type: userTypeEnum("user_type").default("driver"),
-  blockedAt: timestamp("blocked_at"),
+  onboarding: boolean("onboarding"),
+  blocked: boolean("blocked"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", {
     mode: "date",
@@ -192,14 +193,16 @@ export const User = pgTable("user", {
 
 export const CreateUserSchema = createInsertSchema(User, {
   externalId: z.string().min(2).max(255),
-  firstName: z.string().min(2).max(100),
-  lastName: z.string().min(2).max(100),
   email: z.string().email(),
+  firstName: z.string().min(2).max(100).optional().or(z.literal("")),
+  lastName: z.string().min(2).max(100).optional().or(z.literal("")),
   phone: z.string().min(2).max(20).optional().or(z.literal("")),
 }).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  onboarding: true,
+  blocked: true,
 });
 
 export const UserRelations = relations(User, ({ many, one }) => ({

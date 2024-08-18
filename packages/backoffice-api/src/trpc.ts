@@ -102,8 +102,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   console.log(
     `incoming protected procedure... ${JSON.stringify(auth?.userProfile)}... at $}{new Date().toISOString()}`,
   );
-
-  if (!auth?.userProfile) {
+  if (!auth?.user.id) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: `Sync issue ${ctx.user?.id} has no db record or not existed user`,
@@ -117,6 +116,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
         cookies: { ...ctx.session?.cookies },
         jwt: ctx.session?.jwt,
         token: { ...ctx.session?.token },
+        descopeUser: auth.user,
         user: auth.userProfile,
       },
     },

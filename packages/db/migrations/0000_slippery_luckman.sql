@@ -154,8 +154,8 @@ CREATE TABLE IF NOT EXISTS "media" (
 CREATE TABLE IF NOT EXISTS "user" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"external_id" varchar(255),
-	"first_name" varchar(100) NOT NULL,
-	"last_name" varchar(100) NOT NULL,
+	"first_name" varchar(100),
+	"last_name" varchar(100),
 	"about_me" varchar(500),
 	"email" varchar(255) NOT NULL,
 	"phone" varchar(20),
@@ -170,7 +170,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"address" varchar(255),
 	"status" "status" DEFAULT 'single',
 	"user_type" "type" DEFAULT 'driver',
-	"blocked_at" timestamp,
+	"onboarding" boolean,
+	"blocked" boolean,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone,
 	CONSTRAINT "user_external_id_unique" UNIQUE("external_id")
@@ -178,9 +179,9 @@ CREATE TABLE IF NOT EXISTS "user" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "vehicle_audits" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"vehicle_id" serial NOT NULL,
+	"vehicle_id" integer,
 	"note" varchar(500),
-	"vehicle_image_id" serial NOT NULL,
+	"vehicle_image_id" integer,
 	"mileage" integer DEFAULT 0,
 	"checkout_at" timestamp,
 	"repair_at" timestamp,

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 import { getSessionToken, useDescope } from "@descope/react-sdk";
+import { red } from "@mui/material/colors";
 
 import type { MenuGroup } from "@app/ui";
 import { DefaultLayout, LoadingPage } from "@app/ui";
@@ -52,7 +53,6 @@ const menuGroups: MenuGroup[] = [
 export default async function PlatformLayout({ children }: { children: any }) {
   const currSession = session();
   console.log("layout session", currSession);
-  // api.
   if (!currSession) {
     redirect("/auth");
   }

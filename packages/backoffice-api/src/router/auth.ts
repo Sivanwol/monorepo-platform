@@ -1,6 +1,11 @@
 import type { TRPCRouterRecord } from "@trpc/server";
+import { kv } from "@vercel/kv";
+import superjson from "superjson";
+import { z } from "zod";
 
 import { invalidateSessionToken } from "@app/auth";
+import { repositories } from "@app/db/client";
+import { CacheConfig } from "@app/utils";
 
 import { protectedProcedure, publicProcedure } from "../trpc";
 
@@ -10,9 +15,6 @@ export const authRouter = {
   }),
   getUser: protectedProcedure.query(({ ctx }) => {
     return ctx.user;
-  }),
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can see this secret message!";
   }),
   // eslint-disable-next-line @typescript-eslint/require-await
   signOut: protectedProcedure.mutation(async (opts) => {

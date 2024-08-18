@@ -3,5 +3,6 @@ export const CacheConfig = {
 
   keys: {
     mediaId: (media_id: number) => `media:${media_id}`,
+    userOnboarding: (user_id: number | string) => `user:${user_id}:onboarding`,
   },
 };

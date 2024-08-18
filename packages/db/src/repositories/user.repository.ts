@@ -1,5 +1,5 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull, or } from "drizzle-orm";
 
 import type { RegisterUserRequest } from "@app/utils";
 
@@ -21,19 +21,19 @@ export class UserRepository {
     return user ?? null;
   }
 
-  public async locateUserByExternalId(external_id: string): Promise<boolean> {
-    console.log(`locate user by external id ${external_id}`);
+  public async locateUserByExternalId(externalId: string): Promise<boolean> {
+    console.log(`locate user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
-      where: eq(schema.User.externalId, external_id),
+      where: eq(schema.User.externalId, externalId),
     });
     return !!user;
   }
   public async GetUserShortInfoByExternalId(
-    external_id: string,
+    externalId: string,
   ): Promise<UserModel | null> {
-    console.log(`get short info user by external id ${external_id}`);
+    console.log(`get short info user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
-      where: eq(schema.User.externalId, external_id),
+      where: eq(schema.User.externalId, externalId),
     });
     return user ? convertToUserModel(user) : null;
   }
@@ -52,7 +52,22 @@ export class UserRepository {
     });
     return user ?? null;
   }
+  public async HasUserNeedOnBoarding(externalId: string): Promise<boolean> {
+    console.log(`check user ${externalId} need onboarding`);
+    const user = await this.db.query.User.findFirst({
+      where: and(
+        eq(User.externalId, externalId),
+        isNull(User.onboarding),
+        or(eq(User.externalId, externalId), eq(User.onboarding, true)),
+      ),
+    });
+    return !user;
+  }
 
+  /**
+   * feedback loop via descope for register user happened both in login and register
+   * @param userData user data
+   */
   public async register(userData: RegisterUserRequest) {
     console.log(`verify user ${userData.externalId} payload `);
     const result = CreateUserSchema.safeParse(userData);
@@ -65,5 +80,19 @@ export class UserRepository {
       `verify user ${userData.externalId} payload failed `,
       result.error,
     );
+  }
+
+  public async updateOnboardingTime(externalId: string) {
+    console.log(`update user ${externalId} onboarding`);
+    const user = await this.db.query.User.findFirst({
+      where: eq(schema.User.externalId, externalId),
+    });
+    if (user) {
+      // in case first time register need skip this flow as no record yet and no point register the user
+      await this.db
+        .update(User)
+        .set({ onboarding: true })
+        .where(eq(User.externalId, externalId));
+    }
   }
 }

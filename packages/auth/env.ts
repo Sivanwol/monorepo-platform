@@ -4,25 +4,6 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    // AUTH_FACEBOOK_ID:
-    //   process.env.NODE_ENV === "production"
-    //     ? z.string().min(1)
-    //     : z.string().min(1).optional(),
-    // AUTH_FACEBOOK_SECRET:
-    //   process.env.NODE_ENV === "production"
-    //     ? z.string().min(1)
-    //     : z.string().min(1).optional(),
-    // AUTH_GOOGLE_ID: z.string().min(1),
-    // AUTH_GOOGLE_SECRET: z.string().min(1),
-    // AUTH_APPLE_ID:
-    //   process.env.NODE_ENV === "production"
-    //     ? z.string().min(1)
-    //     : z.string().min(1).optional(),
-    // AUTH_APPLE_SECRET:
-    //   process.env.NODE_ENV === "production"
-    //     ? z.string().min(1)
-    //     : z.string().min(1).optional(),
-
     // AUTH_DESCOPE_ID: z.string().min(1),
     BLOB_STORAGE_URL: z.string().min(1),
     KV_URL: z.string().min(1),
@@ -31,6 +12,7 @@ export const env = createEnv({
     KV_REST_API_READ_ONLY_TOKEN: z.string().min(1),
     AUTH_DESCOPE_SECRET: z.string().min(1),
     AUTH_DESCOPE_ISSUER: z.string().min(1),
+    AUTH_DESCOPE_MGT_KEY: z.string().min(1),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)

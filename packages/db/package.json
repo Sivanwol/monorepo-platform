@@ -35,6 +35,7 @@
     "@vercel/postgres": "^0.9.0",
     "@app/utils": "workspace:*",
     "@vercel/kv": "catalog:vercel",
+    "date-fns": "catalog:",
     "drizzle-orm": "^0.31.2",
     "drizzle-zod": "^0.5.1",
     "zod": "catalog:"

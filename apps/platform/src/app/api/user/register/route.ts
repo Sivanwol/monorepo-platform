@@ -11,7 +11,7 @@ export async function POST(_req: NextRequest) {
   const firstName = formData.firstName as string;
   const lastName = formData.lastName as string;
   const email = formData.email as string;
-  const phone = formData.phone || ("" as string);
+  const phone = (formData.phone || "") as string;
   console.log(`register feedback from descope ${externalId}`);
   if (!(await repositories.user.locateUserByExternalId(externalId))) {
     console.log(`payload user info`, {

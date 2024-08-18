@@ -2,8 +2,8 @@ import type * as schema from "../schema";
 
 export interface UserModel {
   id: number;
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   email: string;
   phone: string | null;
   country: string;

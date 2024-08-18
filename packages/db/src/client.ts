@@ -6,7 +6,7 @@ import { MediaRepository } from "./repositories/media.repository";
 import * as schema from "./schema";
 
 export * from "./Models";
-export const db = drizzle(sql, { schema });
+export const db = drizzle(sql, { schema, logger: true });
 
 export const repositories = {
   user: new UserRepository(db),
