@@ -47,6 +47,10 @@
       "cache": false,
       "interactive": true
     },
+    "migrate": {
+      "cache": false,
+      "persistent": true
+    },
     "studio": {
       "cache": false,
       "persistent": true
@@ -72,6 +76,7 @@
     "AUTH_DESCOPE_SECRET",
     "AUTH_DESCOPE_ISSUER",
     "NEXT_PUBLIC_AUTH_DESCOPE_ID",
+    "AUTH_DESCOPE_MGT_KEY",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
     "PORT"

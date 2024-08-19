@@ -1,3 +1,3 @@
-export * from "./Loader";
-export * from "./Theme";
-export * from "./Events";
+export * from "./loader";
+export * from "./theme";
+export * from "./events";

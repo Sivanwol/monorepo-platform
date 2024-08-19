@@ -12,7 +12,6 @@ export interface UserModel {
   isPrivate: boolean;
   avatar: number | null;
   gender: "male" | "female" | "other";
-  type: "private" | "business" | "driver" | "driver+business" | null;
   createdAt: Date;
 }
 export const convertToUserModel = (
@@ -29,6 +28,5 @@ export const convertToUserModel = (
   isWorker: data.IsWorker ?? false,
   isPrivate: data.IsPrivate ?? false,
   gender: data.gender ?? "other",
-  type: data.type,
   createdAt: data.createdAt,
 });

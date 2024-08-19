@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
-import { getSessionToken, useDescope } from "@descope/react-sdk";
-import { red } from "@mui/material/colors";
+import type { MenuGroup } from "@app/ui"
+import { DashboardLayout, DefaultLayout, LoadingPage } from "@app/ui";
 
-import type { MenuGroup } from "@app/ui";
-import { DefaultLayout, LoadingPage } from "@app/ui";
 
 import { env } from "~/env";
 import { api, HydrateClient } from "~/trpc/server";
@@ -92,7 +90,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
-        <DefaultLayout
+        <DashboardLayout
           sideMenuItems={menuGroups}
           notifications={[]}
           user={{
@@ -104,7 +102,7 @@ export default async function PlatformLayout({ children }: { children: any }) {
           }}
         >
           {children}
-        </DefaultLayout>
+        </DashboardLayout>
       </Suspense>
     </HydrateClient>
   );

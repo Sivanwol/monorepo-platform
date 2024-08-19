@@ -1,1 +1,1 @@
-export * from "./DefaultLaout";
+export * from "./dashboardLayout";

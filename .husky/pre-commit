@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/h"
 
-pnpm run format:fix && git add -A .
+pnpm run format:fix && pnpm run lint:fix && git add -A .

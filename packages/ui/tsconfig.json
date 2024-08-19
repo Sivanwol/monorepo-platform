@@ -6,6 +6,6 @@
     "rootDir": ".",
     "emitDeclarationOnly": true
   },
-  "include": ["*.ts", "src"],
+  "include": ["*.ts","*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -4,17 +4,17 @@ import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 
 import { LoadingSpinner, Signin } from "@app/ui";
-
+export const runtime = "edge";
 export const metadata: Metadata = {
   title: "monorepo backoffice Login Page",
   description: "This is Next.js Login Page NextAdmin Dashboard Kit",
 };
 
-export default function SignInPage() {
+export default async function SignInPage() {
   const curSession = session();
   console.log("auth session", curSession);
   if (curSession) {
-    redirect("/platform/dashboard");
+    redirect("en/platform/dashboard");
   }
   return (
     <div className="relative h-full min-h-screen w-full py-40">

@@ -4,14 +4,14 @@ import React, { useState } from "react";
 
 import { Header, SidebarArea } from "@app/ui";
 
-import type { DefaultLayoutProps } from "./type";
+import type { DashboardLayoutProps } from "./type";
 
-export function DefaultLayout({
+export function DashboardLayout({
   children,
   sideMenuItems,
   notifications,
   user,
-}: DefaultLayoutProps) {
+}: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>
