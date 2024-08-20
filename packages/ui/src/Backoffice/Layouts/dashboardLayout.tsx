@@ -11,8 +11,11 @@ export function DashboardLayout({
   sideMenuItems,
   notifications,
   user,
+  blockActions,
+  translations
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  console.log("translations", translations);
   return (
     <>
       {/* <!-- ===== Page Wrapper Star ===== --> */}
@@ -22,6 +25,7 @@ export function DashboardLayout({
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           items={sideMenuItems}
+          translations={translations}
         />
         {/* <!-- ===== Sidebar End ===== --> */}
 
@@ -32,7 +36,9 @@ export function DashboardLayout({
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
             notifications={notifications}
+            blockActions={blockActions}
             user={user}
+            translations={translations}
           />
           {/* <!-- ===== Header End ===== --> */}
 

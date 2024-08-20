@@ -1,16 +1,19 @@
 import { Suspense } from "react";
 
-import useTranslations from "~/app/i18n";
 import { LoadingPage } from "@app/ui";
 import { HydrateClient } from "~/trpc/server";
+import type { PageCommonProps } from "~/type";
+import { t, initTranslation } from "~/locales/translations";
 
 export const runtime = "edge";
 
-export default async function HomePage() {
+export default async function HomePage({
+  params: { lng },
+}: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
 
-  const { t } = await useTranslations('en', 'home');
+  await initTranslation(lng, 'home');
   return (
     <HydrateClient>
       <main className="container h-screen py-16">

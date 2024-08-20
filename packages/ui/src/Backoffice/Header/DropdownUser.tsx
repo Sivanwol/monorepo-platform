@@ -9,7 +9,7 @@ import { useDescope } from "@descope/nextjs-sdk/client"
 
 import type { DropdownUserProps } from "./type";
 import React from "react";
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from "@mui/material";
 
 export const DropdownUser = ({
@@ -17,6 +17,8 @@ export const DropdownUser = ({
   profileLink,
   settingsLink,
   fullname,
+  email,
+  translations
 }: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter()
@@ -87,10 +89,10 @@ export const DropdownUser = ({
 
             <span className="block">
               <span className="text-dark block font-medium dark:text-white">
-                Jhon Smith
+                {fullname}
               </span>
               <span className="text-dark-5 dark:text-dark-6 block font-medium">
-                jonson@nextadmin.com
+                {email}
               </span>
             </span>
           </div>
@@ -121,7 +123,7 @@ export const DropdownUser = ({
                     fill=""
                   />
                 </svg>
-                View profile
+                {translations['user-profile']}
               </Link>
             </li>
 
@@ -151,7 +153,7 @@ export const DropdownUser = ({
                     fill=""
                   />
                 </svg>
-                Account Settings
+                {translations['user-settings']}
               </Link>
             </li>
           </ul>
@@ -187,7 +189,7 @@ export const DropdownUser = ({
                   </clipPath>
                 </defs>
               </svg>
-              Logout
+              {translations['user-logout']}
             </Button>
           </div>
         </div>

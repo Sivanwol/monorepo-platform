@@ -12,6 +12,8 @@ export const Header = ({
   sidebarOpen,
   setSidebarOpen,
   notifications,
+  blockActions,
+  translations,
   user,
 }: HeaderProps) => {
   return (
@@ -22,10 +24,10 @@ export const Header = ({
           <button
             type="button"
             aria-controls="sidebar"
-            aria-expanded={sidebarOpen ? "true" : "false"}
+            aria-expanded={sidebarOpen && !blockActions ? "true" : "false"}
             onClick={(e) => {
               e.stopPropagation();
-              setSidebarOpen(!sidebarOpen);
+              setSidebarOpen(!sidebarOpen && !blockActions);
             }}
             title="Toggle Sidebar"
             className="z-99999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
@@ -72,26 +74,18 @@ export const Header = ({
         <div className="hidden xl:block">
           <div>
             <h1 className="text-heading-5 text-dark mb-0.5 font-bold dark:text-white">
-              Dashboard
+              {translations.dashboard}
             </h1>
-            <p className="font-medium">monorepo Platform Backoffice</p>
+            <p className="font-medium">{translations.title}</p>
           </div>
         </div>
 
         <div className="2xsm:gap-4 flex items-center justify-normal gap-2 lg:w-full lg:justify-between xl:w-auto xl:justify-normal">
-          <ul className="2xsm:gap-4 flex items-center gap-2">
-            {/* <!-- Search Form --> */}
-            <SearchForm />
-            {/* <!-- Search Form --> */}
-
-            {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification notifications={notifications} />
-            {/* <!-- Notification Menu Area --> */}
-          </ul>
-
-          {/* <!-- User Area --> */}
-          <DropdownUser {...user} />
-          {/* <!-- User Area --> */}
+          {!blockActions && (
+            <><ul className="2xsm:gap-4 flex items-center gap-2">
+              <DropdownNotification {...user} notifications={notifications} {...translations} />
+            </ul><DropdownUser {...user} {...translations} /></>
+          )}
         </div>
       </div>
     </header>

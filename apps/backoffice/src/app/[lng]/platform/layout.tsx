@@ -1,10 +1,14 @@
+
+
 import type { Metadata } from "next";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 import type { MenuGroup } from "@app/ui"
 import { DashboardLayout, LoadingPage } from "@app/ui";
 import { api, HydrateClient } from "~/trpc/server";
+import type { LayoutCommonProps } from "~/type";
+import { t, initTranslation } from "~/locales/translations";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -45,8 +49,12 @@ const menuGroups: MenuGroup[] = [
     ],
   },
 ];
-export default async function PlatformLayout({ children }: { children: any }) {
+export default async function PlatformLayout({
+  children,
+  params: { lng },
+}: LayoutCommonProps) {
   const currSession = session();
+  await initTranslation(lng, 'dashboardLayout');
   console.log("layout session", currSession);
   if (!currSession) {
     redirect("/en/auth");
@@ -78,16 +86,33 @@ export default async function PlatformLayout({ children }: { children: any }) {
       </div>
     </div>
   }
+  const translations = {
+    title: t('title'),
+    dashboard: t('dashboard'),
+    shortTitle: t('shortTitle'),
+    support: t('support'),
+    "user-settings": t('user.settings'),
+    "user-profile": t('user.profile'),
+    "user-logout": t('user.logout'),
+    "notifications-title": t('notifications.title'),
+    "notifications-mark-all": t('notifications.mark-all'),
+    "notifications-view-all": t('notifications.view-all'),
+    "notifications-empty": t('notifications.empty'),
+    "notifications-new": t('notifications.new', { count: 3 }),
+  }
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   const userData = await api.auth.getUser();
-  console.log(userData)
+  console.log('userData', userData);
+  console.log('translations', translations);
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
         <DashboardLayout
           sideMenuItems={maintenance ? [] : menuGroups}
           notifications={[]}
+          translations={translations}
+          blockActions={maintenance}
           user={{
             userAvatar: "https://ui-avatars.com/api/?format=png",
             fullname: `${userData?.firstName} ${userData?.lastName}`,

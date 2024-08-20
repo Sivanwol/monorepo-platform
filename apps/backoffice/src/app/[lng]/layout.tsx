@@ -16,6 +16,9 @@ import "./globals.css";
 
 import { env } from "~/env";
 import type { ReactNode } from "react";
+import i18nConfig from "~/i18nConfig";
+import type { LayoutCommonProps } from "~//type";
+import { initTranslation } from "~/locales/translations";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -28,27 +31,20 @@ export const metadata: Metadata = {
   description: "Backoffice of monorepo Platform For both mobile and web app",
 };
 
-interface Props {
-  children: ReactNode;
-  params: {
-    lng: string;
-  }
-}
-
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
+const i18nNamespaces = ['common', 'dashboard-layout'];
 
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async function RootLayout({
   children,
   params: { lng },
-}: Props) {
-
+}: LayoutCommonProps) {
+  console.log("system lang", lng);
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
       <head>

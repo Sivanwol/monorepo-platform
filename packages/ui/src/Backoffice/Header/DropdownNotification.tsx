@@ -7,9 +7,11 @@ import Link from "next/link";
 import { ClickOutside } from "@app/ui";
 
 import type { DropdownNotificationProps } from "./type";
+import React from "react";
 
 export const DropdownNotification = ({
   notifications,
+  translations
 }: DropdownNotificationProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
@@ -46,9 +48,8 @@ export const DropdownNotification = ({
             </svg>
 
             <span
-              className={`z-1 border-gray-2 bg-red-light dark:border-dark-3 absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full border-2 ${
-                !notifying ? "hidden" : "inline"
-              }`}
+              className={`z-1 border-gray-2 bg-red-light dark:border-dark-3 absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full border-2 ${!notifying ? "hidden" : "inline"
+                }`}
             >
               <span className="-z-1 bg-red-light absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
             </span>
@@ -61,15 +62,23 @@ export const DropdownNotification = ({
           >
             <div className="mb-5 flex items-center justify-between">
               <h5 className="text-dark text-lg font-medium dark:text-white">
-                Notifications
+                {translations['notifications-title']}
               </h5>
               <span className="text-body-xs rounded-md bg-primary px-2 py-0.5 font-medium text-white">
-                5 new
+                {translations['notifications-new']}
               </span>
             </div>
 
             <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto">
-              {notifications.map((item, index) => (
+              {notifications.length === 0 && (<><li key={0}>
+                <span className="block">
+                  <span className="text-dark block font-medium dark:text-white">
+                    {translations['notifications-empty']}
+                  </span>
+                </span>
+              </li>
+              </>)}
+              {notifications.length !== 0 && notifications.map((item, index) => (
                 <li key={index}>
                   <Link
                     className="hover:bg-gray-2 dark:hover:bg-dark-3 flex items-center gap-4 rounded-[10px] p-2.5"
@@ -105,7 +114,7 @@ export const DropdownNotification = ({
               className="hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:bg-blue-light-3 flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary dark:hover:border-primary dark:hover:text-primary"
               href="#"
             >
-              See all notifications
+              {translations['notifications-view-all']}
             </Link>
           </div>
         )}

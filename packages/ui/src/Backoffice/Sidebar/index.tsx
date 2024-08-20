@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "flowbite-react";
-import { BiBuoy } from "react-icons/bi";
+import { BiHelpCircle } from "react-icons/bi";
 import * as Icons from "react-icons/hi2";
 import { v4 as uuidv4 } from "uuid";
 
@@ -46,14 +46,14 @@ export const SidebarArea = ({
   sidebarOpen,
   setSidebarOpen,
   items,
+  translations
 }: SidebarProps) => {
   return (
     <aside
-      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden border-r bg-white lg:static lg:translate-x-0 ${
-        sidebarOpen
-          ? "translate-x-0 duration-300 ease-linear"
-          : "-translate-x-full"
-      }`}
+      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden border-r bg-white lg:static lg:translate-x-0 ${sidebarOpen
+        ? "translate-x-0 duration-300 ease-linear"
+        : "-translate-x-full"
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="py-5.5 lg:py-6.5 flex items-center justify-between gap-2 px-6 xl:py-10">
@@ -101,8 +101,8 @@ export const SidebarArea = ({
       {/* <!-- SIDEBAR HEADER --> */}
 
       <Sidebar aria-label="Sabo Backoffice">
-        <Sidebar.Logo href="#" img="/logo.svg" imgAlt="Sabo Backoffice">
-          Sabo Backoffice
+        <Sidebar.Logo href="#" img="/logo.svg" imgAlt={translations.shortTitle}>
+          {translations.shortTitle}
         </Sidebar.Logo>
         <Sidebar.Items>
           <Sidebar.ItemGroup key={uuidv4()}>
@@ -118,11 +118,8 @@ export const SidebarArea = ({
             ))}
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup key={uuidv4()}>
-            <Sidebar.Item href="#" icon={Icons.HiChartPie}>
-              Upgrade to Pro
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiBuoy}>
-              Help
+            <Sidebar.Item href="#" icon={BiHelpCircle}>
+              {translations.support}
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>

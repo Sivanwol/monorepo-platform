@@ -51,13 +51,6 @@
     "react-dom": "catalog:react18",
     "react-icons": "catalog:ui",
     "server-only": "catalog:vercel",
-    "i18next": "catalog:language",
-    "react-i18next": "catalog:language",
-    "next-i18n-router": "catalog:language",
-    "next-i18next": "catalog:language",
-    "react-cookie": "catalog:language",
-    "i18next-resources-to-backend": "catalog:language",
-    "i18next-browser-languagedetector": "catalog:language",
     "styled-components": "^6.1.12",
     "superjson": "2.2.1",
     "zod": "catalog:"
