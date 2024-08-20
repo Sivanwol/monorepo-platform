@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 
-import { api, HydrateClient } from "~/trpc/server";
-
 import useTranslations from "~/app/i18n";
 import { LoadingPage } from "@app/ui";
+import { HydrateClient } from "~/trpc/server";
 
 export const runtime = "edge";
 

@@ -42,6 +42,9 @@ catalogs:
     eslint:
       specifier: ^9.6.0
       version: 9.7.0
+    next:
+      specifier: ^14.2.4
+      version: 14.2.5
     prettier:
       specifier: ^3.3.2
       version: 3.3.3
@@ -98,6 +101,13 @@ catalogs:
     react-dom:
       specifier: 18.3.1
       version: 18.3.1
+  store:
+    '@reduxjs/toolkit':
+      specifier: ^2.2.0
+      version: 2.2.6
+    react-redux:
+      specifier: ^9.1.0
+      version: 9.1.2
   ui:
     '@emotion/cache':
       specifier: ^11.13.0
@@ -258,7 +268,7 @@ importers:
         version: link:../../packages/validators
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@emotion/cache':
         specifier: catalog:ui
         version: 11.13.0
@@ -341,7 +351,7 @@ importers:
         specifier: catalog:language
         version: 1.2.1
       next:
-        specifier: ^14.2.4
+        specifier: 'catalog:'
         version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-i18n-router:
         specifier: catalog:language
@@ -885,9 +895,15 @@ importers:
 
   packages/ui:
     dependencies:
+      '@app/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@app/backoffice-api':
+        specifier: workspace:*
+        version: link:../backoffice-api
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.7.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
@@ -909,12 +925,27 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.0
         version: 1.1.0(@types/react@18.3.3)(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: 'catalog:'
+        version: 5.51.11(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: 'catalog:'
+        version: 5.51.11(@tanstack/react-query@5.51.11(react@18.3.1))(react@18.3.1)
+      '@trpc/client':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.466(@trpc/server@11.0.0-rc.466)
+      '@trpc/react-query':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.466(@tanstack/react-query@5.51.11(react@18.3.1))(@trpc/client@11.0.0-rc.466(@trpc/server@11.0.0-rc.466))(@trpc/server@11.0.0-rc.466)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
       flowbite-react:
         specifier: catalog:ui
         version: 0.10.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.6(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.5.3)))
+      next:
+        specifier: 'catalog:'
+        version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -930,6 +961,9 @@ importers:
       sonner:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      superjson:
+        specifier: 2.2.1
+        version: 2.2.1
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.4.0
@@ -939,6 +973,9 @@ importers:
       uuid:
         specifier: 'catalog:'
         version: 10.0.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.23.8
     devDependencies:
       '@app/eslint-config':
         specifier: workspace:*
@@ -973,18 +1010,21 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.5.3
-      zod:
-        specifier: 'catalog:'
-        version: 3.23.8
 
   packages/utils:
     dependencies:
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+      '@reduxjs/toolkit':
+        specifier: catalog:store
+        version: 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       bcrypt-edge:
         specifier: 'catalog:'
         version: 0.0.6
+      react-redux:
+        specifier: catalog:store
+        version: 9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1)
     devDependencies:
       '@app/eslint-config':
         specifier: workspace:*
@@ -4027,6 +4067,9 @@ packages:
 
   '@types/tinycolor2@1.4.6':
     resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
+
+  '@types/use-sync-external-store@0.0.3':
+    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
 
   '@types/uuid@10.0.0':
     resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==}
@@ -8218,6 +8261,18 @@ packages:
       '@types/react':
         optional: true
 
+  react-redux@9.1.2:
+    resolution: {integrity: sha512-0OA4dhM1W48l3uzmv6B7TXPCGmokUU4p1M44DGN2/D9a1FjVPukVjER1PcPX97jIg6aUeLq1XJo1IpfbgULn0w==}
+    peerDependencies:
+      '@types/react': ^18.2.25
+      react: ^18.0
+      redux: ^5.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      redux:
+        optional: true
+
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
@@ -9402,6 +9457,11 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  use-sync-external-store@1.2.2:
+    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   utf-8-validate@6.0.4:
     resolution: {integrity: sha512-xu9GQDeFp+eZ6LnCywXN/zBancWvOpUMzgjLPSjy4BRHSmTelvn2E0DG0o1sTiw5hkCKBHo8rwSKncfRfv2EEQ==}
@@ -10759,13 +10819,13 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@descope/access-key-management-widget@0.1.116(react@18.3.1)':
+  '@descope/access-key-management-widget@0.1.116(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
@@ -10775,13 +10835,13 @@ snapshots:
       - react
       - react-redux
 
-  '@descope/audit-management-widget@0.1.79(react@18.3.1)':
+  '@descope/audit-management-widget@0.1.79(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
@@ -10804,11 +10864,26 @@ snapshots:
     dependencies:
       jwt-decode: 3.1.2
 
-  '@descope/nextjs-sdk@0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@descope/nextjs-sdk@0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)':
     dependencies:
       '@descope/core-js-sdk': 2.24.1
       '@descope/node-sdk': 1.6.9
-      '@descope/react-sdk': 2.0.65(@types/react@18.3.3)(react@18.3.1)
+      '@descope/react-sdk': 2.0.65(@types/react@18.3.3)(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      '@descope/web-component': 3.22.2
+      '@types/react': 18.3.3
+      next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+    optionalDependencies:
+      '@descope/web-js-sdk': 1.15.8
+    transitivePeerDependencies:
+      - encoding
+      - react-redux
+
+  '@descope/nextjs-sdk@0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@descope/core-js-sdk': 2.24.1
+      '@descope/node-sdk': 1.6.9
+      '@descope/react-sdk': 2.0.65(@types/react@18.3.3)(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       '@descope/web-component': 3.22.2
       '@types/react': 18.3.3
       next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10828,14 +10903,14 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@descope/react-sdk@2.0.65(@types/react@18.3.3)(react@18.3.1)':
+  '@descope/react-sdk@2.0.65(@types/react@18.3.3)(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@descope/access-key-management-widget': 0.1.116(react@18.3.1)
-      '@descope/audit-management-widget': 0.1.79(react@18.3.1)
+      '@descope/access-key-management-widget': 0.1.116(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      '@descope/audit-management-widget': 0.1.79(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       '@descope/core-js-sdk': 2.24.1
-      '@descope/role-management-widget': 0.1.114(react@18.3.1)
-      '@descope/user-management-widget': 0.4.117(react@18.3.1)
-      '@descope/user-profile-widget': 0.0.97(react@18.3.1)
+      '@descope/role-management-widget': 0.1.114(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      '@descope/user-management-widget': 0.4.117(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      '@descope/user-profile-widget': 0.0.97(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       '@descope/web-component': 3.22.2
       '@descope/web-js-sdk': 1.16.1
       '@types/react': 18.3.3
@@ -10843,13 +10918,13 @@ snapshots:
     transitivePeerDependencies:
       - react-redux
 
-  '@descope/role-management-widget@0.1.114(react@18.3.1)':
+  '@descope/role-management-widget@0.1.114(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
@@ -10868,23 +10943,23 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@descope/sdk-mixins@0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)':
+  '@descope/sdk-mixins@0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
       tslib: 2.6.3
 
-  '@descope/user-management-widget@0.4.117(react@18.3.1)':
+  '@descope/user-management-widget@0.4.117(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       libphonenumber-js: 1.11.4
       redux: 5.0.1
@@ -10895,14 +10970,14 @@ snapshots:
       - react
       - react-redux
 
-  '@descope/user-profile-widget@0.0.97(react@18.3.1)':
+  '@descope/user-profile-widget@0.0.97(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-component': 3.22.2
       '@descope/web-js-sdk': 1.16.1
-      '@reduxjs/toolkit': 2.2.6(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       immer: 10.1.1
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
@@ -12644,7 +12719,7 @@ snapshots:
     dependencies:
       nanoid: 3.3.7
 
-  '@reduxjs/toolkit@2.2.6(react@18.3.1)':
+  '@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)':
     dependencies:
       immer: 10.1.1
       redux: 5.0.1
@@ -12652,6 +12727,7 @@ snapshots:
       reselect: 5.1.1
     optionalDependencies:
       react: 18.3.1
+      react-redux: 9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1)
 
   '@remix-run/node@2.10.3(typescript@5.5.3)':
     dependencies:
@@ -13178,6 +13254,8 @@ snapshots:
       '@types/node': 20.14.11
 
   '@types/tinycolor2@1.4.6': {}
+
+  '@types/use-sync-external-store@0.0.3': {}
 
   '@types/uuid@10.0.0': {}
 
@@ -17995,6 +18073,15 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1):
+    dependencies:
+      '@types/use-sync-external-store': 0.0.3
+      react: 18.3.1
+      use-sync-external-store: 1.2.2(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
+      redux: 5.0.1
+
   react-refresh@0.14.2: {}
 
   react-remove-scroll-bar@2.3.6(@types/react@18.3.3)(react@18.3.1):
@@ -19250,6 +19337,10 @@ snapshots:
       tslib: 2.6.3
     optionalDependencies:
       '@types/react': 18.3.3
+
+  use-sync-external-store@1.2.2(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   utf-8-validate@6.0.4:
     dependencies:

@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "bcrypt-edge": "catalog:",
-    "@descope/nextjs-sdk": "catalog:"
+    "@descope/nextjs-sdk": "catalog:",
+    "@reduxjs/toolkit": "catalog:store",
+    "react-redux": "catalog:store"
   },
   "devDependencies": {
     "@app/eslint-config": "workspace:*",

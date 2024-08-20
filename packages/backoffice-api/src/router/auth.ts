@@ -1,27 +1,23 @@
 import type { TRPCRouterRecord } from "@trpc/server";
-import { kv } from "@vercel/kv";
-import superjson from "superjson";
-import { z } from "zod";
-
-import { invalidateSessionToken } from "@app/auth";
-import { repositories } from "@app/db/client";
-import { CacheConfig } from "@app/utils";
-
+import { descopeSdk } from "@app/auth"
 import { protectedProcedure, publicProcedure } from "../trpc";
+import { z } from "zod";
 
 export const authRouter = {
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session;
   }),
   getUser: protectedProcedure.query(({ ctx }) => {
-    return ctx.user;
+    console.log(ctx.session.user);
+    console.log(ctx.session.descopeUser);
+    return ctx.session.user;
   }),
-  // eslint-disable-next-line @typescript-eslint/require-await
-  signOut: protectedProcedure.mutation(async (opts) => {
-    // if (!opts.ctx.token) {
-    //   return { success: false };
-    // }
-    // await invalidateSessionToken(opts.ctx.token);
-    return { success: true };
-  }),
+
+  signOut: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      if (ctx.session.jwt) {
+        await descopeSdk.logout(ctx.session.jwt);
+      }
+      // await invalidateSessionToken(opts.ctx.token);
+    }),
 } satisfies TRPCRouterRecord;

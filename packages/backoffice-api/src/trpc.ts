@@ -1,14 +1,12 @@
 import type { AuthenticationInfo } from "@descope/node-sdk";
-import { cookies } from "next/headers";
 import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import type { UserModel } from "@app/db/client";
-import type { User } from "@app/db/schema";
 import { auth, validateToken } from "@app/auth";
-import { db, repositories } from "@app/db/client";
+import { db } from "@app/db/client";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;

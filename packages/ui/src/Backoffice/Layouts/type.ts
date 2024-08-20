@@ -1,6 +1,6 @@
 import type { DropdownUserProps, MenuGroup, NotificationItem } from "..";
 
-export interface DashboardLayout {
+export interface DashboardLayoutProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: any;
   sideMenuItems: MenuGroup[];

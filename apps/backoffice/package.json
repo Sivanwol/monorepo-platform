@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm with-env next build",
-    "clean": "git clean -xdf .next .turbo node_modules",
+    "clean": "git clean -xdf .next .turbo node_modules dist",
     "dev": "pnpm with-env next dev --port=3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
@@ -45,7 +45,7 @@
     "flowbite": "catalog:ui",
     "flowbite-react": "catalog:ui",
     "geist": "^1.3.0",
-    "next": "^14.2.4",
+    "next": "catalog:",
     "react": "catalog:react18",
     "react-admin": "^5.0.5",
     "react-dom": "catalog:react18",

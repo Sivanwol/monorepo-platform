@@ -1,7 +1,6 @@
 export interface DropdownUserProps {
   userAvatar: string;
   fullname: string;
-  logoutLink: string;
   profileLink: string;
   settingsLink: string;
 }

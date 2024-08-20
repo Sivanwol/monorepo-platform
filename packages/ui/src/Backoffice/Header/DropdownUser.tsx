@@ -5,18 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ClickOutside } from "@app/ui";
+import { useDescope } from "@descope/nextjs-sdk/client"
 
 import type { DropdownUserProps } from "./type";
+import React from "react";
+import { redirect, useRouter } from 'next/navigation';
+import { Button } from "@mui/material";
 
 export const DropdownUser = ({
   userAvatar,
-  logoutLink,
   profileLink,
   settingsLink,
   fullname,
 }: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const router = useRouter()
+  const sdk = useDescope();
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -152,9 +156,12 @@ export const DropdownUser = ({
             </li>
           </ul>
           <div className="p-2.5">
-            <Link
-              href={logoutLink}
-              className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
+            <Button size="large" fullWidth
+              onClick={() => {
+                sdk.logout();
+                setDropdownOpen(false);
+                router.replace("/en/auth");
+              }}
             >
               <svg
                 className="fill-current"
@@ -181,7 +188,7 @@ export const DropdownUser = ({
                 </defs>
               </svg>
               Logout
-            </Link>
+            </Button>
           </div>
         </div>
       )}

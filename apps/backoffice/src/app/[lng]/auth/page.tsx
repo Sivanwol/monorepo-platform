@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   description: "This is Next.js Login Page NextAdmin Dashboard Kit",
 };
 
-export default async function SignInPage() {
+export default function SignInPage() {
   const curSession = session();
   console.log("auth session", curSession);
   if (curSession) {
-    redirect("en/platform/dashboard");
+    redirect("/en/platform/dashboard");
   }
   return (
     <div className="relative h-full min-h-screen w-full py-40">

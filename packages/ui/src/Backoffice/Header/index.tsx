@@ -5,6 +5,7 @@ import type { HeaderProps } from "./type";
 import { DropdownNotification } from "./dropdownNotification";
 import { DropdownUser } from "./dropdownUser";
 import { SearchForm } from "./searchForm";
+import React from "react";
 
 export * from "./type";
 export const Header = ({

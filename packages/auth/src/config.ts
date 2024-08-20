@@ -11,24 +11,16 @@ import { skipCSRFCheck } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { createSdk } from "@descope/nextjs-sdk/server";
-import { kv } from "@vercel/kv";
 import { fromUnixTime } from "date-fns";
-import superjson from "superjson";
-import { z } from "zod";
 
 import type { MediaModel, UserModel } from "@app/db/client";
 import { db, repositories } from "@app/db/client";
-import { CacheConfig } from "@app/utils";
 
 import { env } from "../env";
 
 const adapter = DrizzleAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
-console.log({
-  projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID || "",
-  managementKey: env.AUTH_DESCOPE_MGT_KEY || "",
-});
 export const descopeSdk = createSdk({
   projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID || "",
   managementKey: env.AUTH_DESCOPE_MGT_KEY || "",
@@ -38,9 +30,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
