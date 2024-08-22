@@ -21,7 +21,10 @@ export interface NotificationItem {
   lng: string;
   title: string;
   subTitle: string;
-  translations: translationRecord
+  new: boolean;
+  link: string;
+  read: boolean;
+  createAt: Date;
 }
 export interface HeaderProps {
   lng: string;

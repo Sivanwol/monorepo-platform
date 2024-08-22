@@ -17,6 +17,7 @@ export const Header = ({
   lng,
   user,
 }: HeaderProps) => {
+
   return (
     <header className="z-999 border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white">
       <div className="shadow-2 flex flex-grow items-center justify-between px-4 py-5 md:px-5 2xl:px-10">
@@ -30,7 +31,7 @@ export const Header = ({
               e.stopPropagation();
               setSidebarOpen(!sidebarOpen && !blockActions);
             }}
-            title={translations["toggle-sidebar"]}
+            title={translations["toggleSidebar"]}
             className="z-99999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
           >
             <span className="h-5.5 w-5.5 relative block cursor-pointer">
@@ -84,8 +85,8 @@ export const Header = ({
         <div className="2xsm:gap-4 flex items-center justify-normal gap-2 lg:w-full lg:justify-between xl:w-auto xl:justify-normal">
           {!blockActions && (
             <><ul className="2xsm:gap-4 flex items-center gap-2">
-              <DropdownNotification {...user} notifications={notifications} {...translations} lng={lng} />
-            </ul><DropdownUser {...user} {...translations} lng={lng} /></>
+              <DropdownNotification {...user} notifications={notifications} translations={translations} lng={lng} />
+            </ul><DropdownUser {...user} translations={translations} lng={lng} /></>
           )}
         </div>
       </div>

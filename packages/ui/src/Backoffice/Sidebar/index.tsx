@@ -31,7 +31,7 @@ export const SidebarArea = ({
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="block lg:hidden"
-          title={translations["toggle-sidebar"]}
+          title={translations["toggleSidebar"]}
         >
           <svg
             className="fill-current"
@@ -98,9 +98,7 @@ export const SideItemNoCollapsed = ({
   const Icon = Icons[group.icon as keyof typeof Icons];
   return (
     <ListItemButton href={group.route || ""}>
-      {/* <ListItemIcon>
-        <Icon />
-      </ListItemIcon> */}
+      {Icon && <ListItemIcon><Icon /></ListItemIcon>}
       <ListItemText primary={group.label} />
     </ListItemButton>
   );
@@ -121,9 +119,7 @@ export const SideItemWithChildren = ({
     <>
 
       <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
+        {Icon && <ListItemIcon><Icon /></ListItemIcon>}
         <ListItemText primary={group.label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -132,7 +128,7 @@ export const SideItemWithChildren = ({
         <List component="div" disablePadding key={"submenu_" + rootIndex}>
           {group.items.map((t, index) => (
             <ListItemButton sx={{ pl: 4 }} href={t.route || ""}>
-              <ListItemText primary={t.label} />
+              <ListItemText secondary={t.label} />
             </ListItemButton>
           ))}
         </List>
