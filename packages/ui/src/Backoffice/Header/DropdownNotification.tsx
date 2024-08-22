@@ -27,7 +27,7 @@ export const DropdownNotification = ({
             setNotifying(false);
             setDropdownOpen(!dropdownOpen);
           }}
-          href="#"
+          href="javascript:void(0)"
           className="border-stroke bg-gray-2 text-dark dark:border-dark-4 dark:bg-dark-3 relative flex h-12 w-12 items-center justify-center rounded-full border hover:text-primary dark:text-white dark:hover:text-white"
         >
           <span className="relative">

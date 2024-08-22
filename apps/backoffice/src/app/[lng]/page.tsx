@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 
 import { LoadingPage } from "@app/ui";
-import type { PageCommonProps } from "~/type";
-import { t, initTranslation } from "~/locales/translations";
+import type { PageCommonProps } from "@app/utils";
+import { t, initTranslation } from "@app/utils";
 
 
 export const runtime = "edge";
@@ -21,7 +21,7 @@ export default async function HomePage({
         </h1>
         <div className="w-full max-w-2xl overflow-y-scroll">
           <Suspense fallback={<LoadingPage />}>
-            {t('title')}11
+            {t('title')}
           </Suspense>
         </div>
       </div>

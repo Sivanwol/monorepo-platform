@@ -7,8 +7,8 @@ import { session } from "@descope/nextjs-sdk/server";
 import type { MenuGroup } from "@app/ui"
 import { DashboardLayout, LoadingPage } from "@app/ui";
 import { api, HydrateClient } from "~/trpc/server";
-import type { LayoutCommonProps } from "~/type";
-import { t, initTranslation } from "~/locales/translations";
+import type { LayoutCommonProps } from "@app/utils";
+import { t, initTranslation } from "@app/utils";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -91,6 +91,7 @@ export default async function PlatformLayout({
     dashboard: t('dashboard'),
     shortTitle: t('shortTitle'),
     support: t('support'),
+    "toggle-sidebar": t('toggle-sidebar'),
     "user-settings": t('user.settings'),
     "user-profile": t('user.profile'),
     "user-logout": t('user.logout'),
@@ -103,14 +104,13 @@ export default async function PlatformLayout({
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   const userData = await api.auth.getUser();
-  console.log('userData', userData);
-  console.log('translations', translations);
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
         <DashboardLayout
           sideMenuItems={maintenance ? [] : menuGroups}
           notifications={[]}
+          lng={lng}
           translations={translations}
           blockActions={maintenance}
           user={{

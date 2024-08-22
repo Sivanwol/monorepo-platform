@@ -23,6 +23,7 @@
     "@hookform/resolvers": "^3.7.0",
     "@app/auth": "workspace:*",
     "@app/backoffice-api": "workspace:*",
+    "@app/utils": "workspace:*",
     "@mui/icons-material": "catalog:ui",
     "@mui/material": "catalog:ui",
     "uuid": "catalog:",

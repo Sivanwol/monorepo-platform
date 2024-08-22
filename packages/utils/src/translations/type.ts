@@ -6,7 +6,7 @@ export interface LayoutCommonProps {
     lng: string;
   }
 }
-export type Namespaces = 'home' | 'dashboardLayout';
+export type Namespaces = 'home' | 'dashboardLayout' | 'support';
 export type PageCommonProps = Omit<LayoutCommonProps, "children">;
 
 export type DynamicParam = string | number;
@@ -19,6 +19,6 @@ export type DynamicValue =
   | { [key: string]: DynamicValue };
 
 export type DynamicStructure = Record<string, DynamicValue>;
-export type TranslationKeys = 'home' | 'dashboardLayout';
+export type TranslationKeys = 'home' | 'dashboardLayout' | 'support';
 export type Translations = Record<string, Record<string, Record<string, any>>>;
 export type InputOptions = Record<string, string | number>;

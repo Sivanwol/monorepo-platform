@@ -7,6 +7,7 @@ export interface DashboardLayoutProps {
   sideMenuItems: MenuGroup[];
   notifications: NotificationItem[];
   user: DropdownUserProps;
+  lng: string;
   translations: translationRecord
 }
 export type translationRecord = {

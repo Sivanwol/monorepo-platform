@@ -10,7 +10,7 @@ import { useDescope } from "@descope/nextjs-sdk/client"
 import type { DropdownUserProps } from "./type";
 import React from "react";
 import { useRouter } from 'next/navigation';
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 
 export const DropdownUser = ({
   userAvatar,
@@ -25,24 +25,17 @@ export const DropdownUser = ({
   const sdk = useDescope();
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-      <Link
+      <div
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
-        href="#"
       >
-        <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
+        <div className="rounded-full">
+          <Avatar
+            alt="Remy Sharp"
             src={userAvatar}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-            className="overflow-hidden rounded-full"
+            sx={{ width: 48, height: 48 }}
           />
-        </span>
+        </div>
 
         <span className="text-dark dark:text-dark-6 flex items-center gap-2 font-medium">
           <span className="hidden lg:block">{fullname}</span>
@@ -63,7 +56,7 @@ export const DropdownUser = ({
             />
           </svg>
         </span>
-      </Link>
+      </div>
 
       {/* <!-- Dropdown Star --> */}
       {dropdownOpen && (

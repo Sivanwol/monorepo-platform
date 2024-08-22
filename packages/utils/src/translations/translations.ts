@@ -1,5 +1,4 @@
-import { getConstantValue } from 'typescript';
-import type { Namespaces, Translations } from '~/type';
+import type { Namespaces, Translations } from './type';
 
 const locales = ['en'];
 // Remove the duplicate declaration of 'defaultLng'
@@ -11,10 +10,11 @@ let currentLng: string = defaultLng;
 const translations: Translations = {
   en: {
     home: {},
-    dashboardLayout: {}
+    dashboardLayout: {},
+    support: {}
   }
 } as Record<string, Record<string, any>>;
-
+export let translationsLoaded = false;
 export const initTranslation = async (lng: string, ns: Namespaces) => {
   if (!locales.includes(lng)) {
     console.warn(`Language ${lng} is not supported`);
@@ -22,13 +22,20 @@ export const initTranslation = async (lng: string, ns: Namespaces) => {
   } else {
     currentLng = lng;
   }
-  currentNs = ns;
-
+  console.log(`Initializing translations for ${currentLng}-${ns}`);
   // Asynchronously load translations
-  translations[currentLng] = {
-    home: (await import(`./${currentLng}/home`)).default,
-    dashboardLayout: (await import(`./${currentLng}/dashboard-layout`)).default,
-  };
+  if (!translationsLoaded || currentNs !== ns) {
+    translationsLoaded = false;
+    currentNs = ns;
+    console.log(`Loading translations for ${currentLng}-${currentNs}`);
+    translations[currentLng] = {
+      home: (await import(`./locales/${currentLng}/home`)).default,
+      dashboardLayout: (await import(`./locales/${currentLng}/dashboard-layout`)).default,
+      support: (await import(`./locales/${currentLng}/support`)).default,
+    };
+    translationsLoaded = true;
+    console.log(`Translations loaded for ${currentLng}-${currentNs}`);
+  }
 };
 
 export const t = (key: string, options?: Record<string, string | number>): string => {
@@ -38,7 +45,6 @@ export const t = (key: string, options?: Record<string, string | number>): strin
   }
 
   const translationsForLng = translations[currentLng];;
-  console.log('translationsForLng', translationsForLng)
   if (!translationsForLng) {
     console.warn(`No translations found for language ${currentLng}`);
     return key; // Return the key if any part of the nested path is not found
@@ -47,7 +53,6 @@ export const t = (key: string, options?: Record<string, string | number>): strin
   // Split the key by dots to handle nested structures
   const keys = key.split('.');
   let translation = translationsForLng[currentNs];
-  console.log('translation', translation, keys);
   for (const k of keys) {
     if (typeof translation === 'object' && translation !== null && k in translation) {
       translation = translation[k] as Record<string, Record<string, any>>;

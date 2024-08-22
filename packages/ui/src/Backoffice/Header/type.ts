@@ -1,6 +1,7 @@
 import { translationRecord } from "../layouts/type";
 
 export interface DropdownUserProps {
+  lng: string;
   userAvatar: string;
   fullname: string;
   email: string;
@@ -10,17 +11,20 @@ export interface DropdownUserProps {
 }
 
 export interface DropdownNotificationProps {
+  lng: string;
   notifications: NotificationItem[];
   translations: translationRecord
 }
 export interface NotificationItem {
   icon: React.ReactNode;
   image: string;
+  lng: string;
   title: string;
   subTitle: string;
   translations: translationRecord
 }
 export interface HeaderProps {
+  lng: string;
   notifications: NotificationItem[];
   user: DropdownUserProps;
   sidebarOpen: string | boolean | undefined;

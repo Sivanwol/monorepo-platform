@@ -14,6 +14,7 @@ export const Header = ({
   notifications,
   blockActions,
   translations,
+  lng,
   user,
 }: HeaderProps) => {
   return (
@@ -29,7 +30,7 @@ export const Header = ({
               e.stopPropagation();
               setSidebarOpen(!sidebarOpen && !blockActions);
             }}
-            title="Toggle Sidebar"
+            title={translations["toggle-sidebar"]}
             className="z-99999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
           >
             <span className="h-5.5 w-5.5 relative block cursor-pointer">
@@ -83,8 +84,8 @@ export const Header = ({
         <div className="2xsm:gap-4 flex items-center justify-normal gap-2 lg:w-full lg:justify-between xl:w-auto xl:justify-normal">
           {!blockActions && (
             <><ul className="2xsm:gap-4 flex items-center gap-2">
-              <DropdownNotification {...user} notifications={notifications} {...translations} />
-            </ul><DropdownUser {...user} {...translations} /></>
+              <DropdownNotification {...user} notifications={notifications} {...translations} lng={lng} />
+            </ul><DropdownUser {...user} {...translations} lng={lng} /></>
           )}
         </div>
       </div>

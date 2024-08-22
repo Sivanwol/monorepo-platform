@@ -11,6 +11,7 @@ export function DashboardLayout({
   sideMenuItems,
   notifications,
   user,
+  lng,
   blockActions,
   translations
 }: DashboardLayoutProps) {
@@ -24,6 +25,7 @@ export function DashboardLayout({
         <SidebarArea
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
+          lng={lng}
           items={sideMenuItems}
           translations={translations}
         />
@@ -35,6 +37,7 @@ export function DashboardLayout({
           <Header
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
+            lng={lng}
             notifications={notifications}
             blockActions={blockActions}
             user={user}

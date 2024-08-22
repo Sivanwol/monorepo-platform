@@ -66,28 +66,6 @@ catalogs:
     zod:
       specifier: ^3.23.8
       version: 3.23.8
-  language:
-    i18next:
-      specifier: ^23.14.0
-      version: 23.14.0
-    i18next-browser-languagedetector:
-      specifier: ^8.0.0
-      version: 8.0.0
-    i18next-resources-to-backend:
-      specifier: ^1.2.1
-      version: 1.2.1
-    next-i18n-router:
-      specifier: ^5.5.1
-      version: 5.5.1
-    next-i18next:
-      specifier: ^15.3.1
-      version: 15.3.1
-    react-cookie:
-      specifier: ^7.2.0
-      version: 7.2.0
-    react-i18next:
-      specifier: ^15.0.1
-      version: 15.0.1
   react18:
     '@types/react':
       specifier: ^18.3.3
@@ -341,39 +319,18 @@ importers:
       geist:
         specifier: ^1.3.0
         version: 1.3.1(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      i18next:
-        specifier: catalog:language
-        version: 23.14.0
-      i18next-browser-languagedetector:
-        specifier: catalog:language
-        version: 8.0.0
-      i18next-resources-to-backend:
-        specifier: catalog:language
-        version: 1.2.1
       next:
         specifier: 'catalog:'
         version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      next-i18n-router:
-        specifier: catalog:language
-        version: 5.5.1
-      next-i18next:
-        specifier: catalog:language
-        version: 15.3.1(i18next@23.14.0)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.0.1(i18next@23.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       react:
         specifier: catalog:react18
         version: 18.3.1
       react-admin:
         specifier: ^5.0.5
         version: 5.0.5(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)
-      react-cookie:
-        specifier: catalog:language
-        version: 7.2.0(react@18.3.1)
       react-dom:
         specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
-      react-i18next:
-        specifier: catalog:language
-        version: 15.0.1(i18next@23.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-icons:
         specifier: catalog:ui
         version: 5.2.1(react@18.3.1)
@@ -901,6 +858,9 @@ importers:
       '@app/backoffice-api':
         specifier: workspace:*
         version: link:../backoffice-api
+      '@app/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
         version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
@@ -1086,7 +1046,7 @@ importers:
         version: 7.35.0(eslint@9.7.0)
       eslint-plugin-react-hooks:
         specifier: rc
-        version: 5.1.0-rc-6ebfd5b0-20240818(eslint@9.7.0)
+        version: 5.1.0-rc-1d989965-20240821(eslint@9.7.0)
       eslint-plugin-turbo:
         specifier: ^2.0.8
         version: 2.0.9(eslint@9.7.0)
@@ -2690,9 +2650,6 @@ packages:
   '@floating-ui/utils@0.2.4':
     resolution: {integrity: sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==}
 
-  '@formatjs/intl-localematcher@0.5.4':
-    resolution: {integrity: sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==}
-
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
@@ -3992,9 +3949,6 @@ packages:
 
   '@types/hammerjs@2.0.45':
     resolution: {integrity: sha512-qkcUlZmX6c4J8q45taBKTL3p+LbITgyx7qhlPYOdOHZB7B31K0mXbP5YA7i7SgDeEGuI9MnumiKPEMrxg8j3KQ==}
-
-  '@types/hoist-non-react-statics@3.3.5':
-    resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
 
   '@types/http-proxy@1.17.14':
     resolution: {integrity: sha512-SSrD0c1OQzlFX7pGu1eXxSEjemej64aaNPRhhVYUGqXh0BtldAAx37MG8btcumvpgKyZp1F5Gn3JkktdxiFv6w==}
@@ -5604,8 +5558,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
 
-  eslint-plugin-react-hooks@5.1.0-rc-6ebfd5b0-20240818:
-    resolution: {integrity: sha512-6eErqy/1hus0qhGvPSVOYqHTB63lntNMcYmx4q2p//Zg6ExF3kYftlG2Heh5FEMPGQ/UqxERmZeqBx8kBW26ow==}
+  eslint-plugin-react-hooks@5.1.0-rc-1d989965-20240821:
+    resolution: {integrity: sha512-oGk2ScQjiE7cW6naW23S2XKyIP0BJgBhxtwAC1r68VCKpbORS3kW0l+M5FoJc86V+eZqxnYzezpz9dArD1Jg0w==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -6250,9 +6204,6 @@ packages:
   hotscript@1.0.13:
     resolution: {integrity: sha512-C++tTF1GqkGYecL+2S1wJTfoH6APGAsbb7PAWQ3iVIwgG/EFseAfEVOKFgAFq4yK3+6j1EjUD4UQ9dRJHX/sSQ==}
 
-  html-parse-stringify@3.0.1:
-    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
-
   http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
@@ -6288,18 +6239,6 @@ packages:
     resolution: {integrity: sha512-fCqlqLXcBnXa/TJXmT93/A36tJsjdJkibQ1MuIiFyCCYUlpYpIaj2mv1w+3KR6Rzu1IC3slFTje5f6DUp2A2rg==}
     engines: {node: '>=18'}
     hasBin: true
-
-  i18next-browser-languagedetector@8.0.0:
-    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
-
-  i18next-fs-backend@2.3.2:
-    resolution: {integrity: sha512-LIwUlkqDZnUI8lnUxBnEj8K/FrHQTT/Sc+1rvDm9E8YvvY5YxzoEAASNx+W5M9DfD5s77lI5vSAFWeTp26B/3Q==}
-
-  i18next-resources-to-backend@1.2.1:
-    resolution: {integrity: sha512-okHbVA+HZ7n1/76MsfhPqDou0fptl2dAlhRDu2ideXloRRduzHsqDOznJBef+R3DFZnbvWoBW+KxJ7fnFjd6Yw==}
-
-  i18next@23.14.0:
-    resolution: {integrity: sha512-Y5GL4OdA8IU2geRrt2+Uc1iIhsjICdHZzT9tNwQ3TVqdNzgxHToGCKf/TPRP80vTCAP6svg2WbbJL+Gx5MFQVA==}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -7378,18 +7317,6 @@ packages:
       nodemailer:
         optional: true
 
-  next-i18n-router@5.5.1:
-    resolution: {integrity: sha512-uJGYUAQS33LbRT3Jx+kurR/E79iPQo1jWZUYmc+614UkPt58k2XYyGloSvHR74b21i4K/d6eksdBj6T2WojjdA==}
-
-  next-i18next@15.3.1:
-    resolution: {integrity: sha512-+pa2pZJb7B6k5PKW3TLVMmAodqkNaOBWVYlpWX56mgcEJz0UMW+MKSdKM9Z72CHp6Bp48g7OWwDnLqxXNp/84w==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      i18next: '>= 23.7.13'
-      next: '>= 12.0.0'
-      react: '>= 17.0.2'
-      react-i18next: '>= 13.5.0'
-
   next-themes@0.3.0:
     resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
     peerDependencies:
@@ -8116,11 +8043,6 @@ packages:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  react-cookie@7.2.0:
-    resolution: {integrity: sha512-mqhPERUyfOljq5yJ4woDFI33bjEtigsl8JDJdPPeNhr0eSVZmBc/2Vdf8mFxOUktQxhxTR1T+uF0/FRTZyBEgw==}
-    peerDependencies:
-      react: '>= 16.3.0'
-
   react-devtools-core@5.3.1:
     resolution: {integrity: sha512-7FSb9meX0btdBQLwdFOwt6bGqvRPabmVMMslv8fgoSPqXyuGpgQe36kx8gR86XPw7aV1yVouTp6fyZ0EH+NfUw==}
 
@@ -8154,19 +8076,6 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
-
-  react-i18next@15.0.1:
-    resolution: {integrity: sha512-NwxLqNM6CLbeGA9xPsjits0EnXdKgCRSS6cgkgOdNcPXqL+1fYNl8fBg1wmnnHvFy812Bt4IWTPE9zjoPmFj3w==}
-    peerDependencies:
-      i18next: '>= 23.2.3'
-      react: '>= 16.8.0'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
 
   react-icons@5.2.1:
     resolution: {integrity: sha512-zdbW5GstTzXaVKvGSyTaBalt7HSfuK5ovrzlpyiWHAFXndXTdd/1hdDHI4xBM1Mn7YriT6aqESucFl9kEXzrdw==}
@@ -9332,9 +9241,6 @@ packages:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
 
-  universal-cookie@7.2.0:
-    resolution: {integrity: sha512-PvcyflJAYACJKr28HABxkGemML5vafHmiL4ICe3e+BEKXRMt0GaFLZhAwgv637kFFnnfiSJ8e6jknrKkMrU+PQ==}
-
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
@@ -9508,10 +9414,6 @@ packages:
 
   vlq@1.0.1:
     resolution: {integrity: sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w==}
-
-  void-elements@3.1.0:
-    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
-    engines: {node: '>=0.10.0'}
 
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
@@ -11702,10 +11604,6 @@ snapshots:
 
   '@floating-ui/utils@0.2.4': {}
 
-  '@formatjs/intl-localematcher@0.5.4':
-    dependencies:
-      tslib: 2.6.3
-
   '@graphql-typed-document-node/core@3.2.0(graphql@15.8.0)':
     dependencies:
       graphql: 15.8.0
@@ -13170,11 +13068,6 @@ snapshots:
       '@types/node': 20.14.11
 
   '@types/hammerjs@2.0.45': {}
-
-  '@types/hoist-non-react-statics@3.3.5':
-    dependencies:
-      '@types/react': 18.3.3
-      hoist-non-react-statics: 3.3.2
 
   '@types/http-proxy@1.17.14':
     dependencies:
@@ -14962,7 +14855,7 @@ snapshots:
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
 
-  eslint-plugin-react-hooks@5.1.0-rc-6ebfd5b0-20240818(eslint@9.7.0):
+  eslint-plugin-react-hooks@5.1.0-rc-1d989965-20240821(eslint@9.7.0):
     dependencies:
       eslint: 9.7.0
 
@@ -15823,10 +15716,6 @@ snapshots:
 
   hotscript@1.0.13: {}
 
-  html-parse-stringify@3.0.1:
-    dependencies:
-      void-elements: 3.1.0
-
   http-errors@2.0.0:
     dependencies:
       depd: 2.0.0
@@ -15865,20 +15754,6 @@ snapshots:
   human-signals@5.0.0: {}
 
   husky@9.1.1: {}
-
-  i18next-browser-languagedetector@8.0.0:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next-fs-backend@2.3.2: {}
-
-  i18next-resources-to-backend@1.2.1:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next@23.14.0:
-    dependencies:
-      '@babel/runtime': 7.24.8
 
   iconv-lite@0.4.24:
     dependencies:
@@ -17021,23 +16896,6 @@ snapshots:
       next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
-  next-i18n-router@5.5.1:
-    dependencies:
-      '@formatjs/intl-localematcher': 0.5.4
-      negotiator: 0.6.3
-
-  next-i18next@15.3.1(i18next@23.14.0)(next@14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.0.1(i18next@23.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.24.8
-      '@types/hoist-non-react-statics': 3.3.5
-      core-js: 3.37.1
-      hoist-non-react-statics: 3.3.2
-      i18next: 23.14.0
-      i18next-fs-backend: 2.3.2
-      next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-      react-i18next: 15.0.1(i18next@23.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-
   next-themes@0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -17870,13 +17728,6 @@ snapshots:
       - react-is
       - supports-color
 
-  react-cookie@7.2.0(react@18.3.1):
-    dependencies:
-      '@types/hoist-non-react-statics': 3.3.5
-      hoist-non-react-statics: 3.3.2
-      react: 18.3.1
-      universal-cookie: 7.2.0
-
   react-devtools-core@5.3.1(bufferutil@4.0.8):
     dependencies:
       shell-quote: 1.8.1
@@ -17912,15 +17763,6 @@ snapshots:
   react-hook-form@7.52.1(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  react-i18next@15.0.1(i18next@23.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.24.8
-      html-parse-stringify: 3.0.1
-      i18next: 23.14.0
-      react: 18.3.1
-    optionalDependencies:
-      react-dom: 18.3.1(react@18.3.1)
 
   react-icons@5.2.1(react@18.3.1):
     dependencies:
@@ -19239,11 +19081,6 @@ snapshots:
     dependencies:
       crypto-random-string: 2.0.0
 
-  universal-cookie@7.2.0:
-    dependencies:
-      '@types/cookie': 0.6.0
-      cookie: 0.6.0
-
   universalify@0.1.2: {}
 
   universalify@1.0.0: {}
@@ -19377,8 +19214,6 @@ snapshots:
   vary@1.1.2: {}
 
   vlq@1.0.1: {}
-
-  void-elements@3.1.0: {}
 
   walker@1.0.8:
     dependencies:

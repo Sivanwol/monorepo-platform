@@ -1,51 +1,21 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Sidebar } from "flowbite-react";
+'use client'
+import * as React from 'react';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { BiHelpCircle } from "react-icons/bi";
 import * as Icons from "react-icons/hi2";
-import { v4 as uuidv4 } from "uuid";
 
 import type { MenuGroup, SidebarProps } from "./type";
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import { Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
 
 export * from "./type";
-
-const SideItemNoCollapsed = ({
-  group,
-  rootIndex,
-}: {
-  group: MenuGroup;
-  rootIndex: number;
-}) => {
-  const Icon = Icons[group.icon as keyof typeof Icons];
-  return (
-    <Sidebar.Item key={uuidv4()} href={group.route} icon={Icon}>
-      {group.label}
-    </Sidebar.Item>
-  );
-};
-const SideItemWithChildren = ({
-  group,
-  rootIndex,
-}: {
-  group: MenuGroup;
-  rootIndex: number;
-}) => {
-  const Icon = Icons[group.icon as keyof typeof Icons];
-  return (
-    <Sidebar.Collapse key={uuidv4()} icon={Icon} label={group.label}>
-      {group.items.map((t, index) => (
-        <Sidebar.Item key={uuidv4()} href={t.route}>
-          {t.label}
-        </Sidebar.Item>
-      ))}
-    </Sidebar.Collapse>
-  );
-};
 export const SidebarArea = ({
   sidebarOpen,
   setSidebarOpen,
   items,
+  lng,
   translations
 }: SidebarProps) => {
   return (
@@ -57,31 +27,11 @@ export const SidebarArea = ({
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="py-5.5 lg:py-6.5 flex items-center justify-between gap-2 px-6 xl:py-10">
-        <Link href="/">
-          <Image
-            width={176}
-            height={32}
-            src={"/images/logo/logo-dark.svg"}
-            alt="Logo"
-            priority
-            className="dark:hidden"
-            style={{ width: "auto", height: "auto" }}
-          />
-          <Image
-            width={176}
-            height={32}
-            src={"/images/logo/logo.svg"}
-            alt="Logo"
-            priority
-            className="hidden dark:block"
-            style={{ width: "auto", height: "auto" }}
-          />
-        </Link>
 
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="block lg:hidden"
-          title="Toggle Sidebar"
+          title={translations["toggle-sidebar"]}
         >
           <svg
             className="fill-current"
@@ -100,30 +50,93 @@ export const SidebarArea = ({
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
-      <Sidebar aria-label="Sabo Backoffice">
-        <Sidebar.Logo href="#" img="/logo.svg" imgAlt={translations.shortTitle}>
-          {translations.shortTitle}
-        </Sidebar.Logo>
-        <Sidebar.Items>
-          <Sidebar.ItemGroup key={uuidv4()}>
-            {items.map((group, groupIndex) => (
-              <>
-                {group.items.length === 0 && (
-                  <SideItemNoCollapsed group={group} rootIndex={groupIndex} />
-                )}
-                {group.items.length > 0 && (
-                  <SideItemWithChildren group={group} rootIndex={groupIndex} />
-                )}
-              </>
-            ))}
-          </Sidebar.ItemGroup>
-          <Sidebar.ItemGroup key={uuidv4()}>
-            <Sidebar.Item href="#" icon={BiHelpCircle}>
-              {translations.support}
-            </Sidebar.Item>
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </Sidebar>
-    </aside>
+      <List
+        key="sidemenu"
+        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="sidemenu-subheader">
+            {translations.shortTitle}
+          </ListSubheader>
+        }
+      >
+        {items.map((group, groupIndex) => (
+          <>
+            {group.items.length === 0 && (
+              <SideItemNoCollapsed key={"itemsGroup_" + groupIndex} group={group} rootIndex={groupIndex} />
+            )}
+            {group.items.length > 0 && (
+              <SideItemWithChildren key={"itemsGroup_" + groupIndex}
+                group={group}
+                rootIndex={groupIndex}
+              />
+            )}
+          </>
+        ))}
+        <Divider />
+
+        <ListItemButton href={`/${lng}/platform/support`}>
+          <ListItemIcon>
+            <BiHelpCircle />
+          </ListItemIcon>
+          <ListItemText primary={translations.support} />
+        </ListItemButton>
+      </List>
+    </aside >
+  );
+};
+
+
+export const SideItemNoCollapsed = ({
+  group,
+  rootIndex,
+}: {
+  group: MenuGroup;
+  rootIndex: number;
+}) => {
+  const Icon = Icons[group.icon as keyof typeof Icons];
+  return (
+    <ListItemButton href={group.route || ""}>
+      {/* <ListItemIcon>
+        <Icon />
+      </ListItemIcon> */}
+      <ListItemText primary={group.label} />
+    </ListItemButton>
+  );
+};
+export const SideItemWithChildren = ({
+  group,
+  rootIndex
+}: {
+  group: MenuGroup;
+  rootIndex: number;
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+  const Icon = Icons[group.icon as keyof typeof Icons];
+  return (
+    <>
+
+      <ListItemButton onClick={handleClick}>
+        <ListItemIcon>
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={group.label} />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding key={"submenu_" + rootIndex}>
+          {group.items.map((t, index) => (
+            <ListItemButton sx={{ pl: 4 }} href={t.route || ""}>
+              <ListItemText primary={t.label} />
+            </ListItemButton>
+          ))}
+        </List>
+      </Collapse>
+    </>
   );
 };

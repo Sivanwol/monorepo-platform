@@ -3,6 +3,7 @@ import type { IconType } from "react-icons";
 import { translationRecord } from "../layouts/type";
 
 export interface SidebarProps {
+  lng: string;
   items: MenuGroup[];
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;

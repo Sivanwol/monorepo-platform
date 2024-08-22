@@ -1,4 +1,4 @@
-import { DynamicStructure } from "~/type"
+import { DynamicStructure } from "../../type"
 
 const translate: DynamicStructure = {
   "title": "Home"

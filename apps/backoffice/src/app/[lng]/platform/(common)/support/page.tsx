@@ -1,32 +1,31 @@
 import { Suspense } from "react";
 
-import { LoadingPage } from "@app/ui";
+import { LoadingPage, SupportAndHelp } from "@app/ui";
 import { HydrateClient } from "~/trpc/server";
+import { t, initTranslation, translationsLoaded } from "@app/utils";
 import type { PageCommonProps } from "@app/utils";
-import { t, initTranslation } from "@app/utils";
 
 export const runtime = "edge";
-
 export default async function HomePage({
   params: { lng },
 }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
 
-  await initTranslation(lng, 'home');
+  console.log("lng", lng);
+  await initTranslation(lng, 'support');
   return (
     <HydrateClient>
       <main className="container h-screen py-16">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-primary">T3</span> Turbo
+            {t('title')}
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
             <Suspense
               fallback={<LoadingPage />}
             >
-
-              {t('title')}
+              {translationsLoaded ? <SupportAndHelp lng={lng} /> : <LoadingPage />}
             </Suspense>
           </div>
         </div>

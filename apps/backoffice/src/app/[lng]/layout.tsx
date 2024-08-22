@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import { dir } from 'i18next'
 import { AdminTheme, cn } from "@app/ui";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -15,10 +14,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import "./globals.css";
 
 import { env } from "~/env";
-import type { ReactNode } from "react";
-import i18nConfig from "~/i18nConfig";
-import type { LayoutCommonProps } from "~//type";
-import { initTranslation } from "~/locales/translations";
+import type { LayoutCommonProps } from "@app/utils";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -37,7 +33,6 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
-const i18nNamespaces = ['common', 'dashboard-layout'];
 
 
 export default async function RootLayout({
@@ -46,7 +41,7 @@ export default async function RootLayout({
 }: LayoutCommonProps) {
   console.log("system lang", lng);
   return (
-    <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
+    <html lang={lng} suppressHydrationWarning>
       <head>
         <ThemeModeScript />
       </head>
