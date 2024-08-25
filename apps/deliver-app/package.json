@@ -43,7 +43,7 @@
     "superjson": "catalog:"
   },
   "devDependencies": {
-    "@app/api": "workspace:*",
+    "@app/platform-api": "workspace:*",
     "@app/eslint-config": "workspace:*",
     "@app/prettier-config": "workspace:*",
     "@app/tailwind-config": "workspace:*",

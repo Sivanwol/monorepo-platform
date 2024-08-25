@@ -6,9 +6,9 @@ import { api } from "~/utils/api";
 export default function Post() {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data } = api.post.byId.useQuery({ id });
+  // const { data } = api.post.byId.useQuery({ id });
 
-  if (!data) return null;
+  // if (!data) return null;
 
   return (
     <SafeAreaView className="bg-background">

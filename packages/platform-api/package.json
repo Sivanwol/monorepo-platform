@@ -1,5 +1,5 @@
 {
-  "name": "@app/backoffice-api",
+  "name": "@app/platform-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -24,7 +24,6 @@
     "@app/shared-api": "workspace:*",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
-    "@vercel/edge-config": "catalog:vercel",
     "zod": "catalog:"
   },
   "devDependencies": {

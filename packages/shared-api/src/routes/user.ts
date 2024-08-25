@@ -6,7 +6,7 @@ import { CreateMediaSchema, Media } from "@app/db/schema";
 
 import { protectedProcedure, publicProcedure } from "../trpc";
 
-export const postRouter = {
+export const userRouter = {
   all: publicProcedure.query(({ ctx }) => {
     // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
     return ctx.db.query.Media.findMany({

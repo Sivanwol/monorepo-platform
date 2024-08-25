@@ -1,6 +1,6 @@
-import { authRouter } from "./router/auth";
 import { postRouter } from "./router/post";
 import { createTRPCRouter } from "./trpc";
+import { authRouter } from "@app/shared-api";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,

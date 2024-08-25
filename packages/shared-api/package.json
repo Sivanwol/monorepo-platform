@@ -1,5 +1,5 @@
 {
-  "name": "@app/api",
+  "name": "@app/shared-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -20,8 +20,10 @@
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
+    "@app/utils": "workspace:*",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
+    "@vercel/edge-config": "catalog:vercel",
     "zod": "catalog:"
   },
   "devDependencies": {

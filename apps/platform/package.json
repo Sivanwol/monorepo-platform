@@ -14,7 +14,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@app/api": "workspace:*",
+    "@app/platform-api": "workspace:*",
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
     "@app/ui": "workspace:*",

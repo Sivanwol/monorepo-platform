@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   integer,
+  json,
   pgEnum,
   pgTable,
   serial,
@@ -22,6 +23,14 @@ export const daysEnum = pgEnum("days", [
   "friday",
   "saturday",
   "sunday",
+]);
+
+export type notificationType = "UpdateUserProfile" | "CreateEntry" | "UpdateEntry" | "DeleteEntry";
+export const notificationTypeEnum = pgEnum("notification_type", [
+  "UpdateUserProfile",
+  "CreateEntry",
+  "UpdateEntry",
+  "DeleteEntry",
 ]);
 
 export const Media = pgTable("media", {
@@ -87,6 +96,36 @@ export const CreateUserSchema = createInsertSchema(User, {
   createdAt: true,
   updatedAt: true,
   onboarding: true,
+});
+
+export const Notification = pgTable("notification", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => User.id, { onDelete: "cascade" }),
+  affectedEntity: varchar("affected_entity", { length: 255 }).notNull(),
+  affectedEntityId: integer("affected_entity_id").notNull(),
+  metaData: json("meta_data").default({}),
+  type: notificationTypeEnum("type").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  body: varchar("body", { length: 500 }).notNull(),
+  read: boolean("read").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+    withTimezone: true,
+  }).$onUpdateFn(() => sql`now()`),
+});
+
+export const CreateNotificationSchema = createInsertSchema(Notification, {
+  userId: z.number().int().positive().gt(0),
+  affectedEntityId: z.number().int().positive().gt(0).optional(),
+  type: z.string().min(2).max(255),
+  title: z.string().min(2).max(255),
+  body: z.string().min(2).max(500),
+  read: z.boolean().default(false),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const Client = pgTable("client", {
