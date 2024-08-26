@@ -27,7 +27,7 @@ export const SidebarArea = ({
 }: SidebarProps) => {
   return (
     <aside
-      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden border-r bg-white lg:static lg:translate-x-0 ${
+      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-auto border-r bg-white lg:static lg:translate-x-0 ${
         sidebarOpen
           ? "translate-x-0 duration-300 ease-linear"
           : "-translate-x-full"

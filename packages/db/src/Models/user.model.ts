@@ -10,7 +10,7 @@ export interface UserModel {
   city: string;
   isWorker: boolean;
   isPrivate: boolean;
-  avatar: number | null;
+  avatar: string;
   gender: "male" | "female" | "other";
   createdAt: Date;
 }
@@ -24,7 +24,7 @@ export const convertToUserModel = (
   phone: data.phone,
   country: data.country ?? "IL",
   city: data.city ?? "",
-  avatar: data.avatarMediaId,
+  avatar: data.avatar,
   isWorker: data.IsWorker ?? false,
   isPrivate: data.IsPrivate ?? false,
   gender: data.gender ?? "other",

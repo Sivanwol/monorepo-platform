@@ -15,11 +15,8 @@ import { ClickOutside } from "@app/ui";
 import type { DropdownUserProps } from "./type";
 
 export const DropdownUser = ({
-  userAvatar,
-  profileLink,
-  settingsLink,
-  fullname,
-  email,
+  user,
+  lng,
   translations,
 }: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -28,8 +25,8 @@ export const DropdownUser = ({
   const logout = useCallback(async () => {
     await sdk.logout();
     setDropdownOpen(false);
-    router.replace("/en/auth");
-  }, [sdk, setDropdownOpen]);
+    router.replace(`/${lng}/auth`);
+  }, [sdk, setDropdownOpen, lng]);
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <div
@@ -38,14 +35,16 @@ export const DropdownUser = ({
       >
         <div className="rounded-full">
           <Avatar
-            alt="Remy Sharp"
-            src={userAvatar}
+            alt={user.firstName + " " + user.lastName}
+            src={user.avatar}
             sx={{ width: 48, height: 48 }}
           />
         </div>
 
         <span className="text-dark dark:text-dark-6 flex items-center gap-2 font-medium">
-          <span className="hidden lg:block">{fullname}</span>
+          <span className="hidden lg:block">
+            {user.firstName} {user.lastName}
+          </span>
 
           <svg
             className={`fill-current duration-200 ease-in ${dropdownOpen && "rotate-180"}`}
@@ -75,7 +74,7 @@ export const DropdownUser = ({
               <Image
                 width={112}
                 height={112}
-                src={userAvatar}
+                src={user.avatar}
                 style={{
                   width: "auto",
                   height: "auto",
@@ -89,17 +88,17 @@ export const DropdownUser = ({
 
             <span className="block">
               <span className="text-dark block font-medium dark:text-white">
-                {fullname}
+                {user.firstName} {user.lastName}
               </span>
               <span className="text-dark-5 dark:text-dark-6 block font-medium">
-                {email}
+                {user.email}
               </span>
             </span>
           </div>
           <ul className="border-stroke dark:border-dark-3 flex flex-col gap-1 border-y-[0.5px] p-2.5">
             <li>
               <Link
-                href={profileLink}
+                href={`/${lng}/platform/user/profile`}
                 className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
               >
                 <FaUserCircle />
@@ -109,7 +108,7 @@ export const DropdownUser = ({
 
             <li>
               <Link
-                href={settingsLink}
+                href={`/${lng}/platform/user/settings`}
                 className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
               >
                 <IoSettingsSharp />

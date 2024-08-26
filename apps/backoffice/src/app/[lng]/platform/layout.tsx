@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 
-import type { NotificationModel } from "@app/db/client";
+import type { NotificationModel, UserModel } from "@app/db/client";
 import type { MenuGroup } from "@app/ui";
 import type { LayoutCommonProps } from "@app/utils";
 import { DashboardLayout, LoadingPage } from "@app/ui";
@@ -21,7 +21,7 @@ export default async function PlatformLayout({
   children,
   params: { lng },
 }: LayoutCommonProps) {
-  const menuGroups: MenuGroup[] = [
+  let menuGroups: MenuGroup[] = [
     {
       label: "Dashboard",
       icon: "HiViewBoards",
@@ -66,8 +66,8 @@ export default async function PlatformLayout({
   const currSession = session();
   await initTranslation(lng);
   const currentNS = "dashboardLayout";
-  console.log("layout session", currSession);
-  if (!currSession) {
+  const user = await api.auth.getUser();
+  if (!currSession || !user) {
     redirect(`/${lng}/auth`);
   }
   let maintenance = false;
@@ -98,13 +98,13 @@ export default async function PlatformLayout({
         </div>
       </div>
     );
+    menuGroups = [];
   }
   let notifications: NotificationModel[] = [];
   if (!maintenance) {
     try {
       const res: { items: NotificationModel[] } =
         await api.notifications.getLastNotification();
-
       notifications = res.items;
     } catch (error) {
       // Handle the error case
@@ -126,27 +126,21 @@ export default async function PlatformLayout({
     notificationsViewAll: t(currentNS, "notifications.view-all"),
     notificationsEmpty: t(currentNS, "notifications.empty"),
     notificationsNew: t(currentNS, "notifications.new", {
-      count: notifications.length,
+      count: notifications.filter((n) => !n.read).length,
     }),
   };
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
-  const userData = await api.auth.getUser();
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
         <DashboardLayout
-          sideMenuItems={maintenance ? [] : menuGroups}
+          sideMenuItems={menuGroups}
           notifications={notifications}
           lng={lng}
           translations={translations}
-          blockActions={maintenance ? [] : maintenance}
-          user={{
-            userAvatar: "https://ui-avatars.com/api/?format=png",
-            fullname: `${userData?.firstName} ${userData?.lastName}`,
-            profileLink: "en/platform/user/me",
-            settingsLink: "en/platform/user/settings",
-          }}
+          blockActions={maintenance ? false : maintenance}
+          user={user}
         >
           {maintenance ? maintenanceRenderer : children}
         </DashboardLayout>

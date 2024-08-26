@@ -72,9 +72,7 @@ export const User = pgTable("user", {
   aboutMe: varchar("about_me", { length: 500 }),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),
-  avatarMediaId: integer("avatar_media_id").references(() => Media.id, {
-    onDelete: "cascade",
-  }),
+  avatar: varchar("avatar", { length: 500 }).notNull(),
   IsWorker: boolean("is_worker").default(false), // is this user is a worker (will not open a business entry)
   IsPrivate: boolean("is_private").default(false), // is this a private user
   hasWhatsup: boolean("has_whatsup").default(false),
@@ -94,6 +92,7 @@ export const User = pgTable("user", {
 export const CreateUserSchema = createInsertSchema(User, {
   externalId: z.string().min(2).max(255),
   email: z.string().email(),
+  avatar: z.string().min(5).max(500),
   firstName: z.string().min(2).max(100).optional().or(z.literal("")),
   lastName: z.string().min(2).max(100).optional().or(z.literal("")),
   phone: z.string().min(2).max(20).optional().or(z.literal("")),

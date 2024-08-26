@@ -97,7 +97,7 @@ export const Header = ({
                   lng={lng}
                 />
               </ul>
-              <DropdownUser {...user} translations={translations} lng={lng} />
+              <DropdownUser user={user} translations={translations} lng={lng} />
             </>
           )}
         </div>

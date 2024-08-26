@@ -246,7 +246,7 @@ importers:
         version: link:../../packages/validators
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@emotion/cache':
         specifier: catalog:ui
         version: 11.13.0
@@ -683,6 +683,9 @@ importers:
       date-fns:
         specifier: 'catalog:'
         version: 3.6.0
+      gravatar:
+        specifier: ^1.8.2
+        version: 1.8.2
       next:
         specifier: ^14.2.4
         version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -708,6 +711,9 @@ importers:
       '@app/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/gravatar':
+        specifier: ^1.8.6
+        version: 1.8.6
       eslint:
         specifier: 'catalog:'
         version: 9.7.0
@@ -910,12 +916,15 @@ importers:
       '@app/backoffice-api':
         specifier: workspace:*
         version: link:../backoffice-api
+      '@app/db':
+        specifier: workspace:*
+        version: link:../db
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
-        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.7.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
@@ -3999,6 +4008,9 @@ packages:
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
 
+  '@types/gravatar@1.8.6':
+    resolution: {integrity: sha512-RM21doTkeywTC+kAzlt25a+YIj0DITJIL729xPlrV91oowIGgthEXWFXNQ9wpm/44eCyn01xYt9AfK69esGEyQ==}
+
   '@types/hammerjs@2.0.45':
     resolution: {integrity: sha512-qkcUlZmX6c4J8q45taBKTL3p+LbITgyx7qhlPYOdOHZB7B31K0mXbP5YA7i7SgDeEGuI9MnumiKPEMrxg8j3KQ==}
 
@@ -4575,6 +4587,9 @@ packages:
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
+
+  blueimp-md5@2.19.0:
+    resolution: {integrity: sha512-DRQrD6gJyy8FbiE4s+bDoXS9hiW3Vbx5uCdwvcCf3zLHL+Iv7LtGHLpr+GZV8rHG8tK766FGYBwRbu8pELTt+w==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
@@ -5445,6 +5460,10 @@ packages:
   electron-to-chromium@1.4.832:
     resolution: {integrity: sha512-cTen3SB0H2SGU7x467NRe1eVcQgcuS6jckKfWJHia2eo0cHIGOqHoAxevIYZD4eRHcWjkvFzo93bi3vJ9W+1lA==}
 
+  email-validator@2.0.4:
+    resolution: {integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==}
+    engines: {node: '>4.0'}
+
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
@@ -6174,6 +6193,11 @@ packages:
   graphql@15.8.0:
     resolution: {integrity: sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==}
     engines: {node: '>= 10.x'}
+
+  gravatar@1.8.2:
+    resolution: {integrity: sha512-GdRwLM3oYpFQKy47MKuluw9hZ2gaCtiKPbDGdcDEuYDKlc8eNnW27KYL9LVbIDzEsx88WtDWQm2ClBcsgBnj6w==}
+    engines: {node: '>=10'}
+    hasBin: true
 
   gzip-size@7.0.0:
     resolution: {integrity: sha512-O1Ld7Dr+nqPnmGpdhzLmMTQ4vAsD+rHwMm1NLUmoUFFymBOMKxCCrtDxqdBRYXdeEPEi3SyoR4TizJLQrnKBNA==}
@@ -8029,6 +8053,11 @@ packages:
   query-string@7.1.3:
     resolution: {integrity: sha512-hh2WYhq4fi8+b+/2Kg9CEge4fDPvHS534aOOvOZeQ3+Vf2mCFsaFBYj0i+iXcAq6I9Vzp5fjMFBlONvayDC1qg==}
     engines: {node: '>=6'}
+
+  querystring@0.2.0:
+    resolution: {integrity: sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==}
+    engines: {node: '>=0.4.x'}
+    deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
 
   querystring@0.2.1:
     resolution: {integrity: sha512-wkvS7mL/JMugcup3/rMitHmd9ecIGd2lhFhK9N3UUQ450h66d1r3Y9nvXzQAW1Lq+wyx61k/1pfKS5KuKiyEbg==}
@@ -10777,7 +10806,7 @@ snapshots:
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       immer: 10.1.1
@@ -10793,7 +10822,7 @@ snapshots:
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       immer: 10.1.1
@@ -10819,6 +10848,21 @@ snapshots:
       jwt-decode: 3.1.2
 
   '@descope/nextjs-sdk@0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)':
+    dependencies:
+      '@descope/core-js-sdk': 2.24.1
+      '@descope/node-sdk': 1.6.9
+      '@descope/react-sdk': 2.0.65(@types/react@18.3.3)(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+      '@descope/web-component': 3.22.2
+      '@types/react': 18.3.3
+      next: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+    optionalDependencies:
+      '@descope/web-js-sdk': 1.15.8
+    transitivePeerDependencies:
+      - encoding
+      - react-redux
+
+  '@descope/nextjs-sdk@0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@descope/core-js-sdk': 2.24.1
       '@descope/node-sdk': 1.6.9
@@ -10861,7 +10905,7 @@ snapshots:
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       immer: 10.1.1
@@ -10882,7 +10926,7 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@descope/sdk-mixins@0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)':
+  '@descope/sdk-mixins@0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)':
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
@@ -10896,7 +10940,7 @@ snapshots:
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-js-sdk': 1.16.1
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       immer: 10.1.1
@@ -10913,7 +10957,7 @@ snapshots:
     dependencies:
       '@descope/sdk-component-drivers': 0.2.40
       '@descope/sdk-helpers': 0.1.59
-      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
+      '@descope/sdk-mixins': 0.2.44(@reduxjs/toolkit@2.2.6(react@18.3.1))(immer@10.1.1)(redux-thunk@3.1.0(redux@5.0.1))(redux@5.0.1)
       '@descope/web-component': 3.22.2
       '@descope/web-js-sdk': 1.16.1
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
@@ -13104,6 +13148,8 @@ snapshots:
       '@types/minimatch': 5.1.2
       '@types/node': 20.14.11
 
+  '@types/gravatar@1.8.6': {}
+
   '@types/hammerjs@2.0.45': {}
 
   '@types/http-proxy@1.17.14':
@@ -13770,6 +13816,8 @@ snapshots:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
+
+  blueimp-md5@2.19.0: {}
 
   boolbase@1.0.0: {}
 
@@ -14584,6 +14632,8 @@ snapshots:
   ee-first@1.1.1: {}
 
   electron-to-chromium@1.4.832: {}
+
+  email-validator@2.0.4: {}
 
   emoji-regex@8.0.0: {}
 
@@ -15663,6 +15713,13 @@ snapshots:
       tslib: 2.6.3
 
   graphql@15.8.0: {}
+
+  gravatar@1.8.2:
+    dependencies:
+      blueimp-md5: 2.19.0
+      email-validator: 2.0.4
+      querystring: 0.2.0
+      yargs: 15.4.1
 
   gzip-size@7.0.0:
     dependencies:
@@ -17649,6 +17706,8 @@ snapshots:
       filter-obj: 1.1.0
       split-on-first: 1.1.0
       strict-uri-encode: 2.0.0
+
+  querystring@0.2.0: {}
 
   querystring@0.2.1: {}
 

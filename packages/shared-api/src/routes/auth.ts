@@ -6,10 +6,6 @@ import { descopeSdk } from "@app/auth";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const authRouter = {
-  getSession: publicProcedure.query(({ ctx }) => {
-    console.log(`requesting session data`, ctx.session);
-    return ctx.session;
-  }),
   getUser: protectedProcedure.query(({ ctx }) => {
     console.log(`requesting user data`, ctx.session.user);
     return ctx.session.user;

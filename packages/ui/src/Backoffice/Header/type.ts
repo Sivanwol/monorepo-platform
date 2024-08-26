@@ -1,35 +1,23 @@
+import type { NotificationModel, UserModel } from "@app/db/client";
+
 import type { translationRecord } from "../layouts/type";
 
 export interface DropdownUserProps {
   lng: string;
-  userAvatar: string;
-  fullname: string;
-  email: string;
-  profileLink: string;
-  settingsLink: string;
   translations: translationRecord;
+  user: UserModel;
 }
 
 export interface DropdownNotificationProps {
   lng: string;
-  notifications: NotificationItem[];
+  notifications: NotificationModel[];
   translations: translationRecord;
 }
-export interface NotificationItem {
-  icon: React.ReactNode;
-  image: string;
-  lng: string;
-  title: string;
-  subTitle: string;
-  new: boolean;
-  link: string;
-  read: boolean;
-  createAt: Date;
-}
+
 export interface HeaderProps {
   lng: string;
-  notifications: NotificationItem[];
-  user: DropdownUserProps;
+  notifications: NotificationModel[];
+  user: UserModel;
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
   blockActions: boolean;

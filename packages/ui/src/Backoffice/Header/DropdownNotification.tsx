@@ -3,12 +3,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@mui/material";
-import { MdNotifications, MdNotificationsNone } from "react-icons/md";
+import {
+  MdGMobiledata,
+  MdNotifications,
+  MdNotificationsNone,
+} from "react-icons/md";
 
 import { ClickOutside } from "@app/ui";
 
 import type { DropdownNotificationProps } from "./type";
+
+export const parseTypeToIcon = (type: string) => {
+  switch (type) {
+    case "info":
+      return <MdNotifications />;
+    case "warning":
+      return <MdNotificationsNone />;
+    default:
+      return <MdGMobiledata />;
+  }
+};
 
 export const DropdownNotification = ({
   lng,
@@ -17,7 +31,7 @@ export const DropdownNotification = ({
 }: DropdownNotificationProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
-  const hasNewNotifications = notifications.filter((n) => !!n.new).length > 0;
+  const hasNewNotifications = notifications.filter((n) => !n.read).length > 0;
   return (
     <ClickOutside
       onClick={() => setDropdownOpen(false)}
@@ -82,16 +96,7 @@ export const DropdownNotification = ({
                       href="#"
                     >
                       <span className="block h-14 w-14 rounded-full">
-                        <Image
-                          width={112}
-                          height={112}
-                          src={item.image}
-                          style={{
-                            width: "auto",
-                            height: "auto",
-                          }}
-                          alt="User"
-                        />
+                        {parseTypeToIcon(item.type)}
                       </span>
 
                       <span className="block">
@@ -99,7 +104,7 @@ export const DropdownNotification = ({
                           {item.title}
                         </span>
                         <span className="text-body-sm text-dark-5 dark:text-dark-6 block font-medium">
-                          {item.subTitle}
+                          {item.body}
                         </span>
                       </span>
                     </Link>
@@ -109,7 +114,7 @@ export const DropdownNotification = ({
 
             <Link
               className="hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:bg-blue-light-3 flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary dark:hover:border-primary dark:hover:text-primary"
-              href={`/${lng}/platform/notifications`}
+              href={`/${lng}/platform/notifications/list`}
             >
               {translations.notificationsViewAll}
             </Link>
