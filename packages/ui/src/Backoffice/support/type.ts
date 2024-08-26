@@ -1,4 +1,5 @@
-import { t } from '@app/utils';
+import { Namespaces } from '@app/utils';
 export type SupportProps = {
   lng: string;
+  ns: Namespaces;
 };

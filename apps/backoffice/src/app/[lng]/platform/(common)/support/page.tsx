@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { LoadingPage, SupportAndHelp } from "@app/ui";
 import { HydrateClient } from "~/trpc/server";
-import { t, initTranslation, translationsLoaded } from "@app/utils";
+import { t, initTranslation } from "@app/utils";
 import type { PageCommonProps } from "@app/utils";
 
 export const runtime = "edge";
@@ -13,19 +13,19 @@ export default async function HomePage({
   // void api.post.all.prefetch();
 
   console.log("lng", lng);
-  await initTranslation(lng, 'support');
+  await initTranslation(lng);
   return (
     <HydrateClient>
       <main className="container h-screen py-16">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            {t('title')}
+            {t('support', 'title')}
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
             <Suspense
               fallback={<LoadingPage />}
             >
-              {translationsLoaded ? <SupportAndHelp lng={lng} /> : <LoadingPage />}
+              <SupportAndHelp lng={lng} ns='support' />
             </Suspense>
           </div>
         </div>

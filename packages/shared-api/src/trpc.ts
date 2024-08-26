@@ -6,13 +6,14 @@ import { ZodError } from "zod";
 
 import type { UserModel } from "@app/db/client";
 import { auth, validateToken } from "@app/auth";
-import { db } from "@app/db/client";
+import { db, repositories } from "@app/db/client";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }): Promise<{
   session: AuthenticationInfo | null;
   db: typeof db;
+  repositories: typeof repositories;
   user: UserModel | null;
   // eslint-disable-next-line @typescript-eslint/require-await
 }> => {
@@ -26,6 +27,7 @@ export const createTRPCContext = async (opts: {
   return {
     session: session() ?? null,
     db,
+    repositories,
     user: null,
   };
 };

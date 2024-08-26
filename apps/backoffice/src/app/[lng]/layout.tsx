@@ -8,8 +8,7 @@ import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { AdminTheme, cn } from "@app/ui";
-
-import { TRPCReactProvider } from "~/trpc/react";
+import { api, TRPCReactProvider } from "~/trpc/react";
 
 import "./globals.css";
 
@@ -40,6 +39,7 @@ export default async function RootLayout({
   params: { lng },
 }: LayoutCommonProps) {
   console.log("system lang", lng);
+
   return (
     <html lang={lng} suppressHydrationWarning>
       <head>
