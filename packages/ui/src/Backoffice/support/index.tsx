@@ -64,7 +64,7 @@ export const SupportAndHelp = ({
   useEffect(() => {
     if (!translationsLoaded) {
       const fetcher = async () => {
-        await initTranslation(lng, ns);
+        await initTranslation(lng);
       };
       fetcher().catch(console.error).finally(() => {
         setTranslationsLoaded(true);
