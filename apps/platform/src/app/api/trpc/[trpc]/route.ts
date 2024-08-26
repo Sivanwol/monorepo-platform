@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@app/platform-api";
 import { auth } from "@app/auth";
+import { appRouter, createTRPCContext } from "@app/platform-api";
 
 export const runtime = "edge";
 

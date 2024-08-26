@@ -23,7 +23,7 @@ export const env = createEnv({
     NEXT_PUBLIC_AUTH_DESCOPE_ID: z.string().min(1),
   },
   experimental__runtimeEnv: {
-    NEXT_PUBLIC_AUTH_DESCOPE_ID: process.env.NEXT_PUBLIC_AUTH_DESCOPE_ID
+    NEXT_PUBLIC_AUTH_DESCOPE_ID: process.env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",

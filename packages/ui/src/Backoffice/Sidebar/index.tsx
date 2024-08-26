@@ -1,14 +1,21 @@
-'use client'
-import * as React from 'react';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+"use client";
+
+import * as React from "react";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import {
+  Collapse,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
 import { BiHelpCircle } from "react-icons/bi";
 import * as Icons from "react-icons/hi2";
 
 import type { MenuGroup, SidebarProps } from "./type";
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import { Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
 
 export * from "./type";
 export const SidebarArea = ({
@@ -16,22 +23,22 @@ export const SidebarArea = ({
   setSidebarOpen,
   items,
   lng,
-  translations
+  translations,
 }: SidebarProps) => {
   return (
     <aside
-      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden border-r bg-white lg:static lg:translate-x-0 ${sidebarOpen
-        ? "translate-x-0 duration-300 ease-linear"
-        : "-translate-x-full"
-        }`}
+      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden border-r bg-white lg:static lg:translate-x-0 ${
+        sidebarOpen
+          ? "translate-x-0 duration-300 ease-linear"
+          : "-translate-x-full"
+      }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="py-5.5 lg:py-6.5 flex items-center justify-between gap-2 px-6 xl:py-10">
-
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="block lg:hidden"
-          title={translations["toggleSidebar"]}
+          title={translations.toggleSidebar}
         >
           <svg
             className="fill-current"
@@ -52,7 +59,7 @@ export const SidebarArea = ({
 
       <List
         key="sidemenu"
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
@@ -64,10 +71,15 @@ export const SidebarArea = ({
         {items.map((group, groupIndex) => (
           <>
             {group.items.length === 0 && (
-              <SideItemNoCollapsed key={"itemsGroup_" + groupIndex} group={group} rootIndex={groupIndex} />
+              <SideItemNoCollapsed
+                key={"itemsGroup_" + groupIndex}
+                group={group}
+                rootIndex={groupIndex}
+              />
             )}
             {group.items.length > 0 && (
-              <SideItemWithChildren key={"itemsGroup_" + groupIndex}
+              <SideItemWithChildren
+                key={"itemsGroup_" + groupIndex}
                 group={group}
                 rootIndex={groupIndex}
               />
@@ -83,10 +95,9 @@ export const SidebarArea = ({
           <ListItemText primary={translations.support} />
         </ListItemButton>
       </List>
-    </aside >
+    </aside>
   );
 };
-
 
 export const SideItemNoCollapsed = ({
   group,
@@ -97,15 +108,19 @@ export const SideItemNoCollapsed = ({
 }) => {
   const Icon = Icons[group.icon as keyof typeof Icons];
   return (
-    <ListItemButton href={group.route || ""}>
-      {Icon && <ListItemIcon><Icon /></ListItemIcon>}
+    <ListItemButton href={group.route ?? ""}>
+      {group.icon !== "" && (
+        <ListItemIcon>
+          <Icon />
+        </ListItemIcon>
+      )}
       <ListItemText primary={group.label} />
     </ListItemButton>
   );
 };
 export const SideItemWithChildren = ({
   group,
-  rootIndex
+  rootIndex,
 }: {
   group: MenuGroup;
   rootIndex: number;
@@ -117,9 +132,12 @@ export const SideItemWithChildren = ({
   const Icon = Icons[group.icon as keyof typeof Icons];
   return (
     <>
-
       <ListItemButton onClick={handleClick}>
-        {Icon && <ListItemIcon><Icon /></ListItemIcon>}
+        {group.icon !== "" && (
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+        )}
         <ListItemText primary={group.label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>

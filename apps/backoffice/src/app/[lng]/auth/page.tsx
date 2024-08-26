@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
 
 import { LoadingSpinner, Signin } from "@app/ui";
+
 export const runtime = "edge";
 export const metadata: Metadata = {
   title: "monorepo backoffice Login Page",

@@ -30,9 +30,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [

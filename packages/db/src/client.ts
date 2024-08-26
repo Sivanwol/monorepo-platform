@@ -1,7 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 
-import { UserRepository, MediaRepository, NotificationRepository } from "./repositories";
+import {
+  MediaRepository,
+  NotificationRepository,
+  UserRepository,
+} from "./repositories";
 import * as schema from "./schema";
 
 export * from "./Models";

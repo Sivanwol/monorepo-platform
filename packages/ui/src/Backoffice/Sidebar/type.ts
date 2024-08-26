@@ -1,13 +1,14 @@
 import type { ComponentProps, FC } from "react";
 import type { IconType } from "react-icons";
-import { translationRecord } from "../layouts/type";
+
+import type { translationRecord } from "../layouts/type";
 
 export interface SidebarProps {
   lng: string;
   items: MenuGroup[];
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
-  translations: translationRecord
+  translations: translationRecord;
 }
 export interface MenuGroup {
   label: string;

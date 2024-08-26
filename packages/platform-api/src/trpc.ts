@@ -8,7 +8,6 @@ import type { UserModel } from "@app/db/client";
 import { auth, validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
 
-
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }): Promise<{

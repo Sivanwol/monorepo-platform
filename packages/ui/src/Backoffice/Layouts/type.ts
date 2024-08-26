@@ -8,8 +8,6 @@ export interface DashboardLayoutProps {
   notifications: NotificationItem[];
   user: DropdownUserProps;
   lng: string;
-  translations: translationRecord
+  translations: translationRecord;
 }
-export type translationRecord = {
-  [key: string]: string;
-}
+export type translationRecord = Record<string, string>;

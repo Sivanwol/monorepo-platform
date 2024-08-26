@@ -25,7 +25,11 @@ export const daysEnum = pgEnum("days", [
   "sunday",
 ]);
 
-export type notificationType = "UpdateUserProfile" | "CreateEntry" | "UpdateEntry" | "DeleteEntry";
+export type notificationType =
+  | "UpdateUserProfile"
+  | "CreateEntry"
+  | "UpdateEntry"
+  | "DeleteEntry";
 export const notificationTypeEnum = pgEnum("notification_type", [
   "UpdateUserProfile",
   "CreateEntry",
@@ -60,7 +64,9 @@ export const CreateMediaSchema = createInsertSchema(Media, {
 export const User = pgTable("user", {
   id: serial("id").primaryKey(),
   externalId: varchar("external_id", { length: 255 }).unique(),
-  clientId: integer("client_id").references(() => Client.id, { onDelete: "cascade" }),
+  clientId: integer("client_id").references(() => Client.id, {
+    onDelete: "cascade",
+  }),
   firstName: varchar("first_name", { length: 100 }),
   lastName: varchar("last_name", { length: 100 }),
   aboutMe: varchar("about_me", { length: 500 }),
@@ -100,7 +106,9 @@ export const CreateUserSchema = createInsertSchema(User, {
 
 export const Notification = pgTable("notification", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull().references(() => User.id, { onDelete: "cascade" }),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
   affectedEntity: varchar("affected_entity", { length: 255 }).notNull(),
   affectedEntityId: integer("affected_entity_id").notNull(),
   metaData: json("meta_data").default({}),

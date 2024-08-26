@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 import type { UserModel } from "@app/db/client";
 import { auth, validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
+
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }): Promise<{
@@ -117,7 +118,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
         token: { ...ctx.session?.token },
         descopeUser: auth.user,
         user: auth.userProfile,
-      }
+      },
     },
   });
 });

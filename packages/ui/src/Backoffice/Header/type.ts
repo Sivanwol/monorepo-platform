@@ -1,4 +1,4 @@
-import { translationRecord } from "../layouts/type";
+import type { translationRecord } from "../layouts/type";
 
 export interface DropdownUserProps {
   lng: string;
@@ -7,13 +7,13 @@ export interface DropdownUserProps {
   email: string;
   profileLink: string;
   settingsLink: string;
-  translations: translationRecord
+  translations: translationRecord;
 }
 
 export interface DropdownNotificationProps {
   lng: string;
   notifications: NotificationItem[];
-  translations: translationRecord
+  translations: translationRecord;
 }
 export interface NotificationItem {
   icon: React.ReactNode;
@@ -33,5 +33,5 @@ export interface HeaderProps {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
   blockActions: boolean;
-  translations: translationRecord
+  translations: translationRecord;
 }

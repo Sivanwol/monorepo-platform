@@ -4,6 +4,7 @@ export interface NotificationModel {
   id: number;
   userId: number;
   type: schema.notificationType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: any;
   affectedEntityId?: number;
   title: string;
@@ -20,6 +21,6 @@ export const convertToNotificationModel = (
   metadata: data,
   title: data.title,
   body: data.body,
-  read: data.read || false,
+  read: data.read ?? false,
   createAt: new Date(data.createdAt),
 });

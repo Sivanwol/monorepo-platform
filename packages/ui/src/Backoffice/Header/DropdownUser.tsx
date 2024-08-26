@@ -1,19 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { ClickOutside } from "@app/ui";
-import { useDescope } from "@descope/nextjs-sdk/client"
-
-import type { DropdownUserProps } from "./type";
-import React from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useDescope } from "@descope/nextjs-sdk/client";
 import { Avatar, Button } from "@mui/material";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
+
+import { ClickOutside } from "@app/ui";
+
+import type { DropdownUserProps } from "./type";
 
 export const DropdownUser = ({
   userAvatar,
@@ -21,11 +20,16 @@ export const DropdownUser = ({
   settingsLink,
   fullname,
   email,
-  translations
+  translations,
 }: DropdownUserProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const sdk = useDescope();
+  const logout = useCallback(async () => {
+    await sdk.logout();
+    setDropdownOpen(false);
+    router.replace("/en/auth");
+  }, [sdk, setDropdownOpen]);
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <div
@@ -114,13 +118,7 @@ export const DropdownUser = ({
             </li>
           </ul>
           <div className="p-2.5">
-            <Button size="large" fullWidth
-              onClick={() => {
-                sdk.logout();
-                setDropdownOpen(false);
-                router.replace("/en/auth");
-              }}
-            >
+            <Button size="large" fullWidth onClick={logout}>
               <MdLogout />
               {translations.userLogout}
             </Button>

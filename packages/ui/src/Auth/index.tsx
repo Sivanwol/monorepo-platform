@@ -12,7 +12,7 @@ export function Signin() {
         }}
         onError={(e) => console.log("Could not logged in!")}
         redirectAfterSuccess="/en/platform/dashboard"
-      // redirectAfterError="/error-page"
+        // redirectAfterError="/error-page"
       />
     </div>
   );

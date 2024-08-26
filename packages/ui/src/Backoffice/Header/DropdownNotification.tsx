@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@mui/material";
+import { MdNotifications, MdNotificationsNone } from "react-icons/md";
 
 import { ClickOutside } from "@app/ui";
-import { MdNotificationsNone } from "react-icons/md";
-import { MdNotifications } from "react-icons/md";
+
 import type { DropdownNotificationProps } from "./type";
-import React from "react";
-import { Button } from "@mui/material";
 
 export const DropdownNotification = ({
   lng,
   notifications,
-  translations
+  translations,
 }: DropdownNotificationProps) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
-  const hasNewNotifications = notifications.filter(n => !!n.new).length > 0;
+  const hasNewNotifications = notifications.filter((n) => !!n.new).length > 0;
   return (
     <ClickOutside
       onClick={() => setDropdownOpen(false)}
@@ -34,9 +33,14 @@ export const DropdownNotification = ({
           className="border-stroke bg-gray-2 text-dark dark:border-dark-4 dark:bg-dark-3 relative flex h-12 w-12 items-center justify-center rounded-full border hover:text-primary dark:text-white dark:hover:text-white"
         >
           <span className="relative">
-            {hasNewNotifications ? (<MdNotifications />) : (<MdNotificationsNone className="text-lg h-6 w-6" />)}
+            {hasNewNotifications ? (
+              <MdNotifications />
+            ) : (
+              <MdNotificationsNone className="h-6 w-6 text-lg" />
+            )}
             <span
-              className={`z-1 border-gray-2 bg-red-light dark:border-dark-3 absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full border-2 ${!notifying ? "hidden" : "inline"}`}>
+              className={`z-1 border-gray-2 bg-red-light dark:border-dark-3 absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full border-2 ${!notifying ? "hidden" : "inline"}`}
+            >
               <span className="-z-1 bg-red-light absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
             </span>
           </span>
@@ -55,46 +59,52 @@ export const DropdownNotification = ({
               </span>
             </div>
 
-            <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto"
-              style={{ zIndex: 10 }}>
-              {notifications.length === 0 && (<><li key={0}>
-                <span className="block">
-                  <span className="text-dark block font-medium dark:text-white">
-                    {translations.notificationsEmpty}
-                  </span>
-                </span>
-              </li>
-              </>)}
-              {notifications.length !== 0 && notifications.map((item, index) => (
-                <li key={index}>
-                  <Link
-                    className="hover:bg-gray-2 dark:hover:bg-dark-3 flex items-center gap-4 rounded-[10px] p-2.5"
-                    href="#"
-                  >
-                    <span className="block h-14 w-14 rounded-full">
-                      <Image
-                        width={112}
-                        height={112}
-                        src={item.image}
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                        }}
-                        alt="User"
-                      />
-                    </span>
-
+            <ul
+              className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto"
+              style={{ zIndex: 10 }}
+            >
+              {notifications.length === 0 && (
+                <>
+                  <li key={0}>
                     <span className="block">
                       <span className="text-dark block font-medium dark:text-white">
-                        {item.title}
-                      </span>
-                      <span className="text-body-sm text-dark-5 dark:text-dark-6 block font-medium">
-                        {item.subTitle}
+                        {translations.notificationsEmpty}
                       </span>
                     </span>
-                  </Link>
-                </li>
-              ))}
+                  </li>
+                </>
+              )}
+              {notifications.length !== 0 &&
+                notifications.map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      className="hover:bg-gray-2 dark:hover:bg-dark-3 flex items-center gap-4 rounded-[10px] p-2.5"
+                      href="#"
+                    >
+                      <span className="block h-14 w-14 rounded-full">
+                        <Image
+                          width={112}
+                          height={112}
+                          src={item.image}
+                          style={{
+                            width: "auto",
+                            height: "auto",
+                          }}
+                          alt="User"
+                        />
+                      </span>
+
+                      <span className="block">
+                        <span className="text-dark block font-medium dark:text-white">
+                          {item.title}
+                        </span>
+                        <span className="text-body-sm text-dark-5 dark:text-dark-6 block font-medium">
+                          {item.subTitle}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
             </ul>
 
             <Link

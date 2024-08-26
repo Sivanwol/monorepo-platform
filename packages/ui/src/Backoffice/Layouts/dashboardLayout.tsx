@@ -13,7 +13,7 @@ export function DashboardLayout({
   user,
   lng,
   blockActions,
-  translations
+  translations,
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   console.log("translations", translations);

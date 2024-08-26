@@ -1,5 +1,6 @@
-import { Namespaces } from '@app/utils';
-export type SupportProps = {
+import type { Namespaces } from "@app/utils";
+
+export interface SupportProps {
   lng: string;
   ns: Namespaces;
-};
+}

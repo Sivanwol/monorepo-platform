@@ -7,19 +7,22 @@ import { Analytics } from "@vercel/analytics/react";
 import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+
 import { AdminTheme, cn } from "@app/ui";
+
 import { api, TRPCReactProvider } from "~/trpc/react";
 
 import "./globals.css";
 
-import { env } from "~/env";
 import type { LayoutCommonProps } from "@app/utils";
+
+import { env } from "~/env";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      env.VERCEL_URL!
+        env.VERCEL_URL!
       : "http://localhost:3001",
   ),
   title: "Backoffice of monorepo Platform",
@@ -33,8 +36,7 @@ export const viewport: Viewport = {
   ],
 };
 
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params: { lng },
 }: LayoutCommonProps) {
@@ -56,9 +58,7 @@ export default async function RootLayout({
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={AdminTheme}>
               <CssBaseline />
-              <TRPCReactProvider>
-                {children}
-              </TRPCReactProvider>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </AuthProvider>

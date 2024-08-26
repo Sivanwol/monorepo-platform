@@ -1,15 +1,16 @@
-
-
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { session } from "@descope/nextjs-sdk/server";
-import type { MenuGroup } from "@app/ui"
-import { DashboardLayout, LoadingPage } from "@app/ui";
-import { api, HydrateClient } from "~/trpc/server";
-import type { LayoutCommonProps } from "@app/utils";
-import { t, initTranslation } from "@app/utils";
+
 import type { NotificationModel } from "@app/db/client";
+import type { MenuGroup } from "@app/ui";
+import type { LayoutCommonProps } from "@app/utils";
+import { DashboardLayout, LoadingPage } from "@app/ui";
+import { initTranslation, t } from "@app/utils";
+
+import { api, HydrateClient } from "~/trpc/server";
 
 export const metadata: Metadata = {
   title: "Create T3 Turbo",
@@ -31,7 +32,11 @@ export default async function PlatformLayout({
       label: "Subscriptions",
       icon: "HiShoppingBag",
       items: [
-        { label: "Plans", route: `/${lng}/platform/subscriptions/plans`, icon: null },
+        {
+          label: "Plans",
+          route: `/${lng}/platform/subscriptions/plans`,
+          icon: null,
+        },
         {
           label: "Products",
           route: `/${lng}/platform/subscriptions/products`,
@@ -49,14 +54,18 @@ export default async function PlatformLayout({
       icon: "HiChartPie",
       items: [
         { label: "Overview", route: `/${lng}/platform/reports`, icon: null },
-        { label: "Analytics", route: `/${lng}/platform/reports/analytics`, icon: null },
+        {
+          label: "Analytics",
+          route: `/${lng}/platform/reports/analytics`,
+          icon: null,
+        },
         { label: "Sales", route: `/${lng}/platform/reports/sales`, icon: null },
       ],
     },
   ];
   const currSession = session();
   await initTranslation(lng);
-  const currentNS = 'dashboardLayout';
+  const currentNS = "dashboardLayout";
   console.log("layout session", currSession);
   if (!currSession) {
     redirect(`/${lng}/auth`);
@@ -79,21 +88,24 @@ export default async function PlatformLayout({
     }
   };
   await checkMaintenance();
-  let maintenanceRenderer = <></>
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  let maintenanceRenderer = <></>;
+
   if (maintenance) {
-    maintenanceRenderer = <div className="flex flex-col rounded-md bg-gray-100">
-      <div className="rounded-t-md bg-gray-200 p-4 font-bold">
-        Platform on Maintenance Mode please contact the platform admin
+    maintenanceRenderer = (
+      <div className="flex flex-col rounded-md bg-gray-100">
+        <div className="rounded-t-md bg-gray-200 p-4 font-bold">
+          Platform on Maintenance Mode please contact the platform admin
+        </div>
       </div>
-    </div>
+    );
   }
   let notifications: NotificationModel[] = [];
   if (!maintenance) {
     try {
-      const res: { items: NotificationModel[] } = await api.notifications.getLastNotification();
+      const res: { items: NotificationModel[] } =
+        await api.notifications.getLastNotification();
 
-      notifications = res.items ?? [];
+      notifications = res.items;
     } catch (error) {
       // Handle the error case
       console.error("Error fetching notifications:", error);
@@ -101,20 +113,22 @@ export default async function PlatformLayout({
     }
   }
   const translations = {
-    title: t(currentNS, 'title'),
-    dashboard: t(currentNS, 'dashboard'),
-    shortTitle: t(currentNS, 'shortTitle'),
-    support: t(currentNS, 'support'),
-    "toggleSidebar": t(currentNS, 'toggle-sidebar'),
-    "userSettings": t(currentNS, 'user.settings'),
-    "userProfile": t(currentNS, 'user.profile'),
-    "userLogout": t(currentNS, 'user.logout'),
-    "notificationsTitle": t(currentNS, 'notifications.title'),
-    "notificationsMarkAll": t(currentNS, 'notifications.mark-all'),
-    "notificationsViewAll": t(currentNS, 'notifications.view-all'),
-    "notificationsEmpty": t(currentNS, 'notifications.empty'),
-    "notificationsNew": t(currentNS, 'notifications.new', { count: notifications.length }),
-  }
+    title: t(currentNS, "title"),
+    dashboard: t(currentNS, "dashboard"),
+    shortTitle: t(currentNS, "shortTitle"),
+    support: t(currentNS, "support"),
+    toggleSidebar: t(currentNS, "toggle-sidebar"),
+    userSettings: t(currentNS, "user.settings"),
+    userProfile: t(currentNS, "user.profile"),
+    userLogout: t(currentNS, "user.logout"),
+    notificationsTitle: t(currentNS, "notifications.title"),
+    notificationsMarkAll: t(currentNS, "notifications.mark-all"),
+    notificationsViewAll: t(currentNS, "notifications.view-all"),
+    notificationsEmpty: t(currentNS, "notifications.empty"),
+    notificationsNew: t(currentNS, "notifications.new", {
+      count: notifications.length,
+    }),
+  };
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   const userData = await api.auth.getUser();
@@ -131,7 +145,7 @@ export default async function PlatformLayout({
             userAvatar: "https://ui-avatars.com/api/?format=png",
             fullname: `${userData?.firstName} ${userData?.lastName}`,
             profileLink: "en/platform/user/me",
-            settingsLink: "en/platform/user/settings"
+            settingsLink: "en/platform/user/settings",
           }}
         >
           {maintenance ? maintenanceRenderer : children}
