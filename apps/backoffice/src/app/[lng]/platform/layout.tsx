@@ -92,6 +92,7 @@ export default async function PlatformLayout({
   if (!maintenance) {
     try {
       const res: { items: NotificationModel[] } = await api.notifications.getLastNotification();
+
       notifications = res.items ?? [];
     } catch (error) {
       // Handle the error case

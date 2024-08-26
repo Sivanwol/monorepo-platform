@@ -18,6 +18,7 @@ export class NotificationRepository {
       .from(schema.Notification)
       .where(eq(schema.Notification.userId, userId))
       .orderBy(desc(schema.Notification.createdAt), asc(schema.Notification.read)).limit(10);
+
     return res.map(convertToNotificationModel);
   }
 }

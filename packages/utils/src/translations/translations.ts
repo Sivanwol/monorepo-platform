@@ -43,8 +43,9 @@ export const t = (ns: Namespaces, key: string, options?: Record<string, string |
     console.warn(`No translations found for language ${currentLng}`);
     return key; // Return the key if any part of the nested path is not found
   }
-  // Assuming `currentNs` is defined somewhere in your code
+  // Assuming `ns` is defined somewhere in your code
   // Split the key by dots to handle nested structures
+  console.log(`t ${currentLng}-${ns}-${key}`);
   const keys = key.split('.');
   let translation = translationsForLng[ns];
   for (const k of keys) {

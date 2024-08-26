@@ -79,7 +79,7 @@ export const User = pgTable("user", {
   address: varchar("address", { length: 255 }),
   onboarding: boolean("onboarding"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     mode: "date",
     withTimezone: true,
   }).$onUpdateFn(() => sql`now()`),
@@ -136,7 +136,7 @@ export const Client = pgTable("client", {
   lang_code: varchar("lang_code", { length: 2 }).default("en"),
   deleted: boolean("deleted").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     mode: "date",
     withTimezone: true,
   }).$onUpdateFn(() => sql`now()`),

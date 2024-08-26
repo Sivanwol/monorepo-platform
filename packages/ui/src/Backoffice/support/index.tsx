@@ -108,7 +108,7 @@ export const SupportAndHelp = ({
         </AccordionDetails>
       </Accordion>
     </Item>
-    <Item>
+    <Item style={{ zIndex: -1 }}>
       <h1>{t(ns, 'platformQuestions.categoryRoles.title')}</h1>
       <Accordion>
         <AccordionSummary aria-controls="categoryRoles_q1-content" id="categoryRoles_q1-header">

@@ -55,7 +55,8 @@ export const DropdownNotification = ({
               </span>
             </div>
 
-            <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto">
+            <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto"
+              style={{ zIndex: 10 }}>
               {notifications.length === 0 && (<><li key={0}>
                 <span className="block">
                   <span className="text-dark block font-medium dark:text-white">
