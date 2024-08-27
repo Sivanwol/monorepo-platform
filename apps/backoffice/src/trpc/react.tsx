@@ -55,7 +55,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           url: getBaseUrl() + "/api/trpc",
           headers() {
             const headers = new Headers();
-            headers.set("x-trpc-source", "backoffice-api");
+            headers.set("x-trpc-source", "backoffice");
             return headers;
           },
         }),
