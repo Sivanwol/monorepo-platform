@@ -9,6 +9,7 @@ import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@app/platform-api";
+
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";
 
