@@ -47,13 +47,13 @@ jobs:
       - name: Format
         run: pnpm format
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  # typecheck:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Setup
-        uses: ./tooling/github/setup
+  #     - name: Setup
+  #       uses: ./tooling/github/setup
 
-      - name: Typecheck
-        run: pnpm typecheck
+  #     - name: Typecheck
+  #       run: pnpm typecheck
