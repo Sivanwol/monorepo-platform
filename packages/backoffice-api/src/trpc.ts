@@ -4,6 +4,7 @@ import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { v4 as uuidV4 } from 'uuid';
 
 import type { UserModel } from "@app/db/client";
 import { auth, validateToken } from "@app/auth";
@@ -15,10 +16,12 @@ export const createTRPCContext = async (opts: {
   session: AuthenticationInfo | null;
   db: typeof db;
   repositories: typeof repositories;
-  user: UserModel | null;
+  requestId: string;
   // eslint-disable-next-line @typescript-eslint/require-await
 }> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
+  const requestId = uuidV4();
+  opts.headers.set('x-request-id', requestId);
   console.log(
     ">>> tRPC Request from",
     source,
@@ -29,7 +32,7 @@ export const createTRPCContext = async (opts: {
     session: session() ?? null,
     db,
     repositories,
-    user: null,
+    requestId,
   };
 };
 /**
@@ -127,3 +130,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     },
   });
 });
+function uuid() {
+  throw new Error("Function not implemented.");
+}
+

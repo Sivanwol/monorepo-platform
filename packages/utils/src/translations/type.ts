@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
 
-export interface LayoutCommonProps {
+export interface BaseCommonProps {
   children: ReactNode;
+}
+export type LayoutCommonProps = BaseCommonProps & {
   params: {
     lng: string;
   };
 }
 export type Namespaces = "home" | "dashboardLayout" | "support";
 export type PageCommonProps = Omit<LayoutCommonProps, "children">;
+export type BasePageCommonProps = Omit<BaseCommonProps, "children">;
 
 export type DynamicParam = string | number;
 export type DynamicString =

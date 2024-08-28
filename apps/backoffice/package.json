@@ -20,7 +20,6 @@
     "@app/ui": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/validators": "workspace:*",
-    "trpc-openapi": "catalog:",
     "@descope/nextjs-sdk": "catalog:",
     "@emotion/cache": "catalog:ui",
     "@emotion/react": "catalog:ui",
@@ -46,14 +45,21 @@
     "flowbite": "catalog:ui",
     "flowbite-react": "catalog:ui",
     "geist": "^1.3.0",
+    "http-browserify": "^1.7.0",
+    "https-browserify": "^1.0.0",
     "next": "catalog:",
+    "next-swagger-doc": "catalog:",
+    "openapi-types": "catalog:",
     "react": "catalog:react18",
     "react-admin": "^5.0.5",
     "react-dom": "catalog:react18",
     "react-icons": "catalog:ui",
     "server-only": "catalog:vercel",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^6.1.12",
     "superjson": "2.2.1",
+    "trpc-openapi": "catalog:",
+    "uuid": "^10.0.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -64,6 +70,7 @@
     "@types/node": "^20.14.9",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "catalog:ui",
     "dotenv-cli": "^7.4.2",
     "eslint": "catalog:",
@@ -73,6 +80,12 @@
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "catalog:",
     "typescript": "catalog:"
+  },
+  "browser": {
+    "http": false,
+    "https": false,
+    "stream": false,
+    "util": false
   },
   "prettier": "@app/prettier-config"
 }
