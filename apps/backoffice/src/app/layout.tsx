@@ -4,12 +4,9 @@ interface Props {
   children: ReactNode;
   params: {
     lng: string;
-  }
+  };
 }
 
-export default function RootLayout({
-  children
-}: Props) {
-
+export default function RootLayout({ children }: Props) {
   return children;
 }

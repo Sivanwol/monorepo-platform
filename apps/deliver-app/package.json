@@ -9,10 +9,7 @@
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
     "android": "expo run:android",
-    "ios": "expo run:ios",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@bacons/text-decoder": "^0.0.0",
@@ -43,7 +40,7 @@
     "superjson": "catalog:"
   },
   "devDependencies": {
-    "@app/api": "workspace:*",
+    "@app/platform-api": "workspace:*",
     "@app/eslint-config": "workspace:*",
     "@app/prettier-config": "workspace:*",
     "@app/tailwind-config": "workspace:*",

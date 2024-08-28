@@ -7,7 +7,11 @@ createJiti(fileURLToPath(import.meta.url))("./src/env");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
 
+  optimization: {
+    minimize: false,
+  },
   async headers() {
     return [
       {
@@ -31,7 +35,7 @@ const config = {
   },
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@app/api",
+    "@app/platform-api",
     "@app/auth",
     "@app/db",
     "@app/ui",

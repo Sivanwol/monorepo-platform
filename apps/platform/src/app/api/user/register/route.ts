@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { Avatar } from "@mui/material";
 
 import { repositories } from "@app/db/client";
 
@@ -10,8 +11,9 @@ export async function POST(_req: NextRequest) {
   const externalId = formData.externalId as string;
   const firstName = formData.firstName as string;
   const lastName = formData.lastName as string;
+  const avatar = formData.avatar as string;
   const email = formData.email as string;
-  const phone = (formData.phone || "") as string;
+  const phone = (formData.phone ?? "") as string;
   console.log(`register feedback from descope ${externalId}`);
   if (!(await repositories.user.locateUserByExternalId(externalId))) {
     console.log(`payload user info`, {
@@ -25,6 +27,7 @@ export async function POST(_req: NextRequest) {
       externalId,
       firstName,
       lastName,
+      avatar,
       email,
       phone,
     });

@@ -66,12 +66,8 @@
           "name": "client_logo_media_id_fk",
           "tableFrom": "client",
           "tableTo": "media",
-          "columnsFrom": [
-            "logo"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["logo"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -270,12 +266,8 @@
           "name": "user_client_id_client_id_fk",
           "tableFrom": "user",
           "tableTo": "client",
-          "columnsFrom": [
-            "client_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["client_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -283,12 +275,8 @@
           "name": "user_avatar_media_id_media_id_fk",
           "tableFrom": "user",
           "tableTo": "media",
-          "columnsFrom": [
-            "avatar_media_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["avatar_media_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -298,9 +286,7 @@
         "user_external_id_unique": {
           "name": "user_external_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "external_id"
-          ]
+          "columns": ["external_id"]
         }
       }
     }
@@ -322,11 +308,7 @@
     "public.gender": {
       "name": "gender",
       "schema": "public",
-      "values": [
-        "male",
-        "female",
-        "other"
-      ]
+      "values": ["male", "female", "other"]
     }
   },
   "schemas": {},

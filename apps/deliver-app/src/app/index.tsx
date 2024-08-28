@@ -43,13 +43,13 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
-      setTitle("");
-      setContent("");
-      await utils.post.all.invalidate();
-    },
-  });
+  // const { mutate, error } = api.post.create.useMutation({
+  //   async onSuccess() {
+  //     setTitle("");
+  //     setContent("");
+  //     await utils.post.all.invalidate();
+  //   },
+  // });
 
   return (
     <View className="mt-4 flex gap-2">
@@ -59,22 +59,22 @@ function CreatePost() {
         onChangeText={setTitle}
         placeholder="Title"
       />
-      {error?.data?.zodError?.fieldErrors.title && (
+      {/* {error?.data?.zodError?.fieldErrors.title && (
         <Text className="mb-2 text-destructive">
           {error.data.zodError.fieldErrors.title}
         </Text>
-      )}
+      )} */}
       <TextInput
         className="items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
         value={content}
         onChangeText={setContent}
         placeholder="Content"
       />
-      {error?.data?.zodError?.fieldErrors.content && (
+      {/* {error?.data?.zodError?.fieldErrors.content && (
         <Text className="mb-2 text-destructive">
           {error.data.zodError.fieldErrors.content}
         </Text>
-      )}
+      )} */}
       {/* <Pressable
         className="flex items-center rounded bg-primary p-2"
         onPress={() => {
@@ -86,11 +86,11 @@ function CreatePost() {
       >
         <Text className="text-foreground">Create</Text>
       </Pressable> */}
-      {error?.data?.code === "UNAUTHORIZED" && (
+      {/* {error?.data?.code === "UNAUTHORIZED" && (
         <Text className="mt-2 text-destructive">
           You need to be logged in to create a post
         </Text>
-      )}
+      )} */}
     </View>
   );
 }

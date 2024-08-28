@@ -1,9 +1,14 @@
-import { authRouter } from "./router/auth";
-import { settingsRouter } from "./router/settings";
+import {
+  authRouter,
+  NotificationRouter,
+  settingsRouter,
+} from "@app/shared-api";
+
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  notifications: NotificationRouter,
   settings: settingsRouter,
 });
 

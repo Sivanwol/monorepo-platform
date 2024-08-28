@@ -11,7 +11,9 @@ import { skipCSRFCheck } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { createSdk } from "@descope/nextjs-sdk/server";
+import { Avatar } from "@mui/material";
 import { fromUnixTime } from "date-fns";
+import gravatar from "gravatar";
 
 import type { MediaModel, UserModel } from "@app/db/client";
 import { db, repositories } from "@app/db/client";
@@ -30,9 +32,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -54,8 +56,7 @@ export const authConfig = {
 declare module "next-auth" {
   interface Session {
     user: {
-      image: string | null;
-      imageMedia: MediaModel | null;
+      avatar: string;
       phone: string | null; // Add the 'phone' property
     } & DefaultSession["user"];
     userProfile: UserModel | null;
@@ -94,6 +95,7 @@ const registerInitalUserForOnboarding = async (user: UserResponse) => {
       externalId: user.userId,
       firstName: splitName[0] ?? "",
       lastName: splitName[1] ?? "",
+      avatar: user.picture ?? gravatar.url(user.email ?? "", { s: "200" }),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       email: user.email!,
       phone: "",
@@ -108,20 +110,16 @@ const sendAndParseUserInformation = async (
 ) => {
   const { userId } = userResp;
   const user = await repositories.user.GetUserShortInfoByExternalId(userId);
-  let avatarUrl = "";
-  let media = null;
-  if (user?.avatar) {
-    media = await repositories.media.GetMediaById(user.avatar);
-    avatarUrl = env.BLOB_STORAGE_URL + media?.path;
-  }
   return {
     user: {
       id: userId,
       name: `${user?.firstName} ${user?.lastName}`,
       email: user?.email,
+      avatar:
+        user?.avatar ??
+        userResp.picture ??
+        gravatar.url(userResp.email ?? "", { s: "200" }),
       phone: user?.phone ?? null,
-      imageMedia: media,
-      image: user?.avatar ? avatarUrl : null,
     },
     userProfile: user,
     expires: fromUnixTime(authExpDate).toISOString(),
@@ -151,8 +149,6 @@ export const validateToken = async (
   const descopeUserInfo = res;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const authExpDate = authToken.exp!;
-  console.log(`locate user ${userId}`);
-  console.log("sessionToken", authToken);
   let user = await repositories.user.GetUserShortInfoByExternalId(userId);
   console.log(`found user ${userId}`, user);
   if (!user) {

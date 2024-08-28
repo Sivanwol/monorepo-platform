@@ -58,6 +58,7 @@ export default tseslint.config(
       ...turboPlugin.configs.recommended.rules,
       "@typescript-eslint/no-unsafe-assignment": "warn",
       "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/no-unsafe-return": "warn",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
@@ -76,6 +77,8 @@ export default tseslint.config(
           allowConstantLoopConditions: true,
         },
       ],
+      "@typescript-eslint/no-unsafe-argument": "warn",
+      "@typescript-eslint/require-await": "warn",
       "@typescript-eslint/no-non-null-assertion": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
       "@typescript-eslint/no-unsafe-member-access": "warn",

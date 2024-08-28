@@ -1,7 +1,7 @@
-import { DynamicStructure } from "../../type"
+import type { DynamicStructure } from "../../type";
 
 const translate: DynamicStructure = {
-  "title": "Home"
-}
+  title: "Home",
+};
 
-export default translate
+export default translate;

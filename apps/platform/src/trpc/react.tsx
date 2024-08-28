@@ -1,14 +1,14 @@
 "use client";
 
 import type { QueryClient } from "@tanstack/react-query";
-import React, { lazy, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@app/api";
+import type { AppRouter } from "@app/platform-api";
 
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";
@@ -20,7 +20,8 @@ const getQueryClient = () => {
     return createQueryClient();
   } else {
     // Browser: use singleton pattern to keep the same query client
-    return (clientQueryClientSingleton ??= createQueryClient());
+    clientQueryClientSingleton ??= createQueryClient();
+    return clientQueryClientSingleton;
   }
 };
 
@@ -54,14 +55,13 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           url: getBaseUrl() + "/api/trpc",
           headers() {
             const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
+            headers.set("x-trpc-source", "platform");
             return headers;
           },
         }),
       ],
     }),
   );
-
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
@@ -69,9 +69,9 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
       </api.Provider>
       <ReactQueryDevtools initialIsOpen={false} />
       {showDevtools && (
-        <React.Suspense fallback={null}>
+        <Suspense fallback={null}>
           <ReactQueryDevtoolsProduction />
-        </React.Suspense>
+        </Suspense>
       )}
     </QueryClientProvider>
   );
