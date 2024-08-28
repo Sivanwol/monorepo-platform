@@ -9,6 +9,9 @@ const config = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
 
+  optimization: {
+    minimize: false,
+  },
   async headers() {
     return [
       {

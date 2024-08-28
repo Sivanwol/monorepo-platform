@@ -16,6 +16,9 @@ const config = {
     });
     return config;
   },
+  optimization: {
+    minimize: false,
+  },
 
   async headers() {
     return [
