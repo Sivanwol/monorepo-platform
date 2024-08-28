@@ -3,10 +3,10 @@ import { get } from "@vercel/edge-config";
 import { env } from "@app/auth/env";
 import { EdgeConfig } from "@app/utils";
 
-import { protectedProcedure } from "../trpc";
+import { publicProcedure } from "../trpc";
 
 export const settingsRouter = {
-  checkMaintenanceStatus: protectedProcedure.query(async () => {
+  checkMaintenanceStatus: publicProcedure.query(async () => {
     console.log("checking maintenance status");
     try {
       const res = await get(EdgeConfig.backofficeMaintenance);

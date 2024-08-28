@@ -1,4 +1,5 @@
 import type { AuthenticationInfo } from "@descope/node-sdk";
+import type { OpenApiMeta } from "trpc-openapi";
 import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
@@ -49,16 +50,20 @@ const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter: ({ shape, error }) => ({
-    ...shape,
-    data: {
-      ...shape.data,
-      zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
-    },
-  }),
-});
+const t = initTRPC
+  .context<typeof createTRPCContext>()
+  .meta<OpenApiMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter: ({ shape, error }) => ({
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    }),
+  });
 
 /**
  * Create a server-side caller

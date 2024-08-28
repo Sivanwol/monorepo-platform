@@ -20,6 +20,7 @@
     "@app/ui": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/validators": "workspace:*",
+    "trpc-openapi": "catalog:",
     "@descope/nextjs-sdk": "catalog:",
     "@emotion/cache": "catalog:ui",
     "@emotion/react": "catalog:ui",

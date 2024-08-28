@@ -5,10 +5,12 @@ packages:
 
 catalog:
   "@tanstack/react-query": ^5.51.9
+  "@tanstack/react-form": ^0.31.0
   "@tanstack/react-query-devtools": ^5.51.11
   "@trpc/client": ^11.0.0-rc.466
   "@trpc/react-query": ^11.0.0-rc.466
   "@trpc/server": ^11.0.0-rc.466
+  "trpc-openapi": ^1.2.0
   eslint: ^9.6.0
   prettier: ^3.3.2
   typescript: ^5.5.3

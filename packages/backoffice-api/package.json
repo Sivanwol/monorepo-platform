@@ -22,6 +22,7 @@
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/shared-api": "workspace:*",
+    "trpc-openapi": "catalog:",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
