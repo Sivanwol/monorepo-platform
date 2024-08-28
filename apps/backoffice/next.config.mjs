@@ -8,6 +8,7 @@ createJiti(fileURLToPath(import.meta.url))("./src/env");
 const config = {
   reactStrictMode: true,
 
+  productionBrowserSourceMaps: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -39,7 +40,8 @@ const config = {
   },
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@app/api",
+    "@app/platform-api",
+    "@app/backoffice-api",
     "@app/auth",
     "@app/db",
     "@app/ui",
