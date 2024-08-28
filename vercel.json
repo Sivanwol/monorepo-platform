@@ -2,6 +2,9 @@
   "framework": "nextjs",
   "cleanUrls": true,
   "crons": [],
+  "options": {
+    "sourcemaps": "production"
+  },
   "git": {
     "deploymentEnabled": {
       "master": false,
