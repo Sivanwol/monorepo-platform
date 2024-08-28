@@ -18,6 +18,53 @@ import * as Icons from "react-icons/hi2";
 import type { MenuGroup, SidebarProps } from "./type";
 
 export * from "./type";
+
+export const SideItemNoCollapsed = ({
+  group,
+  rootIndex,
+}: {
+  group: MenuGroup;
+  rootIndex: number;
+}) => {
+  const Icon = Icons[group.icon as keyof typeof Icons];
+  return (
+    <ListItemButton href={group.route ?? ""}>
+      <ListItemText primary={group.label} />
+    </ListItemButton>
+  );
+};
+
+export const SideItemWithChildren = ({
+  group,
+  rootIndex,
+}: {
+  group: MenuGroup;
+  rootIndex: number;
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+  return (
+    <>
+      <ListItemButton onClick={handleClick}>
+        <ListItemText primary={group.label} />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding key={"submenu_" + rootIndex}>
+          {group.items.map((t, index) => (
+            <ListItemButton sx={{ pl: 4 }} href={t.route || ""}>
+              <ListItemText secondary={t.label} />
+            </ListItemButton>
+          ))}
+        </List>
+      </Collapse>
+    </>
+  );
+};
+
 export const SidebarArea = ({
   sidebarOpen,
   setSidebarOpen,
@@ -27,11 +74,10 @@ export const SidebarArea = ({
 }: SidebarProps) => {
   return (
     <aside
-      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-auto border-r bg-white lg:static lg:translate-x-0 ${
-        sidebarOpen
-          ? "translate-x-0 duration-300 ease-linear"
-          : "-translate-x-full"
-      }`}
+      className={`z-9999 w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-auto border-r bg-white lg:static lg:translate-x-0 ${sidebarOpen
+        ? "translate-x-0 duration-300 ease-linear"
+        : "-translate-x-full"
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="py-5.5 lg:py-6.5 flex items-center justify-between gap-2 px-6 xl:py-10">
@@ -96,61 +142,5 @@ export const SidebarArea = ({
         </ListItemButton>
       </List>
     </aside>
-  );
-};
-
-export const SideItemNoCollapsed = ({
-  group,
-  rootIndex,
-}: {
-  group: MenuGroup;
-  rootIndex: number;
-}) => {
-  const Icon = Icons[group.icon as keyof typeof Icons];
-  return (
-    <ListItemButton href={group.route ?? ""}>
-      {group.icon !== "" && (
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-      )}
-      <ListItemText primary={group.label} />
-    </ListItemButton>
-  );
-};
-export const SideItemWithChildren = ({
-  group,
-  rootIndex,
-}: {
-  group: MenuGroup;
-  rootIndex: number;
-}) => {
-  const [open, setOpen] = React.useState(false);
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  const Icon = Icons[group.icon as keyof typeof Icons];
-  return (
-    <>
-      <ListItemButton onClick={handleClick}>
-        {group.icon !== "" && (
-          <ListItemIcon>
-            <Icon />
-          </ListItemIcon>
-        )}
-        <ListItemText primary={group.label} />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding key={"submenu_" + rootIndex}>
-          {group.items.map((t, index) => (
-            <ListItemButton sx={{ pl: 4 }} href={t.route || ""}>
-              <ListItemText secondary={t.label} />
-            </ListItemButton>
-          ))}
-        </List>
-      </Collapse>
-    </>
   );
 };
