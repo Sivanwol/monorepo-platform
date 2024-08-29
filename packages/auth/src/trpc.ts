@@ -1,12 +1,13 @@
 import type { AuthenticationInfo } from "@descope/node-sdk";
+import type { OpenApiMeta } from "trpc-openapi";
 import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
+import { v4 as uuidV4 } from "uuid";
 import { ZodError } from "zod";
-import { v4 as uuidV4 } from 'uuid';
+
 import { validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
-import type { OpenApiMeta } from "trpc-openapi";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
@@ -20,7 +21,7 @@ export const createTRPCContext = async (opts: {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
   const descopeSession = session();
   const requestId = uuidV4();
-  opts.headers.set('x-request-id', requestId);
+  opts.headers.set("x-request-id", requestId);
   console.log(
     ">>> tRPC Request from",
     source,
@@ -29,12 +30,14 @@ export const createTRPCContext = async (opts: {
   );
   console.log(`checking session... ${descopeSession?.token.sub} `);
   let jwtSession: AuthenticationInfo | null = null;
-  if (opts.headers.get("Authorization")?.replace("Bearer ", "") !== "" && !descopeSession) {
+  if (
+    opts.headers.get("Authorization")?.replace("Bearer ", "") !== "" &&
+    !descopeSession
+  ) {
     jwtSession = {
       jwt: opts.headers.get("Authorization")?.replace("Bearer ", "") ?? "",
-      token: {
-      },
-    }
+      token: {},
+    };
   }
   return {
     session: descopeSession ?? jwtSession,
@@ -124,8 +127,9 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!auth?.user?.id) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: `User not located user id - ${auth?.descopeSession?.userId ?? "N/A"
-        } has no db record or not existed user`,
+      message: `User not located user id - ${
+        auth?.descopeSession?.userId ?? "N/A"
+      } has no db record or not existed user`,
     });
   }
 
@@ -144,4 +148,3 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     },
   });
 });
-

@@ -21,4 +21,10 @@ export {
   isSecureContext,
 } from "./config";
 
-export { createTRPCRouter, createTRPCContext, createCallerFactory, publicProcedure, protectedProcedure } from "./trpc"
+export {
+  createTRPCRouter,
+  createTRPCContext,
+  createCallerFactory,
+  publicProcedure,
+  protectedProcedure,
+} from "./trpc";

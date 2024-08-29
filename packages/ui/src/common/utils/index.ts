@@ -1,1 +1,1 @@
-export * from './reactSwagger';
+export * from "./reactSwagger";

@@ -1,5 +1,6 @@
 import { createSwaggerSpec } from "next-swagger-doc";
-import 'server-only';
+
+import "server-only";
 
 export const getApiDocs = async () => {
   const spec = createSwaggerSpec({

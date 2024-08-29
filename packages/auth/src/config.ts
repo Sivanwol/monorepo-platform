@@ -6,6 +6,7 @@ import type {
 
 import "next-auth/jwt";
 
+import type { AuthenticationInfo } from "@descope/node-sdk";
 import { skipCSRFCheck } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -14,10 +15,10 @@ import { fromUnixTime } from "date-fns";
 import gravatar from "gravatar";
 
 import type { UserModel } from "@app/db/client";
+import type { UserResponse } from "@app/utils";
 import { db, repositories } from "@app/db/client";
 
 import { env } from "../env";
-import type { AuthenticationInfo } from "@descope/node-sdk";
 
 const adapter = DrizzleAdapter(db);
 
@@ -31,9 +32,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-      skipCSRFCheck: skipCSRFCheck,
-      trustHost: true,
-    }
+        skipCSRFCheck: skipCSRFCheck,
+        trustHost: true,
+      }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -62,26 +63,6 @@ declare module "next-auth" {
   }
 }
 
-/** User base details from Descope API */
-interface User {
-  email?: string;
-  name?: string;
-  givenName?: string;
-  middleName?: string;
-  familyName?: string;
-  phone?: string;
-}
-/** User extended details from Descope API */
-type UserResponse = User & {
-  loginIds: string[];
-  userId: string;
-  verifiedEmail?: boolean;
-  verifiedPhone?: boolean;
-  picture?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  customAttributes?: Record<string, any>;
-  status: string;
-};
 const registerInitialUserForOnboarding = async (user: UserResponse) => {
   console.log(`check if user by id ${user.userId} need do onboarding`);
   const requiredOnborading = await repositories.user.HasUserNeedOnBoarding(
@@ -128,9 +109,9 @@ const sendAndParseUserInformation = async (
 export const validateToken = async (
   token: string,
 ): Promise<{
-  session: NextAuthSession,
-  descopeSession: UserResponse | undefined,
-  token: AuthenticationInfo | null,
+  session: NextAuthSession;
+  descopeSession: UserResponse | undefined;
+  token: AuthenticationInfo | null;
   user: UserModel | null;
 } | null> => {
   console.log(`validate token`);
@@ -161,10 +142,13 @@ export const validateToken = async (
     user = await repositories.user.GetUserShortInfoByExternalId(userId);
   }
   return {
-    session: sendAndParseUserInformation(descopeUserInfo, authExpDate) as unknown as NextAuthSession,
+    session: sendAndParseUserInformation(
+      descopeUserInfo,
+      authExpDate,
+    ) as unknown as NextAuthSession,
     descopeSession: res as UserResponse,
     token: sessionRes,
-    user: user
+    user: user,
   };
 };
 

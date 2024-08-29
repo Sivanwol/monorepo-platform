@@ -1,7 +1,7 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq, isNull, or } from "drizzle-orm";
 
-import type { RegisterUserRequest, OnBoardAdminUserRequest } from "@app/utils";
+import type { OnBoardAdminUserRequest, RegisterUserRequest } from "@app/utils";
 
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
@@ -9,7 +9,7 @@ import * as schema from "../schema";
 import { CreateUserSchema, User } from "../schema";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) { }
+  constructor(public db: VercelPgDatabase<typeof schema>) {}
 
   public async GetUserById(
     user_id: number,
@@ -63,10 +63,7 @@ export class UserRepository {
   public async HasUserNeedOnBoarding(externalId: string): Promise<boolean> {
     console.log(`check user ${externalId} need onboarding`);
     const user = await this.db.query.User.findFirst({
-      where: and(
-        eq(User.externalId, externalId),
-        isNull(User.onboardingAt),
-      ),
+      where: and(eq(User.externalId, externalId), isNull(User.onboardingAt)),
     });
     return !user;
   }
@@ -96,8 +93,10 @@ export class UserRepository {
     );
   }
 
-
-  public async BoardingAdminUser(userId: number, payload: OnBoardAdminUserRequest) {
+  public async BoardingAdminUser(
+    userId: number,
+    payload: OnBoardAdminUserRequest,
+  ) {
     console.log(`update user ${userId} onboarding`);
     if (await this.HasUserExist(userId)) {
       const user = await this.db.query.User.findFirst({
@@ -111,7 +110,7 @@ export class UserRepository {
           gender: payload.gender,
           aboutMe: payload.aboutMe ?? user?.aboutMe,
           avatar: payload.avatar ?? user?.avatar,
-          onboardingAt: new Date()
+          onboardingAt: new Date(),
         })
         .where(eq(User.id, userId));
       // #TODO: add login when user enter phone MFA is enforce also when user do login MFA will be required (check ways do so on descope!)
@@ -119,8 +118,8 @@ export class UserRepository {
         await this.db
           .update(User)
           .set({
-            phone: payload.phone!,
-            verifyPhoneAt: null
+            phone: payload.phone,
+            verifyPhoneAt: null,
           })
           .where(eq(User.id, userId));
       } else {

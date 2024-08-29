@@ -1,9 +1,7 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod";
 
-import { descopeSdk } from "@app/auth";
-
-import { protectedProcedure, publicProcedure } from "@app/auth";
+import { descopeSdk, protectedProcedure, publicProcedure } from "@app/auth";
 
 export const authRouter = {
   getUser: protectedProcedure.query(({ ctx }) => {

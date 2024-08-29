@@ -6,12 +6,11 @@ import {
   userRouter,
 } from "@app/shared-api";
 
-
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   notifications: NotificationRouter,
   settings: settingsRouter,
-  user: userRouter
+  user: userRouter,
 });
 
 // export type definition of API

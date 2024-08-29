@@ -7,7 +7,7 @@ export type LayoutCommonProps = BaseCommonProps & {
   params: {
     lng: string;
   };
-}
+};
 export type Namespaces = "home" | "dashboardLayout" | "support";
 export type PageCommonProps = Omit<LayoutCommonProps, "children">;
 export type BasePageCommonProps = Omit<BaseCommonProps, "children">;

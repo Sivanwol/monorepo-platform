@@ -1,7 +1,8 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import SuperJSON from "superjson";
+
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
-import SuperJSON from 'superjson';
 
 export const runtime = "edge";
 
@@ -43,9 +44,12 @@ const handler = auth(async (req) => {
         input = JSON.parse(param);
       }
       if (req.method === "POST") {
-        input = await req.json() as Record<string, unknown>;
+        input = (await req.json()) as Record<string, unknown>;
       }
-      console.error(`>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`, error);
+      console.error(
+        `>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`,
+        error,
+      );
     },
   });
 

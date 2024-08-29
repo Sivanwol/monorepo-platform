@@ -12,8 +12,7 @@ export const NotificationRouter = {
     console.log("getting last notification");
     try {
       const res = await ctx.repositories.notification.GetLastNotification(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ctx.session.user!.id,
+        ctx.session.user.id,
       );
       return { items: res };
     } catch (error) {
