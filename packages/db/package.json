@@ -31,10 +31,10 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@t3-oss/env-core": "^0.10.1",
-    "@vercel/postgres": "^0.9.0",
     "@app/utils": "workspace:*",
+    "@t3-oss/env-core": "^0.10.1",
     "@vercel/kv": "catalog:vercel",
+    "@vercel/postgres": "^0.9.0",
     "date-fns": "catalog:",
     "drizzle-orm": "^0.31.2",
     "drizzle-zod": "^0.5.1",

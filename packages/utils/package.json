@@ -18,8 +18,8 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "bcrypt-edge": "catalog:",
     "@descope/nextjs-sdk": "catalog:",
+    "@descope/node-sdk": "catalog:",
     "@reduxjs/toolkit": "catalog:store",
     "react-redux": "catalog:store"
   },

@@ -1,4 +1,3 @@
-// TODO fix this eslint error and see how better handle
 import type {
   DefaultSession,
   NextAuthConfig,
@@ -14,10 +13,11 @@ import { createSdk } from "@descope/nextjs-sdk/server";
 import { fromUnixTime } from "date-fns";
 import gravatar from "gravatar";
 
-import type { MediaModel, UserModel } from "@app/db/client";
+import type { UserModel } from "@app/db/client";
 import { db, repositories } from "@app/db/client";
 
 import { env } from "../env";
+import type { AuthenticationInfo } from "@descope/node-sdk";
 
 const adapter = DrizzleAdapter(db);
 
@@ -82,7 +82,7 @@ type UserResponse = User & {
   customAttributes?: Record<string, any>;
   status: string;
 };
-const registerInitalUserForOnboarding = async (user: UserResponse) => {
+const registerInitialUserForOnboarding = async (user: UserResponse) => {
   console.log(`check if user by id ${user.userId} need do onboarding`);
   const requiredOnborading = await repositories.user.HasUserNeedOnBoarding(
     user.userId,
@@ -127,7 +127,12 @@ const sendAndParseUserInformation = async (
 
 export const validateToken = async (
   token: string,
-): Promise<NextAuthSession | null> => {
+): Promise<{
+  session: NextAuthSession,
+  descopeSession: UserResponse | undefined,
+  token: AuthenticationInfo | null,
+  user: UserModel | null;
+} | null> => {
   console.log(`validate token`);
   let sessionRes = null;
   try {
@@ -152,15 +157,20 @@ export const validateToken = async (
   console.log(`found user ${userId}`, user);
   if (!user) {
     console.warn(`User not register need onboarding ${userId}`);
-    await registerInitalUserForOnboarding(descopeUserInfo);
+    await registerInitialUserForOnboarding(descopeUserInfo);
     user = await repositories.user.GetUserShortInfoByExternalId(userId);
   }
-  return sendAndParseUserInformation(descopeUserInfo, authExpDate);
+  return {
+    session: sendAndParseUserInformation(descopeUserInfo, authExpDate) as unknown as NextAuthSession,
+    descopeSession: res as UserResponse,
+    token: sessionRes,
+    user: user
+  };
 };
 
-export const fetchCurrentDescopeUserDetails = async (extrenalId: string) => {
-  console.log(`fetch user details ${extrenalId}`);
-  const request = await descopeSdk.management.user.loadByUserId(extrenalId);
+export const fetchCurrentDescopeUserDetails = async (externalId: string) => {
+  console.log(`fetch user details ${externalId}`);
+  const request = await descopeSdk.management.user.loadByUserId(externalId);
   if (request.ok) {
     return request.data;
   }

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1724071528331,
-      "tag": "0000_complete_jean_grey",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1724587588889,
-      "tag": "0002_dry_nightcrawler",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1724678714818,
-      "tag": "0002_glamorous_lady_ursula",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1724707929409,
-      "tag": "0003_boring_catseye",
+      "when": 1724928303386,
+      "tag": "0000_spicy_marvel_apes",
       "breakpoints": true
     }
   ]

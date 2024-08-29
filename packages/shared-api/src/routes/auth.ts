@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { descopeSdk } from "@app/auth";
 
-import { protectedProcedure, publicProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "@app/auth";
 
 export const authRouter = {
   getUser: protectedProcedure.query(({ ctx }) => {

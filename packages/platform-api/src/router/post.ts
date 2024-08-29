@@ -4,7 +4,7 @@ import { z } from "zod";
 import { desc, eq } from "@app/db";
 import { CreateMediaSchema, Media } from "@app/db/schema";
 
-import { protectedProcedure, publicProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "@app/auth";
 
 export const postRouter = {
   all: publicProcedure.query(({ ctx }) => {

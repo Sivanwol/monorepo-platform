@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { protectedProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "@app/auth";
 
 export const NotificationEvent = new EventEmitter();
 export interface NotificationEventModel {

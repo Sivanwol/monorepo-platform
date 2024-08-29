@@ -36,9 +36,6 @@ catalogs:
     '@types/uuid':
       specifier: ^10.0.0
       version: 10.0.0
-    bcrypt-edge:
-      specifier: ^0.0.6
-      version: 0.0.6
     date-fns:
       specifier: ^3.6.0
       version: 3.6.0
@@ -881,6 +878,9 @@ importers:
       superjson:
         specifier: 'catalog:'
         version: 2.2.1
+      trpc-openapi:
+        specifier: 'catalog:'
+        version: 1.2.0(@trpc/server@11.0.0-rc.466)(zod@3.23.8)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -915,6 +915,9 @@ importers:
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
+      '@descope/node-sdk':
+        specifier: 'catalog:'
+        version: 1.6.9
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
@@ -924,6 +927,9 @@ importers:
       superjson:
         specifier: 'catalog:'
         version: 2.2.1
+      trpc-openapi:
+        specifier: 'catalog:'
+        version: 1.2.0(@trpc/server@11.0.0-rc.466)(zod@3.23.8)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -1082,12 +1088,12 @@ importers:
       '@descope/nextjs-sdk':
         specifier: 'catalog:'
         version: 0.0.23(@types/react@18.3.3)(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+      '@descope/node-sdk':
+        specifier: 'catalog:'
+        version: 1.6.9
       '@reduxjs/toolkit':
         specifier: catalog:store
         version: 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
-      bcrypt-edge:
-        specifier: 'catalog:'
-        version: 0.0.6
       react-redux:
         specifier: catalog:store
         version: 9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1)
@@ -4819,9 +4825,6 @@ packages:
   basic-ftp@5.0.5:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
-
-  bcrypt-edge@0.0.6:
-    resolution: {integrity: sha512-lL5Y2V6RCwGvfY/6lIUGM8N1XfRwU0ncIr3dZO6d64KfaDQERcv/9TMWtUkiANxawg1BPvLlfjvanFOXmUIZwA==}
 
   better-opn@3.0.2:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
@@ -14959,8 +14962,6 @@ snapshots:
   base64-js@1.5.1: {}
 
   basic-ftp@5.0.5: {}
-
-  bcrypt-edge@0.0.6: {}
 
   better-opn@3.0.2:
     dependencies:

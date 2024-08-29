@@ -1,6 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
+import SuperJSON from 'superjson';
 
 export const runtime = "edge";
 
@@ -32,8 +33,19 @@ const handler = auth(async (req) => {
       createTRPCContext({
         headers: req.headers,
       }),
-    onError({ error, path }) {
-      console.error(`>>> tRPC Error on '${path}'`, error);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    async onError({ error, path, req }) {
+      let input: Record<string, unknown> = {};
+      if (req.method === "GET") {
+        const { searchParams } = new URL(req.url);
+        const param = searchParams.get("input") ?? "{}";
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        input = JSON.parse(param);
+      }
+      if (req.method === "POST") {
+        input = await req.json() as Record<string, unknown>;
+      }
+      console.error(`>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`, error);
     },
   });
 

@@ -80,7 +80,14 @@ export class UserRepository {
     const result = CreateUserSchema.safeParse(userData);
     if (result.success) {
       console.log(`insert user ${userData.externalId} payload `);
-      await this.db.insert(User).values(result.data);
+      await this.db.insert(User).values({
+        externalId: userData.externalId,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        avatar: userData.avatar,
+        phone: userData.phone,
+      });
       return;
     }
     console.log(

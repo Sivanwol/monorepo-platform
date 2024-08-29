@@ -4,7 +4,7 @@ import { z } from "zod";
 import { CreateMediaSchema, Media, OnBoardAdminUserSchema } from "@app/db/schema";
 import { createSdk } from "@descope/nextjs-sdk/server";
 import type { AuthenticationInfo } from "@descope/node-sdk";
-import { protectedProcedure, publicProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "@app/auth";
 import { genders } from "@app/utils";
 
 const descopeSdk = createSdk({
@@ -43,6 +43,7 @@ export const userRouter = {
       phone: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
+      console.log(`onboarding user... ${JSON.stringify(input)} `);
       const validPerm = descopeSdk.validatePermissions(ctx.session.token as unknown as AuthenticationInfo, ["backoffice"]);
       if (!validPerm) {
         throw new TRPCError({
@@ -50,8 +51,8 @@ export const userRouter = {
           message: "You are not authorized to perform this action",
         });
       }
-      if (await ctx.repositories.user.HasUserNeedOnBoarding(ctx.session.token.sub!)) {
-        await ctx.repositories.user.BoardingAdminUser(ctx.session.user?.id!, {
+      if (await ctx.repositories.user.HasUserNeedOnBoarding(ctx.session.descopeUser?.userId!)) {
+        await ctx.repositories.user.BoardingAdminUser(ctx.session.user.id, {
           firstName: input.firstName,
           lastName: input.lastName,
           gender: input.gender,

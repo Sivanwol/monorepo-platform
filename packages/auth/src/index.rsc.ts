@@ -20,3 +20,5 @@ export {
   validateToken,
   isSecureContext,
 } from "./config";
+
+export { createTRPCRouter, createTRPCContext, createCallerFactory, publicProcedure, protectedProcedure } from "./trpc"
