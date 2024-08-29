@@ -40,7 +40,7 @@ export class BaseService {
     if (permissions.length === 0) {
       return true;
     }
-
+    debugger;
     const validPerm = descopeSdk.validatePermissions(
       this.ctx.session.token as unknown as AuthenticationInfo,
       permissions,

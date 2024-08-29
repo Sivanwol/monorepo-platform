@@ -18,7 +18,7 @@ export const Header = ({
   user,
 }: HeaderProps) => {
   return (
-    <header className="z-999 border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white">
+    <header className="border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white" style={{ zIndex: 999 }}>
       <div className="shadow-2 flex flex-grow items-center justify-between px-4 py-5 md:px-5 2xl:px-10">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -31,36 +31,31 @@ export const Header = ({
               setSidebarOpen(!sidebarOpen && !blockActions);
             }}
             title={translations.toggleSidebar}
-            className="z-99999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
+            className="z-999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
           >
             <span className="h-5.5 w-5.5 relative block cursor-pointer">
               <span className="du-block absolute right-0 h-full w-full">
                 <span
-                  className={`bg-dark delay-[0] relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!w-full delay-300"
-                  }`}
+                  className={`bg-dark delay-[0] relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!w-full delay-300"
+                    }`}
                 ></span>
                 <span
-                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-150 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "delay-400 !w-full"
-                  }`}
+                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-150 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "delay-400 !w-full"
+                    }`}
                 ></span>
                 <span
-                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-200 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!w-full delay-500"
-                  }`}
+                  className={`bg-dark relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm delay-200 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!w-full delay-500"
+                    }`}
                 ></span>
               </span>
               <span className="absolute right-0 h-full w-full rotate-45">
                 <span
-                  className={`bg-dark absolute left-2.5 top-0 block h-full w-0.5 rounded-sm delay-300 duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!delay-[0] !h-0"
-                  }`}
+                  className={`bg-dark absolute left-2.5 top-0 block h-full w-0.5 rounded-sm delay-300 duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!delay-[0] !h-0"
+                    }`}
                 ></span>
                 <span
-                  className={`delay-400 bg-dark absolute left-0 top-2.5 block h-0.5 w-full rounded-sm duration-200 ease-in-out dark:bg-white ${
-                    !sidebarOpen && "!h-0 !delay-200"
-                  }`}
+                  className={`delay-400 bg-dark absolute left-0 top-2.5 block h-0.5 w-full rounded-sm duration-200 ease-in-out dark:bg-white ${!sidebarOpen && "!h-0 !delay-200"
+                    }`}
                 ></span>
               </span>
             </span>
