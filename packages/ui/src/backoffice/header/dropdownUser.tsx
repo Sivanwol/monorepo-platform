@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { useDescope } from "@descope/nextjs-sdk/client";
 import { Avatar, Button } from "@mui/material";
 import { FaUserCircle } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
-import { MdLogout } from "react-icons/md";
+import { MdHistoryToggleOff, MdLogout } from "react-icons/md";
 
 import { ClickOutside } from "@app/ui";
 
@@ -108,11 +107,11 @@ export const DropdownUser = ({
 
             <li>
               <Link
-                href={`/${lng}/platform/user/settings`}
+                href={`/${lng}/platform/user/security`}
                 className="text-dark-4 hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium duration-300 ease-in-out dark:hover:text-white lg:text-base"
               >
-                <IoSettingsSharp />
-                {translations.userSettings}
+                <MdHistoryToggleOff />
+                {translations.securityAudit}
               </Link>
             </li>
           </ul>

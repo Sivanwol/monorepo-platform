@@ -29,6 +29,7 @@ export const initTranslation = async (lng: string) => {
     dashboardLayout: (await import(`./locales/${currentLng}/dashboard-layout`))
       .default,
     support: (await import(`./locales/${currentLng}/support`)).default,
+    userHistory: (await import(`./locales/${currentLng}/user-history`)).default,
   };
   console.log(`Translations loaded for ${currentLng}`);
 };

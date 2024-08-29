@@ -1,24 +1,39 @@
 import { TRPCError } from "@trpc/server";
+import { fromUnixTime } from "date-fns";
 
+import type { UserAuditInfo } from "@app/utils";
 import { descopeSdk } from "@app/auth";
 
 import type { InputOnboardingAdminUserPayload } from "./types";
 import { BaseService } from "./base.service";
 
 export class UserService extends BaseService {
-  public async fetchAuditUser(userId: string) {
+  public async fetchAuditUser(userId: string): Promise<UserAuditInfo[]> {
     const searchOptions = {
       userIds: [userId],
+      tenants: ["T2lLM64ZZh1o1nAjWuWmSw1iA1Mu"],
+      from: Date.now() - 10 * 24 * 60 * 60 * 1000,
       actions: ["LoginSucceed"],
     };
-    const aduitRes = await descopeSdk.management.audit.search(searchOptions);
-    if (!aduitRes.ok) {
+    const auditRes = await descopeSdk.management.audit.search(searchOptions);
+    if (!auditRes.ok) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "No aduit found for user",
       });
     }
-    return aduitRes.data ?? [];
+    return (
+      auditRes.data?.map((item) => ({
+        device: item.device,
+        geo: item.geo,
+        remoteAddress: item.remoteAddress,
+        browser: item.data.browser as string,
+        os: item.data.os as string,
+        osVersion: item.data.osVersion as string,
+        providerName: item.data.providerName as string,
+        occurred: fromUnixTime(item.occurred),
+      })) ?? []
+    );
   }
   public async onBoardAdminUser(
     userId: number,

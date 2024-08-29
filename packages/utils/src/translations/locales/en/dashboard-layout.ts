@@ -6,9 +6,10 @@ const translate: DynamicStructure = {
   dashboard: "Dashboard",
   support: "Help & Support",
   "toggle-sidebar": "Toggle Sidebar",
+  homepageTitle: "Dashboard",
   user: {
     profile: "User Profile",
-    settings: "Settings",
+    securityAudit: "Login History",
     logout: "Logout",
   },
   notifications: {

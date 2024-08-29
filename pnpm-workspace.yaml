@@ -5,7 +5,6 @@ packages:
 
 catalog:
   "@tanstack/react-query": ^5.51.9
-  "@tanstack/react-form": ^0.31.0
   "@tanstack/react-query-devtools": ^5.51.11
   "@trpc/client": ^11.0.0-rc.466
   "@trpc/react-query": ^11.0.0-rc.466
@@ -71,7 +70,9 @@ catalogs:
     "postcss": ^8
     "autoprefixer": ^10.4.19
     "react-icons": ^5.2.1
-    "@tanstack/react-table": ^8.19.2
+    "@tanstack/react-table": ^8.20.5
+    "@tanstack/zod-form-adapter": ^0.31.0
+    "@tanstack/react-form": ^0.31.0
     "flowbite": 1.7.0
     "flowbite-react": ^0.10.1
     "@mui/material": ^5.16.4

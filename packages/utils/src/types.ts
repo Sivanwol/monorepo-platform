@@ -1,3 +1,5 @@
+import type { Namespaces } from "./translations";
+
 export const genders = ["male", "female", "other"] as const;
 export type Gender = "male" | "female" | "other";
 
@@ -21,3 +23,23 @@ export type UserResponse = User & {
   customAttributes?: Record<string, any>;
   status: string;
 };
+
+export interface UserAuditInfo {
+  device: string;
+  geo: string;
+  remoteAddress: string;
+  browser: string;
+  os: string;
+  osVersion: string;
+  providerName: string;
+  occurred: Date;
+}
+
+export interface SupportProps {
+  lng: string;
+  ns: Namespaces;
+}
+
+export interface BreadcrumbProps {
+  homepageTitle: string;
+}

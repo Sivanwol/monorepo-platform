@@ -42,7 +42,11 @@ export const userRouter = {
           ctx.session.descopeUser?.userId ?? "",
         );
       } else {
-        if (!service.verifyPermissions([backofficePermmisions.UserTrack] as string[])) {
+        if (
+          !service.verifyPermissions([
+            backofficePermmisions.UserTrack,
+          ] as string[])
+        ) {
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "You are not authorized to perform this action",

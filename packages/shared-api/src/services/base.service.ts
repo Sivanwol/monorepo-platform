@@ -25,8 +25,9 @@ export class BaseService {
       return true;
     }
 
-    const validRoles = descopeSdk.validateRoles(
+    const validRoles = descopeSdk.validateTenantRoles(
       this.ctx.session.token as unknown as AuthenticationInfo,
+      "T2lLM64ZZh1o1nAjWuWmSw1iA1Mu",
       roles,
     );
     if (!validRoles) {
@@ -40,9 +41,9 @@ export class BaseService {
     if (permissions.length === 0) {
       return true;
     }
-    debugger;
-    const validPerm = descopeSdk.validatePermissions(
+    const validPerm = descopeSdk.validateTenantPermissions(
       this.ctx.session.token as unknown as AuthenticationInfo,
+      "T2lLM64ZZh1o1nAjWuWmSw1iA1Mu",
       permissions,
     );
     if (!validPerm) {
