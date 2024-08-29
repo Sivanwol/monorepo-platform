@@ -4,14 +4,15 @@ import type { PageCommonProps } from "@app/utils";
 import { LoadingPage, SupportAndHelp } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
-import { HydrateClient } from "~/trpc/server";
+import { api, HydrateClient } from "~/trpc/server";
 
 export const runtime = "edge";
 export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
-
-  console.log("lng", lng);
+  const user = await api.auth.getUser();
+  const aduit = await api.user.securityAudit(user.id);
+  console.log("lng", lng, aduit);
   await initTranslation(lng);
   return (
     <HydrateClient>
@@ -22,7 +23,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
-              <SupportAndHelp lng={lng} ns="support" />
+              {aduit ? JSON.stringify(aduit) : JSON.stringify([])}
             </Suspense>
           </div>
         </div>
