@@ -4,8 +4,6 @@ import type { PageCommonProps } from "@app/utils";
 import { LoadingPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
-export const runtime = "edge";
-
 export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   await initTranslation(lng);
