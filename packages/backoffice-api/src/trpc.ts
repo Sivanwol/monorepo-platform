@@ -17,6 +17,7 @@ export const createTRPCContext = async (opts: {
   db: typeof db;
   repositories: typeof repositories;
   requestId: string;
+  user: UserModel | null;
   // eslint-disable-next-line @typescript-eslint/require-await
 }> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
@@ -33,6 +34,7 @@ export const createTRPCContext = async (opts: {
     db,
     repositories,
     requestId,
+    user: null,
   };
 };
 /**
@@ -126,11 +128,9 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
         token: { ...ctx.session?.token },
         descopeUser: auth.user,
         user: auth.userProfile,
+        requestId: ctx.requestId,
       },
     },
   });
 });
-function uuid() {
-  throw new Error("Function not implemented.");
-}
 

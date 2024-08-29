@@ -1,7 +1,7 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq, isNull, or } from "drizzle-orm";
 
-import type { RegisterUserRequest } from "@app/utils";
+import type { RegisterUserRequest, OnBoardAdminUserRequest } from "@app/utils";
 
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
@@ -9,7 +9,7 @@ import * as schema from "../schema";
 import { CreateUserSchema, User } from "../schema";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) {}
+  constructor(public db: VercelPgDatabase<typeof schema>) { }
 
   public async GetUserById(
     user_id: number,
@@ -38,6 +38,14 @@ export class UserRepository {
     return user ? convertToUserModel(user) : null;
   }
 
+  public async HasUserExist(userId: number): Promise<boolean> {
+    console.log(`check user ${userId} exist`);
+    const user = await this.db.query.User.findFirst({
+      where: eq(schema.User.id, userId),
+    });
+    return !!user;
+  }
+
   public async GetUsers(): Promise<(typeof schema.User.$inferSelect)[]> {
     console.log(`get users`);
     const users = await this.db.query.User.findMany();
@@ -57,8 +65,7 @@ export class UserRepository {
     const user = await this.db.query.User.findFirst({
       where: and(
         eq(User.externalId, externalId),
-        isNull(User.onboarding),
-        or(eq(User.externalId, externalId), eq(User.onboarding, true)),
+        isNull(User.onboardingAt),
       ),
     });
     return !user;
@@ -68,7 +75,7 @@ export class UserRepository {
    * feedback loop via descope for register user happened both in login and register
    * @param userData user data
    */
-  public async register(userData: RegisterUserRequest) {
+  public async Register(userData: RegisterUserRequest) {
     console.log(`verify user ${userData.externalId} payload `);
     const result = CreateUserSchema.safeParse(userData);
     if (result.success) {
@@ -82,17 +89,36 @@ export class UserRepository {
     );
   }
 
-  public async updateOnboardingTime(externalId: string) {
-    console.log(`update user ${externalId} onboarding`);
-    const user = await this.db.query.User.findFirst({
-      where: eq(schema.User.externalId, externalId),
-    });
-    if (user) {
-      // in case first time register need skip this flow as no record yet and no point register the user
+
+  public async BoardingAdminUser(userId: number, payload: OnBoardAdminUserRequest) {
+    console.log(`update user ${userId} onboarding`);
+    if (await this.HasUserExist(userId)) {
+      const user = await this.db.query.User.findFirst({
+        where: eq(schema.User.id, userId),
+      });
       await this.db
         .update(User)
-        .set({ onboarding: true })
-        .where(eq(User.externalId, externalId));
+        .set({
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          gender: payload.gender,
+          aboutMe: payload.aboutMe ?? user?.aboutMe,
+          avatar: payload.avatar ?? user?.avatar,
+          onboardingAt: new Date()
+        })
+        .where(eq(User.id, userId));
+      // #TODO: add login when user enter phone MFA is enforce also when user do login MFA will be required (check ways do so on descope!)
+      if (payload.phone) {
+        await this.db
+          .update(User)
+          .set({
+            phone: payload.phone!,
+            verifyPhoneAt: null
+          })
+          .where(eq(User.id, userId));
+      } else {
+        console.log(`user ${userId} not exist`);
+      }
     }
   }
 }

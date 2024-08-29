@@ -11,7 +11,6 @@ import { skipCSRFCheck } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { createSdk } from "@descope/nextjs-sdk/server";
-import { Avatar } from "@mui/material";
 import { fromUnixTime } from "date-fns";
 import gravatar from "gravatar";
 
@@ -32,9 +31,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -91,7 +90,7 @@ const registerInitalUserForOnboarding = async (user: UserResponse) => {
   if (requiredOnborading) {
     console.log(`user did onboarding ${user.userId} not required`);
     const splitName = user.name?.split(" ") ?? ["", ""];
-    await repositories.user.register({
+    await repositories.user.Register({
       externalId: user.userId,
       firstName: splitName[0] ?? "",
       lastName: splitName[1] ?? "",

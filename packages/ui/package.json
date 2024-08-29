@@ -39,7 +39,7 @@
     "flowbite-react": "catalog:ui",
     "next": "catalog:",
     "next-themes": "^0.3.0",
-    "react-hook-form": "^7.52.1",
+    "@tanstack/react-form": "catalog:",
     "react-icons": "catalog:ui",
     "react-jsx-parser": "^2.0.0",
     "sonner": "^1.5.0",
