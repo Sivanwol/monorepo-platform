@@ -6,7 +6,7 @@ import { initTranslation, t } from "@app/utils";
 
 import { HydrateClient } from "~/trpc/server";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
