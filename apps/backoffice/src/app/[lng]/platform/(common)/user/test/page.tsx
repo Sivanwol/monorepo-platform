@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import type { ColumnTableProps, PageCommonProps } from "@app/utils";
@@ -5,6 +6,11 @@ import { LoadingPage, UserTestPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
+
+export const metadata: Metadata = {
+  title: "Backoffice of monorepo Platform - User Test",
+  description: "Backoffice of monorepo Platform For both mobile and web app",
+};
 
 // export const runtime = "edge";
 export default async function HomePage({ params: { lng } }: PageCommonProps) {

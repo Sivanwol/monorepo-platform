@@ -38,6 +38,7 @@
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "class-variance-authority": "^0.7.0",
+    "react-csv": "catalog:ui",
     "flowbite-react": "catalog:ui",
     "next": "catalog:",
     "next-themes": "^0.3.0",
@@ -63,6 +64,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
+    "@types/react-csv": "catalog:ui",
     "tailwindcss": "^3.4.4",
     "typescript": "catalog:",
     "zod": "catalog:"

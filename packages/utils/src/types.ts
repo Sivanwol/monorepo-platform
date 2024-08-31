@@ -100,6 +100,7 @@ export interface TableCommonProps {
   editMode?: "inline" | "modal";
   editModalComponent?: React.ReactNode;
   onReloadDataFn?: () => void;
+  onExportFn?: () => void;
   onInfinityScrollUpdateFn?: () => void;
   enableSelection?: boolean;
   enableExport?: boolean;

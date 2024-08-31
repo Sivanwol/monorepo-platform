@@ -1,8 +1,8 @@
 "use client";
 
-import type { ColumnDef, Column } from "@tanstack/react-table";
-import { useMemo, useReducer } from "react";
-import { Button, styled, div } from "@mui/material";
+import type { Column, ColumnDef } from "@tanstack/react-table";
+import React, { useMemo, useReducer } from "react";
+import { Button, styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Paper from "@mui/material/Paper";
@@ -21,6 +21,8 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { CSVDownload } from "react-csv";
+import { CgExport } from "react-icons/cg";
 import { TfiReload } from "react-icons/tfi";
 
 import type {
@@ -31,10 +33,15 @@ import type {
   TableCommonProps,
 } from "@app/utils";
 
-
 import { Filter } from "./filter";
 import { TablePaginating } from "./pageing";
-import { buildColumnDef, buildGroupColumnDef, isGroupColumn } from "./utils";
+import {
+  buildColumnDef,
+  buildCSV,
+  buildGroupColumnDef,
+  downloadCsv,
+  isGroupColumn,
+} from "./utils";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -53,8 +60,10 @@ export const Table = ({
   data,
   columns,
   actions,
+  enableExport,
   enableFilters,
   onReloadDataFn,
+  onExportFn,
 }: TableCommonProps) => {
   const rerender = useReducer(() => ({}), {})[1];
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
@@ -64,7 +73,7 @@ export const Table = ({
     if (!columns[0]) {
       throw new Error("Columns is empty");
     }
-    const firstColumn = columns[0] as ColumnGroupTableProps | ColumnTableProps;
+    const firstColumn = columns[0];
     return isGroupColumn(firstColumn)
       ? buildGroupColumnDef(columns as ColumnGroupTableProps[])
       : buildColumnDef(columns as ColumnTableProps[]);
@@ -82,10 +91,9 @@ export const Table = ({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    //
-    debugTable: true,
   });
-  const reloadData = () => {
+
+  const onReload = () => {
     console.log("reload data");
     if (onReloadDataFn) {
       try {
@@ -97,6 +105,22 @@ export const Table = ({
       rerender();
     }
   };
+
+  const onExport = () => {
+    console.log("export data");
+    if (onExportFn) {
+      try {
+        onExportFn();
+      } catch (e) {
+        console.error("issue with data fetch", e);
+      }
+    } else {
+      const csv = buildCSV(data, columns);
+      console.log("csv", csv);
+      downloadCsv(csv, `export-${new Date().toISOString()}.csv`);
+    }
+    return;
+  };
   const { pageSize, pageIndex } = table.getState().pagination;
   const rowsPerPageOptions = [25, 50, 100];
   return (
@@ -106,10 +130,19 @@ export const Table = ({
           <Button
             variant="outlined"
             startIcon={<TfiReload />}
-            onClick={() => reloadData()}
+            onClick={() => onReload()}
           >
             {translations.reload}
           </Button>
+          {enableExport && (
+            <Button
+              variant="outlined"
+              startIcon={<CgExport />}
+              onClick={() => onExport()}
+            >
+              {translations.export}
+            </Button>
+          )}
           {(actions?.length ?? 0) > 0 && (
             <ButtonGroup variant="contained" aria-label={translations.actions}>
               {actions?.map((action, index) => (
@@ -130,7 +163,7 @@ export const Table = ({
                         (column) => column.id === header.id,
                       ) as ColumnGroupTableProps;
                       console.log("columnGroupEntity", columnGroupEntity);
-                      const columnEntity = columnGroupEntity.columns?.find(
+                      const columnEntity = columnGroupEntity.columns.find(
                         (column) => column.id === header.id,
                       );
                       console.log("columnEntity", columnEntity);
@@ -142,9 +175,10 @@ export const Table = ({
                                 header.column.columnDef.header,
                                 header.getContext(),
                               )}
-                              {columnEntity && enableFilters &&
-                                columnEntity?.filterable &&
-                                header.column.getCanFilter() ? (
+                              {columnEntity &&
+                              enableFilters &&
+                              columnEntity.filterable &&
+                              header.column.getCanFilter() ? (
                                 <div>
                                   <Filter
                                     column={header.column}

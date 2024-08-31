@@ -82,3 +82,5 @@ catalogs:
     "@emotion/styled": ^11.13.0
     "@emotion/react": ^11.13.0
     "@emotion/cache": ^11.13.0
+    "react-csv": ^2.2.2
+    "@types/react-csv": ^1.1.10
