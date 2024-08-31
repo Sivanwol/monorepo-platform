@@ -1,3 +1,4 @@
+import type { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
 import React from "react";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
@@ -6,7 +7,6 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
-import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
 
 export const TablePaginating = (props: TablePaginationActionsProps) => {
   const theme = useTheme();

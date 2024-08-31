@@ -66,7 +66,7 @@ export interface ColumnTableProps {
 export type DataTableType = Record<
   string,
   string | boolean | Date | number | object
->[];
+>;
 
 export interface ColumnGroupTableProps {
   id: string;
@@ -78,25 +78,30 @@ export interface ActionsTableItem {
   icon: React.ReactNode;
   onClickEvent: () => void;
 }
+
+export interface UserTestPageProps extends CommonLanguageProps {
+  columns: ColumnTableProps[] | ColumnGroupTableProps[];
+}
 export interface TableCommonProps {
   title: string;
   translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
-  actions: ActionsTableItem[];
-  data: DataTableType;
-  multiSort: boolean;
-  enableResize: boolean;
+  actions?: ActionsTableItem[];
+  data: DataTableType[];
+  multiSort?: boolean;
+  enableResize?: boolean;
   resize?: {
     minWidth: number;
     maxWidth: number;
   };
-  enableInfinityScroll: boolean;
-  editMode: "inline" | "modal";
+  enableInfinityScroll?: boolean;
+  editMode?: "inline" | "modal";
   editModalComponent?: React.ReactNode;
-  onInfinityScrollUpdateFn?: () => DataTableType;
-  enableSelection: boolean;
-  enableExport: boolean;
-  enableFilters: boolean;
-  enableSearch: boolean;
+  onReloadDataFn?: () => void;
+  onInfinityScrollUpdateFn?: () => void;
+  enableSelection?: boolean;
+  enableExport?: boolean;
+  enableFilters?: boolean;
+  enableSearch?: boolean;
   searchComponent?: React.ReactNode;
 }

@@ -1,7 +1,7 @@
+import type { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { ColumnDef } from "@tanstack/react-table";
 
-import {
+import type {
   ColumnGroupTableProps,
   ColumnTableProps,
   DataTableType,

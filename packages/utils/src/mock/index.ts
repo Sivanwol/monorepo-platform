@@ -25,6 +25,7 @@ const newPerson = (): Person => {
     age: faker.number.int(40),
     visits: faker.number.int(1000),
     progress: faker.number.int(100),
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     status: faker.helpers.shuffle<Person["status"]>([
       "relationship",
       "complicated",
@@ -35,6 +36,7 @@ const newPerson = (): Person => {
 
 export function mockData(...lens: number[]) {
   const makeDataLevel = (depth = 0): Person[] => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const len = lens[depth]!;
     return range(len).map((d): Person => {
       return {

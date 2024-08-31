@@ -10,10 +10,9 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 
+import type { CommonLanguageProps } from "@app/utils";
 import { LoadingSpinner } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
-
-import type { SupportProps } from "./type";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -59,7 +58,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export const SupportAndHelp = ({ lng, ns }: SupportProps) => {
+export const SupportAndHelp = ({ lng, ns }: CommonLanguageProps) => {
   const [translationsLoaded, setTranslationsLoaded] = useState(false);
   useEffect(() => {
     if (!translationsLoaded) {

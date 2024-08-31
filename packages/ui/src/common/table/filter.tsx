@@ -1,5 +1,5 @@
+import type { Column, Table as ReactTable } from "@tanstack/react-table";
 import { InputBase } from "@mui/material";
-import { Column, Table as ReactTable } from "@tanstack/react-table";
 
 export function Filter({
   column,
@@ -18,11 +18,12 @@ export function Filter({
     <div className="flex space-x-2">
       <InputBase
         type="number"
-        value={(columnFilterValue as [number, number])?.[0] ?? ""}
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        value={(columnFilterValue as [number, number])[0] ?? ""}
         onChange={(e) =>
           column.setFilterValue((old: [number, number]) => [
             e.target.value,
-            old?.[1],
+            old[1],
           ])
         }
         placeholder={`Min`}
@@ -30,10 +31,11 @@ export function Filter({
       />
       <InputBase
         type="number"
-        value={(columnFilterValue as [number, number])?.[1] ?? ""}
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        value={(columnFilterValue as [number, number])[1] ?? ""}
         onChange={(e) =>
           column.setFilterValue((old: [number, number]) => [
-            old?.[0],
+            old[0],
             e.target.value,
           ])
         }

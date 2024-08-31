@@ -1,5 +1,6 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useReducer } from "react";
 import { Button, styled } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -14,18 +15,15 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import {
-  Column,
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  Table as ReactTable,
   useReactTable,
 } from "@tanstack/react-table";
 import { TfiReload } from "react-icons/tfi";
 
-import {
+import type {
   ActionsTableItem,
   ColumnGroupTableProps,
   ColumnTableProps,
@@ -57,6 +55,7 @@ export const Table = ({
   columns,
   actions,
   enableFilters,
+  onReloadDataFn,
 }: TableCommonProps) => {
   const rerender = useReducer(() => ({}), {})[1];
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
@@ -75,7 +74,7 @@ export const Table = ({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: headers,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -83,8 +82,20 @@ export const Table = ({
     //
     debugTable: true,
   });
-
+  const reloadData = () => {
+    console.log("reload data");
+    if (onReloadDataFn) {
+      try {
+        onReloadDataFn();
+      } catch (e) {
+        console.error("issue with data fetch", e);
+      }
+    } else {
+      rerender();
+    }
+  };
   const { pageSize, pageIndex } = table.getState().pagination;
+  const rowsPerPageOptions = [25, 50, 100];
   return (
     <Box sx={{ width: "100%" }}>
       <Stack spacing={2}>
@@ -92,13 +103,13 @@ export const Table = ({
           <Button
             variant="outlined"
             startIcon={<TfiReload />}
-            onClick={() => rerender()}
+            onClick={() => reloadData()}
           >
             {translations.reload}
           </Button>
-          {actions.length > 0 && (
+          {(actions?.length ?? 0) > 0 && (
             <ButtonGroup variant="contained" aria-label={translations.actions}>
-              {actions.map((action, index) => (
+              {actions?.map((action, index) => (
                 <ActionButton key={index} {...action} />
               ))}
             </ButtonGroup>
@@ -115,7 +126,7 @@ export const Table = ({
                       const columnGroupEntity = columns.find(
                         (column) => column.id === headerGroup.id,
                       ) as ColumnGroupTableProps;
-                      const columnEntity = columnGroupEntity?.columns.find(
+                      const columnEntity = columnGroupEntity.columns.find(
                         (column) => column.id === header.id,
                       );
                       return (
@@ -147,7 +158,7 @@ export const Table = ({
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
-                      const columnEntity = columns?.find(
+                      const columnEntity = columns.find(
                         (column) => column.id === header.id,
                       ) as ColumnTableProps;
                       return (
@@ -158,7 +169,7 @@ export const Table = ({
                               header.getContext(),
                             )}
                             {enableFilters &&
-                            columnEntity?.filterable &&
+                            columnEntity.filterable &&
                             header.column.getCanFilter() ? (
                               <div>
                                 <Filter column={header.column} table={table} />
@@ -195,12 +206,7 @@ export const Table = ({
         </Item>
         <Item>
           <TablePagination
-            rowsPerPageOptions={[
-              25,
-              50,
-              100,
-              { label: translations.all!, value: data.length },
-            ]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
             count={table.getFilteredRowModel().rows.length}
             rowsPerPage={pageSize}
