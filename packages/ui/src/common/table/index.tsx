@@ -1,8 +1,8 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, Column } from "@tanstack/react-table";
 import { useMemo, useReducer } from "react";
-import { Button, styled } from "@mui/material";
+import { Button, styled, div } from "@mui/material";
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Paper from "@mui/material/Paper";
@@ -31,9 +31,10 @@ import type {
   TableCommonProps,
 } from "@app/utils";
 
+
 import { Filter } from "./filter";
 import { TablePaginating } from "./pageing";
-import { buildColumnDef, buildGroupColumnDef } from "./utils";
+import { buildColumnDef, buildGroupColumnDef, isGroupColumn } from "./utils";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -46,8 +47,6 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-const isGroupColumn = (column: any): column is ColumnGroupTableProps =>
-  "columns" in column;
 export const Table = ({
   translations,
   title,
@@ -62,7 +61,11 @@ export const Table = ({
     if (columns.length === 0) {
       throw new Error("Columns is empty");
     }
-    return isGroupColumn(columns[0])
+    if (!columns[0]) {
+      throw new Error("Columns is empty");
+    }
+    const firstColumn = columns[0] as ColumnGroupTableProps | ColumnTableProps;
+    return isGroupColumn(firstColumn)
       ? buildGroupColumnDef(columns as ColumnGroupTableProps[])
       : buildColumnDef(columns as ColumnTableProps[]);
   }, [columns]);
@@ -119,16 +122,18 @@ export const Table = ({
           <TableContainer component={Paper}>
             <MuiTable sx={{ minWidth: 400 }} aria-label={title}>
               <TableHead>
-                (isGroupColumn(columns[0]) ? (
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
+                      console.log("header", header);
                       const columnGroupEntity = columns.find(
-                        (column) => column.id === headerGroup.id,
+                        (column) => column.id === header.id,
                       ) as ColumnGroupTableProps;
-                      const columnEntity = columnGroupEntity.columns.find(
+                      console.log("columnGroupEntity", columnGroupEntity);
+                      const columnEntity = columnGroupEntity.columns?.find(
                         (column) => column.id === header.id,
                       );
+                      console.log("columnEntity", columnEntity);
                       return (
                         <TableCell key={header.id} colSpan={header.colSpan}>
                           {header.isPlaceholder ? null : (
@@ -137,9 +142,9 @@ export const Table = ({
                                 header.column.columnDef.header,
                                 header.getContext(),
                               )}
-                              {enableFilters &&
-                              columnEntity?.filterable &&
-                              header.column.getCanFilter() ? (
+                              {columnEntity && enableFilters &&
+                                columnEntity?.filterable &&
+                                header.column.getCanFilter() ? (
                                 <div>
                                   <Filter
                                     column={header.column}
@@ -154,34 +159,6 @@ export const Table = ({
                     })}
                   </TableRow>
                 ))}
-                ) (!isGroupColumn(columns[0]) ? (
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      const columnEntity = columns.find(
-                        (column) => column.id === header.id,
-                      ) as ColumnTableProps;
-                      return (
-                        <TableCell key={header.id} colSpan={header.colSpan}>
-                          <div>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                            {enableFilters &&
-                            columnEntity.filterable &&
-                            header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </div>
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-                )
               </TableHead>
               <TableBody>
                 {table.getRowModel().rows.map((row) => {

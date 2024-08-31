@@ -41,6 +41,7 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         data={data}
         title={translations.title}
         translations={translations}
+        onReloadDataFn={onReloadData}
       />
     </Box>
   );

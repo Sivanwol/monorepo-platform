@@ -17,21 +17,25 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       id: "firstName",
       title: "First Name",
       type: "string",
+      group: false,
     },
     {
       id: "lastName",
       title: "Last Name",
       type: "string",
+      group: false,
     },
     {
       id: "age",
       title: "Age",
       type: "number",
+      group: false,
     },
     {
       id: "status",
       title: "Status",
       type: "string",
+      group: false,
     },
   ];
   return (

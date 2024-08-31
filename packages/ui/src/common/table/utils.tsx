@@ -1,3 +1,4 @@
+import { createColumnHelper } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
@@ -7,17 +8,17 @@ import type {
   DataTableType,
 } from "@app/utils";
 
+const columnHelper = createColumnHelper<DataTableType>()
 export const buildColumnDef = (
   columns: ColumnTableProps[],
 ): ColumnDef<DataTableType>[] => {
   return columns.map((column) => {
-    return {
-      accessorFn: column.title,
+    return columnHelper.accessor(row => row[column.id], {
       id: column.id,
-      cell: (info) => info.getValue(),
+      cell: info => info.getValue(),
       header: () => <span>{column.title}</span>,
-      footer: (props) => column.id,
-    };
+      footer: props => props.column.id,
+    }) as ColumnDef<DataTableType>;
   });
 };
 
@@ -25,11 +26,13 @@ export const buildGroupColumnDef = (
   columns: ColumnGroupTableProps[],
 ): ColumnDef<DataTableType>[] => {
   return columns.map((column) => {
-    return {
-      accessorFn: column.title,
+    return columnHelper.group({
       id: column.id,
-      columns: buildColumnDef(column.columns),
-      header: () => <span>{column.title}</span>,
-    };
+      header: column.title,
+      columns: buildColumnDef(column.columns)
+    });
   });
+};
+export const isGroupColumn = (column: ColumnGroupTableProps | ColumnTableProps): column is ColumnGroupTableProps => {
+  return column.group;
 };

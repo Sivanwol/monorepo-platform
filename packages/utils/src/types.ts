@@ -56,6 +56,7 @@ export interface ColumnTableProps {
   title: string;
   type: "string" | "number" | "date" | "boolean" | "object";
   fixed?: "left" | "right";
+  group: false;
   width?: number;
   visible?: boolean;
   filterable?: boolean;
@@ -72,6 +73,7 @@ export interface ColumnGroupTableProps {
   id: string;
   title: string;
   columns: ColumnTableProps[];
+  group: true;
 }
 export interface ActionsTableItem {
   title: string;
