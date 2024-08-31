@@ -13,7 +13,8 @@ export type Namespaces =
   | "dashboardLayout"
   | "support"
   | "userHistory"
-  | "table";
+  | "table"
+  | "userTest";
 export type TranslationKeys = Namespaces;
 export type PageCommonProps = Omit<LayoutCommonProps, "children">;
 export type BasePageCommonProps = Omit<BaseCommonProps, "children">;

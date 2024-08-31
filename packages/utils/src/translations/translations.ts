@@ -31,6 +31,7 @@ export const initTranslation = async (lng: string) => {
     support: (await import(`./locales/${currentLng}/support`)).default,
     userHistory: (await import(`./locales/${currentLng}/user-history`)).default,
     table: (await import(`./locales/${currentLng}/table`)).default,
+    userTest: (await import(`./locales/${currentLng}/user-test`)).default,
   };
   console.log(`Translations loaded for ${currentLng}`);
 };

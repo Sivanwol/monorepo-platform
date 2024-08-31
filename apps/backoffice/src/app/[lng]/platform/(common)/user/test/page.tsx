@@ -39,7 +39,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       <main className="container h-screen w-full py-16" style={{ zIndex: -1 }}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            {t("support", "title")}
+            {t("userTest", "title")}
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
