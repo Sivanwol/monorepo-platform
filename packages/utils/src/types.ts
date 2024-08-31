@@ -1,4 +1,4 @@
-import type { Namespaces } from "./translations";
+import type { Namespaces, TranslationRecord } from "./translations";
 
 export const genders = ["male", "female", "other"] as const;
 export type Gender = "male" | "female" | "other";
@@ -35,11 +35,68 @@ export interface UserAuditInfo {
   occurred: Date;
 }
 
-export interface SupportProps {
+export interface CommonLanguageProps {
   lng: string;
   ns: Namespaces;
 }
 
 export interface BreadcrumbProps {
   homepageTitle: string;
+}
+
+interface sortAbleHeader {
+  enable: boolean;
+  key: string;
+  desc: "asc" | "desc";
+  sortingFn?: string;
+}
+
+export interface ColumnTableProps {
+  id: string;
+  title: string;
+  type: "string" | "number" | "date" | "boolean" | "object";
+  fixed?: "left" | "right";
+  width?: number;
+  visible?: boolean;
+  filterable?: boolean;
+  sortable?: boolean;
+  sort?: sortAbleHeader; // null will set sortable to false
+}
+
+export type DataTableType = Record<
+  string,
+  string | boolean | Date | number | object
+>[];
+
+export interface ColumnGroupTableProps {
+  id: string;
+  title: string;
+  columns: ColumnTableProps[];
+}
+export interface ActionsTableItem {
+  title: string;
+  icon: React.ReactNode;
+  onClickEvent: () => void;
+}
+export interface TableCommonProps {
+  title: string;
+  translations: TranslationRecord;
+  columns: ColumnTableProps[] | ColumnGroupTableProps[];
+  actions: ActionsTableItem[];
+  data: DataTableType;
+  multiSort: boolean;
+  enableResize: boolean;
+  resize?: {
+    minWidth: number;
+    maxWidth: number;
+  };
+  enableInfinityScroll: boolean;
+  editMode: "inline" | "modal";
+  editModalComponent?: React.ReactNode;
+  onInfinityScrollUpdateFn?: () => DataTableType;
+  enableSelection: boolean;
+  enableExport: boolean;
+  enableFilters: boolean;
+  enableSearch: boolean;
+  searchComponent?: React.ReactNode;
 }

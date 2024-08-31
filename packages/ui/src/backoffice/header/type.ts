@@ -1,17 +1,16 @@
 import type { NotificationModel, UserModel } from "@app/db/client";
-
-import type { translationRecord } from "../layouts/type";
+import type { TranslationRecord } from "@app/utils";
 
 export interface DropdownUserProps {
   lng: string;
-  translations: translationRecord;
+  translations: TranslationRecord;
   user: UserModel;
 }
 
 export interface DropdownNotificationProps {
   lng: string;
   notifications: NotificationModel[];
-  translations: translationRecord;
+  translations: TranslationRecord;
 }
 
 export interface HeaderProps {
@@ -21,5 +20,5 @@ export interface HeaderProps {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
   blockActions: boolean;
-  translations: translationRecord;
+  translations: TranslationRecord;
 }

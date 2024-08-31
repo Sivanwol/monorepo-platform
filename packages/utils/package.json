@@ -20,6 +20,7 @@
   "dependencies": {
     "@descope/nextjs-sdk": "catalog:",
     "@descope/node-sdk": "catalog:",
+    "@faker-js/faker": "^8.4.1",
     "@reduxjs/toolkit": "catalog:store",
     "react-redux": "catalog:store"
   },
