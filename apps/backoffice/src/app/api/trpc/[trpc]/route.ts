@@ -40,7 +40,7 @@ const handler = auth(async (req) => {
       if (req.method === "GET") {
         const { searchParams } = new URL(req.url);
         const param = searchParams.get("input") ?? "{}";
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+         
         input = JSON.parse(param);
       }
       if (req.method === "POST") {

@@ -1,10 +1,34 @@
 "use client";
 
-import type { Column, ColumnDef } from "@tanstack/react-table";
+import type { DragEndEvent } from "@dnd-kit/core";
+import type {
+  ColumnDef,
+  ColumnResizeDirection,
+  ColumnResizeMode,
+  Row,
+  RowSelectionState,
+} from "@tanstack/react-table";
 import React, { useMemo, useReducer } from "react";
+// needed for table body level scope DnD setup
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
 import { Button, styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import MuiTable from "@mui/material/Table";
@@ -21,7 +45,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { CSVDownload } from "react-csv";
 import { CgExport } from "react-icons/cg";
 import { TfiReload } from "react-icons/tfi";
 
@@ -33,6 +56,7 @@ import type {
   TableCommonProps,
 } from "@app/utils";
 
+import { DragAlongCell, DraggableTableHeader } from "./draggableTableContext";
 import { Filter } from "./filter";
 import { TablePaginating } from "./pageing";
 import {
@@ -41,6 +65,7 @@ import {
   buildGroupColumnDef,
   downloadCsv,
   isGroupColumn,
+  isObjectEmpty,
 } from "./utils";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -53,7 +78,6 @@ const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#1A2027",
   }),
 }));
-
 export const Table = ({
   translations,
   title,
@@ -62,9 +86,20 @@ export const Table = ({
   actions,
   enableExport,
   enableFilters,
+  enableSelection,
   onReloadDataFn,
   onExportFn,
+  resize,
+  direction,
+  rowActions,
+  debugMode,
 }: TableCommonProps) => {
+  const [columnResizeMode, setColumnResizeMode] =
+    React.useState<ColumnResizeMode>("onChange");
+
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [columnResizeDirection, setColumnResizeDirection] =
+    React.useState<ColumnResizeDirection>(direction);
   const rerender = useReducer(() => ({}), {})[1];
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
     if (columns.length === 0) {
@@ -74,25 +109,78 @@ export const Table = ({
       throw new Error("Columns is empty");
     }
     const firstColumn = columns[0];
+    const isGroupColumnRef = isGroupColumn(firstColumn);
+
+    if (rowActions && rowActions.length > 0) {
+      const actionColumn: ColumnTableProps = {
+        id: "rowActions",
+        title: translations.rowActions ?? "Actions",
+        type: "internal",
+        group: false,
+      };
+      if (isGroupColumnRef) {
+        const lastGroup = columns[columns.length - 1] as ColumnGroupTableProps;
+        lastGroup.columns.push(actionColumn);
+      } else {
+        (columns as ColumnTableProps[]).push(actionColumn);
+      }
+    }
+    if (enableSelection) {
+      const selectColumn: ColumnTableProps = {
+        id: "select",
+        title: "",
+        type: "object",
+        group: false,
+      };
+      if (isGroupColumnRef) {
+        const firstGroup = columns[0] as ColumnGroupTableProps;
+        firstGroup.columns.unshift(selectColumn);
+        columns[0] = firstGroup;
+      } else {
+        (columns as ColumnTableProps[]).unshift(selectColumn);
+      }
+    }
     return isGroupColumn(firstColumn)
-      ? buildGroupColumnDef(columns as ColumnGroupTableProps[])
-      : buildColumnDef(columns as ColumnTableProps[]);
-  }, [columns]);
+      ? buildGroupColumnDef(
+        columns as ColumnGroupTableProps[],
+        translations,
+        rowActions,
+      )
+      : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
+  }, [columns, rowActions, enableSelection, translations]);
+  const [columnOrder, setColumnOrder] = React.useState(() =>
+    headers.map((c) => c.id).filter((id) => id !== undefined),
+  );
   const ActionButton = ({ title, icon, onClickEvent }: ActionsTableItem) => (
     <Button variant="outlined" startIcon={icon} onClick={() => onClickEvent}>
       {title}
     </Button>
   );
 
+  const defaultColumn = {
+    maxSize: resize?.maxWidth,
+    minSize: resize?.maxWidth,
+  };
   const table = useReactTable({
     data,
     columns: headers,
+    defaultColumn: resize ? defaultColumn : undefined,
+    columnResizeMode: resize ? columnResizeMode : undefined,
+    enableRowSelection: enableSelection ?? false,
+    state: {
+      columnOrder,
+    },
+    onRowSelectionChange: setRowSelection,
+    onColumnOrderChange: setColumnOrder,
+    columnResizeDirection,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    debugTable: debugMode ?? false,
+    debugHeaders: debugMode ?? false,
+    debugColumns: debugMode ?? false,
   });
-
   const onReload = () => {
     console.log("reload data");
     if (onReloadDataFn) {
@@ -106,6 +194,24 @@ export const Table = ({
     }
   };
 
+  // reorder columns after drag & drop
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (active && over && active.id !== over.id) {
+      setColumnOrder((columnOrder) => {
+        const oldIndex = columnOrder.indexOf(active.id as string);
+        const newIndex = columnOrder.indexOf(over.id as string);
+        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
+      });
+    }
+  }
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {}),
+  );
   const onExport = () => {
     console.log("export data");
     if (onExportFn) {
@@ -115,105 +221,197 @@ export const Table = ({
         console.error("issue with data fetch", e);
       }
     } else {
-      const csv = buildCSV(data, columns);
+      let dataToExport = data; // in case of no selection local export will be to all existing data
+      if (
+        !isObjectEmpty(rowSelection) ||
+        data.length !== Object.keys(rowSelection).length
+      ) {
+        dataToExport = data.filter((row, index) => {
+          return rowSelection[index] === true;
+        });
+      }
+      const csv = buildCSV(dataToExport, columns);
       console.log("csv", csv);
       downloadCsv(csv, `export-${new Date().toISOString()}.csv`);
     }
     return;
   };
+
   const { pageSize, pageIndex } = table.getState().pagination;
   const rowsPerPageOptions = [25, 50, 100];
   return (
     <Box sx={{ width: "100%" }}>
       <Stack spacing={2}>
         <Item>
-          <Button
-            variant="outlined"
-            startIcon={<TfiReload />}
-            onClick={() => onReload()}
+          <Stack
+            direction="row"
+            spacing={2}
+            divider={<Divider orientation="vertical" flexItem />}
           >
-            {translations.reload}
-          </Button>
-          {enableExport && (
-            <Button
-              variant="outlined"
-              startIcon={<CgExport />}
-              onClick={() => onExport()}
-            >
-              {translations.export}
-            </Button>
-          )}
-          {(actions?.length ?? 0) > 0 && (
-            <ButtonGroup variant="contained" aria-label={translations.actions}>
-              {actions?.map((action, index) => (
-                <ActionButton key={index} {...action} />
-              ))}
-            </ButtonGroup>
-          )}
+            <Item>
+              <Button
+                variant="outlined"
+                startIcon={<TfiReload />}
+                onClick={() => onReload()}
+              >
+                {translations.reload}
+              </Button>
+            </Item>
+            {enableExport && (
+              <Item>
+                <Button
+                  variant="outlined"
+                  startIcon={<CgExport />}
+                  onClick={() => onExport()}
+                >
+                  {translations.export}
+                </Button>
+              </Item>
+            )}
+            {(actions?.length ?? 0) > 0 && (
+              <Item>
+                <ButtonGroup
+                  variant="contained"
+                  aria-label={translations.actions}
+                >
+                  {actions?.map((action, index) => (
+                    <ActionButton key={index} {...action} />
+                  ))}
+                </ButtonGroup>
+              </Item>
+            )}
+          </Stack>
         </Item>
         <Item>
-          <TableContainer component={Paper}>
-            <MuiTable sx={{ minWidth: 400 }} aria-label={title}>
-              <TableHead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      console.log("header", header);
-                      const columnGroupEntity = columns.find(
-                        (column) => column.id === header.id,
-                      ) as ColumnGroupTableProps;
-                      console.log("columnGroupEntity", columnGroupEntity);
-                      const columnEntity = columnGroupEntity.columns.find(
-                        (column) => column.id === header.id,
-                      );
-                      console.log("columnEntity", columnEntity);
-                      return (
-                        <TableCell key={header.id} colSpan={header.colSpan}>
-                          {header.isPlaceholder ? null : (
-                            <div>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                              {columnEntity &&
-                              enableFilters &&
-                              columnEntity.filterable &&
-                              header.column.getCanFilter() ? (
-                                <div>
-                                  <Filter
-                                    column={header.column}
-                                    table={table}
-                                  />
-                                </div>
-                              ) : null}
-                            </div>
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHead>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        return (
-                          <TableCell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </TableCell>
-                        );
-                      })}
+          <DndContext
+            collisionDetection={closestCenter}
+            modifiers={[restrictToHorizontalAxis]}
+            onDragEnd={handleDragEnd}
+            sensors={sensors}
+          >
+            <TableContainer component={Paper}>
+              <MuiTable
+                sx={{ width: table.getCenterTotalSize(), minWidth: 400 }}
+                aria-label={title}
+              >
+                <TableHead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      <SortableContext
+                        items={columnOrder}
+                        strategy={horizontalListSortingStrategy}
+                      >
+                        {headerGroup.headers.map((header) => {
+                          const columnGroupEntity = columns.find(
+                            (column) => column.id === header.id,
+                          ) as ColumnGroupTableProps;
+                          const columnEntity =
+                            columnGroupEntity.columns !== undefined
+                              ? columnGroupEntity.columns.find(
+                                (column) => column.id === header.id,
+                              )
+                              : columnGroupEntity;
+                          return (
+                            <TableCell
+                              key={header.id}
+                              colSpan={header.colSpan}
+                              style={{
+                                width: header.getSize() + 20, // we add 20 px for the DnD handle
+                              }}
+                            >
+                              <DraggableTableHeader header={header}>
+                                {header.isPlaceholder ? null : (
+                                  <>
+                                    {flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext(),
+                                    )}
+                                    {columnEntity &&
+                                      enableFilters &&
+                                      "filterable" in columnEntity &&
+                                      columnEntity.filterable &&
+                                      header.column.getCanFilter() ? (
+                                      <div>
+                                        <Filter
+                                          column={header.column}
+                                          table={table}
+                                        />
+                                      </div>
+                                    ) : null}
+                                    {/* <div
+                                      {...{
+                                        onDoubleClick: () =>
+                                          header.column.resetSize(),
+                                        onMouseDown:
+                                          header.getResizeHandler(),
+                                        onTouchStart:
+                                          header.getResizeHandler(),
+                                        className: `resizer ${table.options.columnResizeDirection
+                                          } ${header.column.getIsResizing()
+                                            ? "isResizing"
+                                            : ""
+                                          }`,
+                                        style: {
+                                          transform:
+                                            columnResizeMode === "onEnd" &&
+                                              header.column.getIsResizing()
+                                              ? `translateX(${(table.options
+                                                .columnResizeDirection ===
+                                                "rtl"
+                                                ? -1
+                                                : 1) *
+                                              (table.getState()
+                                                .columnSizingInfo
+                                                .deltaOffset ?? 0)
+                                              }px)`
+                                              : "",
+                                        },
+                                      }}
+                                    /> */}
+                                  </>
+                                )}
+                              </DraggableTableHeader>
+                            </TableCell>
+                          );
+                        })}
+                      </SortableContext>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </MuiTable>
-          </TableContainer>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {table.getRowModel().rows.map((row) => {
+                    return (
+                      <TableRow
+                        key={row.id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        {row.getVisibleCells().map((cell) => {
+                          return (
+                            <TableCell key={cell.id}>
+                              <SortableContext
+                                key={cell.id}
+                                items={columnOrder}
+                                strategy={horizontalListSortingStrategy}
+                              >
+                                <DragAlongCell key={cell.id} cell={cell}>
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                  )}
+                                </DragAlongCell>
+                              </SortableContext>
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </MuiTable>
+            </TableContainer>
+          </DndContext>
         </Item>
         <Item>
           <TablePagination

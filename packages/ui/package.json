@@ -38,7 +38,6 @@
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "class-variance-authority": "^0.7.0",
-    "react-csv": "catalog:ui",
     "flowbite-react": "catalog:ui",
     "next": "catalog:",
     "next-themes": "^0.3.0",
@@ -50,6 +49,11 @@
     "swagger-ui-react": "5.17.14",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "@dnd-kit/core": "catalog:ui",
+    "@dnd-kit/modifiers": "catalog:ui",
+    "@dnd-kit/sortable": "catalog:ui",
+    "@dnd-kit/utilities": "catalog:ui",
+    "classnames": "catalog:ui",
     "uuid": "catalog:",
     "zod": "catalog:"
   },
@@ -64,7 +68,6 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
-    "@types/react-csv": "catalog:ui",
     "tailwindcss": "^3.4.4",
     "typescript": "catalog:",
     "zod": "catalog:"

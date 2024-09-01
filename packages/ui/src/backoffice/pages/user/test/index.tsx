@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Box } from "@mui/material";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { DataTableType, UserTestPageProps } from "@app/utils";
 import { LoadingSpinner, Table } from "@app/ui";
@@ -27,9 +28,10 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
     setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
   };
   const translations = {
-    all: t(ns, "all"),
     title: t(ns, "title"),
-    rawPerPage: t(ns, "rawPerPage"),
+    rowsPerPage: t(ns, "rawPerPage"),
+    export: t(ns, "export"),
+    rowActions: t(ns, "rowActions"),
     actions: t(ns, "actions"),
     reload: t(ns, "reload"),
   };
@@ -43,6 +45,21 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         translations={translations}
         onReloadDataFn={onReloadData}
         enableExport={true}
+        rowActions={[
+          {
+            title: "Edit",
+            icon: <MdModeEdit />,
+            onClickEvent: (row: DataTableType) => console.log("Edit"),
+          },
+          {
+            title: "Delete",
+            icon: <MdDelete />,
+            onClickEvent: (row: DataTableType) => console.log("Delete"),
+          },
+        ]}
+        direction="rtl"
+        resize={{ minWidth: 50, maxWidth: 200 }}
+        debugMode={true}
       />
     </Box>
   );

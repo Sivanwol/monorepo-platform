@@ -54,7 +54,7 @@ interface sortAbleHeader {
 export interface ColumnTableProps {
   id: string;
   title: string;
-  type: "string" | "number" | "date" | "boolean" | "object";
+  type: "string" | "number" | "date" | "boolean" | "object" | "internal";
   fixed?: "left" | "right";
   group: false;
   width?: number;
@@ -77,8 +77,15 @@ export interface ColumnGroupTableProps {
 }
 export interface ActionsTableItem {
   title: string;
+  useRowSelection?: boolean;
   icon: React.ReactNode;
   onClickEvent: () => void;
+}
+
+export interface RowActionsTableItem {
+  title: string;
+  icon: React.ReactNode;
+  onClickEvent: (row: DataTableType) => void;
 }
 
 export interface UserTestPageProps extends CommonLanguageProps {
@@ -86,12 +93,12 @@ export interface UserTestPageProps extends CommonLanguageProps {
 }
 export interface TableCommonProps {
   title: string;
+  direction: "ltr" | "rtl";
   translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
   actions?: ActionsTableItem[];
   data: DataTableType[];
   multiSort?: boolean;
-  enableResize?: boolean;
   resize?: {
     minWidth: number;
     maxWidth: number;
@@ -100,11 +107,15 @@ export interface TableCommonProps {
   editMode?: "inline" | "modal";
   editModalComponent?: React.ReactNode;
   onReloadDataFn?: () => void;
+  onSortFn?: (filedId: string, sort: string) => void;
   onExportFn?: () => void;
   onInfinityScrollUpdateFn?: () => void;
+  onFilterFn?: (filedId: string, filter: string) => void;
+  rowActions?: RowActionsTableItem[];
   enableSelection?: boolean;
   enableExport?: boolean;
   enableFilters?: boolean;
   enableSearch?: boolean;
   searchComponent?: React.ReactNode;
+  debugMode?: boolean;
 }

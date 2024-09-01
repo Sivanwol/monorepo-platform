@@ -31,7 +31,7 @@ export function useLocalStorage<T>(
   useEffect(() => {
     try {
       // Allow value to be a function so we have same API as useState
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+       
       const valueToStore =
         typeof storedValue === "function"
           ? storedValue(storedValue)

@@ -122,7 +122,7 @@ export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
   console.log(
-    `incoming protected procedure... user id - ${JSON.stringify(auth?.user?.id)}... at $}{new Date().toISOString()}`,
+    `incoming protected procedure... user id - ${JSON.stringify(auth?.user?.id)}... at ${new Date().toISOString()}`,
   );
   if (!auth?.user?.id) {
     throw new TRPCError({
