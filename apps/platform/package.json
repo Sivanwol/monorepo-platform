@@ -13,13 +13,14 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
-    "@app/platform-api": "workspace:*",
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
+    "@app/platform-api": "workspace:*",
     "@app/ui": "workspace:*",
-    "@app/validators": "workspace:*",
     "@app/utils": "workspace:*",
+    "@app/validators": "workspace:*",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "catalog:",
@@ -47,6 +48,5 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }
