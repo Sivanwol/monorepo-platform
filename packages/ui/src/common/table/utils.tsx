@@ -46,7 +46,7 @@ export const buildColumnDef = (
 ): ColumnDef<DataTableType>[] => {
   console.log("columns", columns);
   console.log("rowActions", rowActions);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+   
   return columns
     .map((column) => {
       if (column.id === "select") {
@@ -89,7 +89,7 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       } else {
         if (column.type !== "internal") {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+           
           return columnHelper.accessor((row) => row[column.id], {
             id: column.id,
             cell: (info) => info.getValue(),
