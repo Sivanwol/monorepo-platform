@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import type { ColumnTableProps, PageCommonProps } from "@app/utils";
-import { LoadingPage, UserTestPage } from "@app/ui";
+import { LoadingPage, SortByProvider, UserTestPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
@@ -53,7 +53,9 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
-              <UserTestPage columns={columns} />
+              <SortByProvider>
+                <UserTestPage columns={columns} />
+              </SortByProvider>
             </Suspense>
           </div>
         </div>

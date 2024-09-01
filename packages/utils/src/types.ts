@@ -60,7 +60,7 @@ export interface ColumnTableProps {
   width?: number;
   visible?: boolean;
   filterable?: boolean;
-  sortable?: boolean;
+  freeze?: boolean;
   sort?: sortAbleHeader; // null will set sortable to false
 }
 
@@ -98,7 +98,6 @@ export interface TableCommonProps {
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
   actions?: ActionsTableItem[];
   data: DataTableType[];
-  multiSort?: boolean;
   resize?: {
     minWidth: number;
     maxWidth: number;
@@ -112,6 +111,7 @@ export interface TableCommonProps {
   onInfinityScrollUpdateFn?: () => void;
   onFilterFn?: (filedId: string, filter: string) => void;
   rowActions?: RowActionsTableItem[];
+  enableSorting?: boolean;
   enableSelection?: boolean;
   enableExport?: boolean;
   enableFilters?: boolean;

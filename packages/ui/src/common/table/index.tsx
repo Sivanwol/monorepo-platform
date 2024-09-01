@@ -5,10 +5,13 @@ import type {
   ColumnDef,
   ColumnResizeDirection,
   ColumnResizeMode,
+  OnChangeFn,
   Row,
   RowSelectionState,
+  SortingFn,
+  SortingState,
 } from "@tanstack/react-table";
-import React, { useMemo, useReducer } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 // needed for table body level scope DnD setup
 import {
   closestCenter,
@@ -43,6 +46,8 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  sortingFns,
   useReactTable,
 } from "@tanstack/react-table";
 import { CgExport } from "react-icons/cg";
@@ -64,6 +69,8 @@ import {
   buildCSV,
   buildGroupColumnDef,
   downloadCsv,
+  filterColumn,
+  getHeaderFromColumn,
   isGroupColumn,
   isObjectEmpty,
 } from "./utils";
@@ -87,6 +94,7 @@ export const Table = ({
   enableExport,
   enableFilters,
   enableSelection,
+  enableSorting,
   onReloadDataFn,
   onExportFn,
   resize,
@@ -95,11 +103,11 @@ export const Table = ({
   debugMode,
 }: TableCommonProps) => {
   const [columnResizeMode, setColumnResizeMode] =
-    React.useState<ColumnResizeMode>("onChange");
-
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+    useState<ColumnResizeMode>("onChange");
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnResizeDirection, setColumnResizeDirection] =
-    React.useState<ColumnResizeDirection>(direction);
+    useState<ColumnResizeDirection>(direction);
   const rerender = useReducer(() => ({}), {})[1];
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
     if (columns.length === 0) {
@@ -142,15 +150,16 @@ export const Table = ({
     }
     return isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-        columns as ColumnGroupTableProps[],
-        translations,
-        rowActions,
-      )
+          columns as ColumnGroupTableProps[],
+          translations,
+          rowActions,
+        )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
   }, [columns, rowActions, enableSelection, translations]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
     headers.map((c) => c.id).filter((id) => id !== undefined),
   );
+
   const ActionButton = ({ title, icon, onClickEvent }: ActionsTableItem) => (
     <Button variant="outlined" startIcon={icon} onClick={() => onClickEvent}>
       {title}
@@ -161,6 +170,7 @@ export const Table = ({
     maxSize: resize?.maxWidth,
     minSize: resize?.maxWidth,
   };
+
   const table = useReactTable({
     data,
     columns: headers,
@@ -168,19 +178,24 @@ export const Table = ({
     columnResizeMode: resize ? columnResizeMode : undefined,
     enableRowSelection: enableSelection ?? false,
     state: {
+      rowSelection,
       columnOrder,
+      sorting,
     },
     onRowSelectionChange: setRowSelection,
     onColumnOrderChange: setColumnOrder,
     columnResizeDirection,
+    onSortingChange: setSorting,
+    enableSorting: enableSorting ?? false,
+    manualSorting: enableSorting ?? false,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: debugMode ?? false,
-    debugHeaders: debugMode ?? false,
-    debugColumns: debugMode ?? false,
+    getSortedRowModel: getSortedRowModel(),
+    debugAll: debugMode ?? false,
   });
+
   const onReload = () => {
     console.log("reload data");
     if (onReloadDataFn) {
@@ -236,7 +251,6 @@ export const Table = ({
     }
     return;
   };
-
   const { pageSize, pageIndex } = table.getState().pagination;
   const rowsPerPageOptions = [25, 50, 100];
   return (
@@ -308,8 +322,8 @@ export const Table = ({
                           const columnEntity =
                             columnGroupEntity.columns !== undefined
                               ? columnGroupEntity.columns.find(
-                                (column) => column.id === header.id,
-                              )
+                                  (column) => column.id === header.id,
+                                )
                               : columnGroupEntity;
                           return (
                             <TableCell
@@ -327,10 +341,10 @@ export const Table = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                    enableFilters &&
+                                    "filterable" in columnEntity &&
+                                    columnEntity.filterable &&
+                                    header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}

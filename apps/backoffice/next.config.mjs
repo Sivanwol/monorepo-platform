@@ -12,7 +12,6 @@ const config = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
 
@@ -62,6 +61,12 @@ const config = {
         hostname: "**",
       },
     ],
+  },
+
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },

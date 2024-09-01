@@ -20,12 +20,17 @@ const rowButtonRenderer = (
   translations: TranslationRecord,
   row: DataTableType,
 ) => (
-  <ButtonGroup variant="contained" aria-label={translations.rowActions}>
+  <ButtonGroup
+    size="large"
+    variant="outlined"
+    aria-label={translations.rowActions}
+  >
     {rowActions.map((action, index) => (
       <Button
         variant="outlined"
         key={"button_" + index}
         startIcon={action.icon}
+        className="ml-3 mr-3"
         onClick={() => action.onClickEvent(row)}
       >
         {action.title}
@@ -41,7 +46,7 @@ export const buildColumnDef = (
 ): ColumnDef<DataTableType>[] => {
   console.log("columns", columns);
   console.log("rowActions", rowActions);
-   
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return columns
     .map((column) => {
       if (column.id === "select") {
@@ -49,6 +54,7 @@ export const buildColumnDef = (
           id: "select",
           header: ({ table }) => (
             <IndeterminateCheckbox
+              key={`select_all`}
               {...{
                 checked: table.getIsAllRowsSelected(),
                 indeterminate: table.getIsSomeRowsSelected(),
@@ -59,6 +65,7 @@ export const buildColumnDef = (
           cell: ({ row }) => (
             <div className="px-1">
               <IndeterminateCheckbox
+                key={`select_${row.id}`}
                 {...{
                   checked: row.getIsSelected(),
                   disabled: !row.getCanSelect(),
@@ -72,7 +79,7 @@ export const buildColumnDef = (
       }
       if (column.type === "internal" && rowActions) {
         console.info("rowActions", column, rowActions);
-         
+
         return columnHelper.accessor((row) => row[column.id], {
           id: column.id,
           cell: (info) =>
@@ -82,7 +89,7 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       } else {
         if (column.type !== "internal") {
-           
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return columnHelper.accessor((row) => row[column.id], {
             id: column.id,
             cell: (info) => info.getValue(),
@@ -112,7 +119,29 @@ export const isGroupColumn = (
 ): column is ColumnGroupTableProps => {
   return column.group;
 };
-
+export const filterColumn = (columnId: string) =>
+  columnId !== "select" && columnId !== "rowActions";
+export const getHeaderFromColumn = (
+  columnId: string,
+  headers: ColumnTableProps[] | ColumnGroupTableProps[],
+) => {
+  const firstColumn = headers[0];
+  if (headers.length > 0 && firstColumn) {
+    for (const header of headers) {
+      if (isGroupColumn(header)) {
+        const column = header.columns.find((col) => col.id === columnId);
+        if (column) {
+          return column;
+        }
+      } else {
+        if (header.id === columnId) {
+          return header;
+        }
+      }
+    }
+  }
+  return null;
+};
 export const buildCSV = (
   data: DataTableType[],
   columns: ColumnTableProps[] | ColumnGroupTableProps[],
@@ -120,26 +149,38 @@ export const buildCSV = (
   const buildHeaders: string[] = [];
   columns.forEach((column) => {
     if (isGroupColumn(column)) {
-      column.columns.forEach((col) => {
-        buildHeaders.push(col.title);
-      });
+      column.columns
+        .filter((c) => filterColumn(c.id))
+        .forEach((col) => {
+          buildHeaders.push(col.title);
+        });
     } else {
-      buildHeaders.push(column.title);
+      if (filterColumn(column.id)) {
+        buildHeaders.push(column.title);
+      }
     }
+    console.log("buildHeaders", buildHeaders);
   });
+  console.log("buildHeaders", buildHeaders);
   const rows = data.map((row) => {
     const rowValues: string[] = [];
     columns.forEach((column) => {
       if (isGroupColumn(column)) {
-        column.columns.forEach((col) => {
-          rowValues.push(row[col.id]?.toString() ?? "");
-        });
+        column.columns
+          .filter((c) => filterColumn(c.id))
+          .forEach((col) => {
+            rowValues.push(row[col.id]?.toString() ?? "");
+          });
       } else {
-        rowValues.push(row[column.id]?.toString() ?? "");
+        if (filterColumn(column.id)) {
+          rowValues.push(row[column.id]?.toString() ?? "");
+        }
       }
     });
+    console.log("rowValues", rowValues);
     return rowValues.join(",");
   });
+  console.log("rows", rows);
   return [buildHeaders.join(","), ...rows].join("\n");
 };
 

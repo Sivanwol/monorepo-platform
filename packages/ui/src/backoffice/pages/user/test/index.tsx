@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { DataTableType, UserTestPageProps } from "@app/utils";
-import { LoadingSpinner, Table } from "@app/ui";
+import { LoadingSpinner, SortByProvider, Table } from "@app/ui";
 import { initTranslation, mockData, t } from "@app/utils";
 
 export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
@@ -45,16 +45,17 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         translations={translations}
         onReloadDataFn={onReloadData}
         enableExport={true}
+        enableSelection={true}
         rowActions={[
           {
             title: "Edit",
             icon: <MdModeEdit />,
-            onClickEvent: (row: DataTableType) => console.log("Edit"),
+            onClickEvent: (row: DataTableType) => console.log("Edit", row),
           },
           {
             title: "Delete",
             icon: <MdDelete />,
-            onClickEvent: (row: DataTableType) => console.log("Delete"),
+            onClickEvent: (row: DataTableType) => console.log("Delete", row),
           },
         ]}
         direction="rtl"

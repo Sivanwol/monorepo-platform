@@ -75,7 +75,7 @@ export const SupportAndHelp = ({ lng, ns }: CommonLanguageProps) => {
   console.log(`loading ${lng}-${ns}`, translationsLoaded);
   const renderSupportPage = (
     <Stack spacing={2}>
-      <Item style={{ zIndex: -1 }}>
+      <Item>
         <h1>{t(ns, "platformQuestions.categoryUsers.title")}</h1>
         <Accordion>
           <AccordionSummary
@@ -162,7 +162,7 @@ export const SupportAndHelp = ({ lng, ns }: CommonLanguageProps) => {
           </AccordionDetails>
         </Accordion>
       </Item>
-      <Item style={{ zIndex: -1 }}>
+      <Item>
         <h1>{t(ns, "platformQuestions.categoryRoles.title")}</h1>
         <Accordion>
           <AccordionSummary

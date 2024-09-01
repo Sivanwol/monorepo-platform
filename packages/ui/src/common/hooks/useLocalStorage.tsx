@@ -31,7 +31,7 @@ export function useLocalStorage<T>(
   useEffect(() => {
     try {
       // Allow value to be a function so we have same API as useState
-       
+
       const valueToStore =
         typeof storedValue === "function"
           ? storedValue(storedValue)

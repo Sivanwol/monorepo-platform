@@ -9,12 +9,18 @@ import { RiDraggable } from "react-icons/ri";
 
 import type { DataTableType } from "@app/utils";
 
+import { filterColumn } from "./utils";
+
 export const DraggableTableHeader = ({
   children,
   header,
+  softElm,
+  frozen,
 }: {
   children: React.ReactNode;
   header: Header<DataTableType, unknown>;
+  softElm?: React.ReactNode;
+  frozen?: boolean;
 }) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useSortable({
@@ -30,8 +36,7 @@ export const DraggableTableHeader = ({
     width: header.column.getSize(),
     zIndex: isDragging ? 1 : 0,
   };
-  const hideHandle =
-    header.column.id === "select" || header.column.id === "rowActions"; // columns cases that we not want allow DnD support
+  const hideHandle = filterColumn(header.column.id) && frozen; // columns cases that we not want allow DnD support
   return (
     <div style={style} ref={setNodeRef}>
       {children}
@@ -43,6 +48,11 @@ export const DraggableTableHeader = ({
         <button {...attributes} {...listeners}>
           <RiDraggable />
         </button>
+        {softElm && (
+          <div className={classNames("inline", "w-14", "align-sub")}>
+            {softElm}
+          </div>
+        )}
       </div>
     </div>
   );
