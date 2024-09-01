@@ -4,7 +4,7 @@ import SuperJSON from "superjson";
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 /**
  * Configure basic CORS headers
@@ -40,7 +40,7 @@ const handler = auth(async (req) => {
       if (req.method === "GET") {
         const { searchParams } = new URL(req.url);
         const param = searchParams.get("input") ?? "{}";
-         
+
         input = JSON.parse(param);
       }
       if (req.method === "POST") {
