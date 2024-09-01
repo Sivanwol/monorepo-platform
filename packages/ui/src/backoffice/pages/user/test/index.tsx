@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { DataTableType, UserTestPageProps } from "@app/utils";
-import { LoadingSpinner, SortByProvider, Table } from "@app/ui";
+import { LoadingSpinner, SortByProvider, Table, useSort } from "@app/ui";
 import { initTranslation, mockData, t } from "@app/utils";
 
 export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
@@ -24,6 +24,9 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         });
     }
   }, [ns, translationsLoaded, setTranslationsLoaded]);
+
+  const { sortBy } = useSort();
+  console.log("external sortBy", sortBy);
   const onReloadData = () => {
     setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
   };
@@ -46,6 +49,7 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         onReloadDataFn={onReloadData}
         enableExport={true}
         enableSelection={true}
+        enableSorting={true}
         rowActions={[
           {
             title: "Edit",

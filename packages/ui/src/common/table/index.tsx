@@ -10,8 +10,9 @@ import type {
   RowSelectionState,
   SortingFn,
   SortingState,
+  Updater,
 } from "@tanstack/react-table";
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 // needed for table body level scope DnD setup
 import {
   closestCenter,
@@ -46,10 +47,9 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
-  sortingFns,
   useReactTable,
 } from "@tanstack/react-table";
+import classNames from "classnames";
 import { CgExport } from "react-icons/cg";
 import { TfiReload } from "react-icons/tfi";
 
@@ -61,6 +61,8 @@ import type {
   TableCommonProps,
 } from "@app/utils";
 
+import { SortByDirection } from "../context";
+import { useSort } from "../hooks";
 import { DragAlongCell, DraggableTableHeader } from "./draggableTableContext";
 import { Filter } from "./filter";
 import { TablePaginating } from "./pageing";
@@ -68,6 +70,7 @@ import {
   buildColumnDef,
   buildCSV,
   buildGroupColumnDef,
+  convertSortBy,
   downloadCsv,
   filterColumn,
   getHeaderFromColumn,
@@ -104,11 +107,15 @@ export const Table = ({
 }: TableCommonProps) => {
   const [columnResizeMode, setColumnResizeMode] =
     useState<ColumnResizeMode>("onChange");
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const { sortBy, UpdateSortBy, ResetSortBy } = useSort();
+  const [sorting, setSorting] = React.useState<SortingState>(
+    convertSortBy(sortBy),
+  );
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnResizeDirection, setColumnResizeDirection] =
     useState<ColumnResizeDirection>(direction);
   const rerender = useReducer(() => ({}), {})[1];
+
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
     if (columns.length === 0) {
       throw new Error("Columns is empty");
@@ -156,10 +163,39 @@ export const Table = ({
         )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
   }, [columns, rowActions, enableSelection, translations]);
+  useEffect(() => {
+    const currentSorting = sorting[0];
+    if (currentSorting) {
+      const requireResetSorting = !currentSorting;
+      const currentDirection = requireResetSorting
+        ? null
+        : !currentSorting.desc
+          ? SortByDirection.ASC
+          : SortByDirection.DESC;
+      if (
+        (sortBy &&
+          (sortBy.columnId !== currentSorting.id ||
+            sortBy.direction !== currentDirection)) ||
+        !sortBy
+      ) {
+        const column = getHeaderFromColumn(currentSorting.id, columns);
+        if (column) {
+          if (requireResetSorting || !currentDirection) {
+            ResetSortBy(column.id);
+          } else {
+            UpdateSortBy({
+              columnId: column.id,
+              direction: currentDirection,
+            });
+          }
+          rerender();
+        }
+      }
+    }
+  }, [sorting, sortBy, columns, ResetSortBy, UpdateSortBy]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
     headers.map((c) => c.id).filter((id) => id !== undefined),
   );
-
   const ActionButton = ({ title, icon, onClickEvent }: ActionsTableItem) => (
     <Button variant="outlined" startIcon={icon} onClick={() => onClickEvent}>
       {title}
@@ -182,17 +218,17 @@ export const Table = ({
       columnOrder,
       sorting,
     },
+    enableMultiSort: false,
+    onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onColumnOrderChange: setColumnOrder,
     columnResizeDirection,
-    onSortingChange: setSorting,
     enableSorting: enableSorting ?? false,
     manualSorting: enableSorting ?? false,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     debugAll: debugMode ?? false,
   });
 
@@ -336,22 +372,48 @@ export const Table = ({
                               <DraggableTableHeader header={header}>
                                 {header.isPlaceholder ? null : (
                                   <>
-                                    {flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext(),
-                                    )}
-                                    {columnEntity &&
-                                    enableFilters &&
-                                    "filterable" in columnEntity &&
-                                    columnEntity.filterable &&
-                                    header.column.getCanFilter() ? (
-                                      <div>
-                                        <Filter
-                                          column={header.column}
-                                          table={table}
-                                        />
-                                      </div>
-                                    ) : null}
+                                    <div
+                                      className={classNames("inline", {
+                                        "cursor-pointer select-none":
+                                          header.column.getCanSort(),
+                                      })}
+                                      onClick={header.column.getToggleSortingHandler()}
+                                      title={
+                                        header.column.getCanSort()
+                                          ? header.column.getNextSortingOrder() ===
+                                            "asc"
+                                            ? "Sort ascending"
+                                            : header.column.getNextSortingOrder() ===
+                                                "desc"
+                                              ? "Sort descending"
+                                              : "Clear sort"
+                                          : undefined
+                                      }
+                                    >
+                                      {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext(),
+                                      )}
+                                      {columnEntity &&
+                                      enableFilters &&
+                                      "filterable" in columnEntity &&
+                                      columnEntity.filterable &&
+                                      header.column.getCanFilter() ? (
+                                        <div>
+                                          <Filter
+                                            column={header.column}
+                                            table={table}
+                                          />
+                                        </div>
+                                      ) : null}
+
+                                      {{
+                                        asc: " 🔼",
+                                        desc: " 🔽",
+                                      }[
+                                        header.column.getIsSorted() as string
+                                      ] ?? null}
+                                    </div>
                                     {/* <div
                                       {...{
                                         onDoubleClick: () =>

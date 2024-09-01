@@ -16,9 +16,8 @@ export interface SortByContextType {
   ResetSortBy: (columnId: string) => void;
 }
 export interface SoftByRow {
-  row: DataTableType;
   columnId: string;
-  direction: SortByDirection;
+  direction?: SortByDirection;
 }
 export const SortByContext = createContext<SortByContextType | undefined>(
   undefined,
@@ -29,13 +28,16 @@ export const SortByProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [sortBy, setSortBy] = useState<SoftByRow | null>(null);
 
-  const UpdateSortBy = (sort: SoftByRow) => {
-    setSortBy(sort);
+  const UpdateSortBy = (state: SoftByRow) => {
+    console.log("UpdateSortBy", state);
+    setSortBy(state);
   };
 
   const ResetSortBy = (columnId: string) => {
+    console.log("ResetSortBy", columnId);
     if (sortBy && sortBy.columnId === columnId) {
-      setSortBy(null);
+      sortBy.direction = undefined;
+      setSortBy(sortBy);
     }
   };
 

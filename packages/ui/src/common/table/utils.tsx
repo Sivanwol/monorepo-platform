@@ -1,4 +1,4 @@
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import React from "react";
 import { Button, ButtonGroup } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -11,6 +11,8 @@ import type {
   TranslationRecord,
 } from "@app/utils";
 
+import type { SoftByRow } from "../context";
+import { SortByDirection } from "../context";
 import { IndeterminateCheckbox } from "./indeterminateCheckbox";
 
 const columnHelper = createColumnHelper<DataTableType>();
@@ -46,9 +48,12 @@ export const buildColumnDef = (
 ): ColumnDef<DataTableType>[] => {
   console.log("columns", columns);
   console.log("rowActions", rowActions);
-   
+  const columnMap: Record<string, boolean> = {};
   return columns
     .map((column) => {
+      if (columnMap[column.id]) return null;
+      columnMap[column.id] = true;
+
       if (column.id === "select") {
         return columnHelper.accessor((row) => row[column.id], {
           id: "select",
@@ -89,7 +94,6 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       } else {
         if (column.type !== "internal") {
-           
           return columnHelper.accessor((row) => row[column.id], {
             id: column.id,
             cell: (info) => info.getValue(),
@@ -198,4 +202,16 @@ export const downloadCsv = (csvString: string, filename: string) => {
 
 export function isObjectEmpty(obj: Record<string, unknown>): boolean {
   return Object.keys(obj).length === 0;
+}
+
+export function convertSortBy(sortBy: SoftByRow | null): SortingState {
+  if (sortBy) {
+    return [
+      {
+        id: sortBy.columnId,
+        desc: sortBy.direction === SortByDirection.DESC,
+      },
+    ];
+  }
+  return [];
 }
