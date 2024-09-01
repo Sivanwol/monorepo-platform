@@ -218,6 +218,7 @@ export const Table = ({
       columnOrder,
       sorting,
     },
+    initialState: { pagination: { pageIndex: 0, pageSize: 50 } },
     enableMultiSort: false,
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
