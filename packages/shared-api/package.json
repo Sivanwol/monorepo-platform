@@ -23,10 +23,10 @@
     "@app/utils": "workspace:*",
     "@trpc/server": "catalog:",
     "@descope/node-sdk": "catalog:",
-    "trpc-openapi": "catalog:",
-    "date-fns": "catalog:",
-    "superjson": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
+    "date-fns": "catalog:",
+    "trpc-openapi": "catalog:",
+    "superjson": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

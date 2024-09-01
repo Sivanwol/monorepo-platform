@@ -52,8 +52,8 @@
     "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tailwindcss": "^3.4.4",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "tailwindcss": "^3.4.4"
   },
   "prettier": "@app/prettier-config"
 }

@@ -22,8 +22,8 @@
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/shared-api": "workspace:*",
-    "trpc-openapi": "catalog:",
     "@trpc/server": "catalog:",
+    "trpc-openapi": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
   },
