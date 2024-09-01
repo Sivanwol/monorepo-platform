@@ -17,6 +17,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
@@ -42,6 +43,5 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

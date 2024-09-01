@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "browser": {
+    "http": false,
+    "https": false,
+    "stream": false,
+    "util": false
+  },
   "scripts": {
     "build": "pnpm with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules dist",
@@ -13,6 +19,7 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/backoffice-api": "workspace:*",
@@ -81,12 +88,5 @@
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "catalog:",
     "typescript": "catalog:"
-  },
-  "browser": {
-    "http": false,
-    "https": false,
-    "stream": false,
-    "util": false
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

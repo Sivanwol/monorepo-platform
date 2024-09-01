@@ -1,7 +1,7 @@
 {
   "name": "@app/ui",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "exports": {
     ".": {
@@ -18,12 +18,17 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "ui-add": "pnpm dlx shadcn-ui add && prettier src --write --list-different"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/backoffice-api": "workspace:*",
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
     "@descope/nextjs-sdk": "catalog:",
+    "@dnd-kit/core": "catalog:ui",
+    "@dnd-kit/modifiers": "catalog:ui",
+    "@dnd-kit/sortable": "catalog:ui",
+    "@dnd-kit/utilities": "catalog:ui",
     "@hookform/resolvers": "^3.7.0",
     "@mui/icons-material": "catalog:ui",
     "@mui/material": "catalog:ui",
@@ -31,6 +36,7 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@tanstack/react-form": "catalog:ui",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "catalog:",
     "@tanstack/react-table": "catalog:ui",
@@ -38,10 +44,10 @@
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "class-variance-authority": "^0.7.0",
+    "classnames": "catalog:ui",
     "flowbite-react": "catalog:ui",
     "next": "catalog:",
     "next-themes": "^0.3.0",
-    "@tanstack/react-form": "catalog:ui",
     "react-icons": "catalog:ui",
     "react-jsx-parser": "^2.0.0",
     "sonner": "^1.5.0",
@@ -49,11 +55,6 @@
     "swagger-ui-react": "5.17.14",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "@dnd-kit/core": "catalog:ui",
-    "@dnd-kit/modifiers": "catalog:ui",
-    "@dnd-kit/sortable": "catalog:ui",
-    "@dnd-kit/utilities": "catalog:ui",
-    "classnames": "catalog:ui",
     "uuid": "catalog:",
     "zod": "catalog:"
   },
@@ -75,6 +76,5 @@
   "peerDependencies": {
     "react": "catalog:react18",
     "zod": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

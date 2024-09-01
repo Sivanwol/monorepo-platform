@@ -17,16 +17,17 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
-    "@trpc/server": "catalog:",
     "@descope/node-sdk": "catalog:",
+    "@trpc/server": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
     "date-fns": "catalog:",
-    "trpc-openapi": "catalog:",
     "superjson": "catalog:",
+    "trpc-openapi": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -36,6 +37,5 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

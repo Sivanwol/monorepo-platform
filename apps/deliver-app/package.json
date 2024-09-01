@@ -4,13 +4,14 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
+    "android": "expo run:android",
     "clean": "git clean -xdf .expo .turbo node_modules",
     "dev": "#expo start",
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
-    "android": "expo run:android",
     "ios": "expo run:ios"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@bacons/text-decoder": "^0.0.0",
     "@expo/metro-config": "^0.18.8",
@@ -40,8 +41,8 @@
     "superjson": "catalog:"
   },
   "devDependencies": {
-    "@app/platform-api": "workspace:*",
     "@app/eslint-config": "workspace:*",
+    "@app/platform-api": "workspace:*",
     "@app/prettier-config": "workspace:*",
     "@app/tailwind-config": "workspace:*",
     "@app/tsconfig": "workspace:*",
@@ -52,8 +53,7 @@
     "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "typescript": "catalog:",
-    "tailwindcss": "^3.4.4"
-  },
-  "prettier": "@app/prettier-config"
+    "tailwindcss": "^3.4.4",
+    "typescript": "catalog:"
+  }
 }

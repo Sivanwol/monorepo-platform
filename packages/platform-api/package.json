@@ -17,14 +17,15 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
-    "@app/utils": "workspace:*",
     "@app/shared-api": "workspace:*",
+    "@app/utils": "workspace:*",
     "@trpc/server": "catalog:",
-    "trpc-openapi": "catalog:",
     "superjson": "catalog:",
+    "trpc-openapi": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -34,6 +35,5 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }
