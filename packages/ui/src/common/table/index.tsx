@@ -5,12 +5,8 @@ import type {
   ColumnDef,
   ColumnResizeDirection,
   ColumnResizeMode,
-  OnChangeFn,
-  Row,
   RowSelectionState,
-  SortingFn,
   SortingState,
-  Updater,
 } from "@tanstack/react-table";
 import React, { useEffect, useMemo, useReducer, useState } from "react";
 // needed for table body level scope DnD setup
@@ -42,12 +38,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { Resizable } from 'react-resizable';
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 import classNames from "classnames";
 import { CgExport } from "react-icons/cg";
@@ -72,7 +69,6 @@ import {
   buildGroupColumnDef,
   convertSortBy,
   downloadCsv,
-  filterColumn,
   getHeaderFromColumn,
   isGroupColumn,
   isObjectEmpty,
@@ -115,7 +111,6 @@ export const Table = ({
   const [columnResizeDirection, setColumnResizeDirection] =
     useState<ColumnResizeDirection>(direction);
   const rerender = useReducer(() => ({}), {})[1];
-
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
     if (columns.length === 0) {
       throw new Error("Columns is empty");
@@ -135,9 +130,15 @@ export const Table = ({
       };
       if (isGroupColumnRef) {
         const lastGroup = columns[columns.length - 1] as ColumnGroupTableProps;
-        lastGroup.columns.push(actionColumn);
+        if (!lastGroup.columns.some(column => column.id === actionColumn.id)) {
+          lastGroup.columns.push(actionColumn);
+        }
       } else {
-        (columns as ColumnTableProps[]).push(actionColumn);
+        // add check if this item exist by id
+        const existingItem = columns.find((column) => column.id === actionColumn.id);
+        if (!existingItem) {
+          (columns as ColumnTableProps[]).push(actionColumn);
+        }
       }
     }
     if (enableSelection) {
@@ -149,18 +150,22 @@ export const Table = ({
       };
       if (isGroupColumnRef) {
         const firstGroup = columns[0] as ColumnGroupTableProps;
-        firstGroup.columns.unshift(selectColumn);
-        columns[0] = firstGroup;
+        if (!firstGroup.columns.some(column => column.id === selectColumn.id)) {
+          firstGroup.columns.unshift(selectColumn);
+        }
       } else {
-        (columns as ColumnTableProps[]).unshift(selectColumn);
+        const existingItem = columns.find((column) => column.id === selectColumn.id);
+        if (!existingItem) {
+          (columns as ColumnTableProps[]).unshift(selectColumn);
+        }
       }
     }
     return isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-          columns as ColumnGroupTableProps[],
-          translations,
-          rowActions,
-        )
+        columns as ColumnGroupTableProps[],
+        translations,
+        rowActions,
+      )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
   }, [columns, rowActions, enableSelection, translations]);
   useEffect(() => {
@@ -204,9 +209,23 @@ export const Table = ({
 
   const defaultColumn = {
     maxSize: resize?.maxWidth,
+    width: 150,
     minSize: resize?.maxWidth,
   };
-
+  if (debugMode) {
+    console.log("columns", columns);
+    console.log("headers", headers);
+    console.log("sorting", sorting);
+    console.log("rowSelection", rowSelection);
+    console.log("columnOrder", columnOrder);
+    console.log("direction", direction);
+    console.log("resize", resize);
+    console.log("enableSelection", enableSelection);
+    console.log("enableSorting", enableSorting);
+    console.log("enableFilters", enableFilters);
+    console.log("enableExport", enableExport);
+    console.log("rowActions", rowActions);
+  }
   const table = useReactTable({
     data,
     columns: headers,
@@ -220,6 +239,7 @@ export const Table = ({
     },
     initialState: { pagination: { pageIndex: 0, pageSize: 50 } },
     enableMultiSort: false,
+    enableColumnResizing: true,
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onColumnOrderChange: setColumnOrder,
@@ -230,7 +250,7 @@ export const Table = ({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugAll: debugMode ?? false,
+    debugAll: debugMode ?? false
   });
 
   const onReload = () => {
@@ -342,6 +362,7 @@ export const Table = ({
           >
             <TableContainer component={Paper}>
               <MuiTable
+                stickyHeader
                 sx={{ width: table.getCenterTotalSize(), minWidth: 400 }}
                 aria-label={title}
               >
@@ -359,16 +380,13 @@ export const Table = ({
                           const columnEntity =
                             columnGroupEntity.columns !== undefined
                               ? columnGroupEntity.columns.find(
-                                  (column) => column.id === header.id,
-                                )
+                                (column) => column.id === header.id,
+                              )
                               : columnGroupEntity;
                           return (
                             <TableCell
                               key={header.id}
                               colSpan={header.colSpan}
-                              style={{
-                                width: header.getSize() + 20, // we add 20 px for the DnD handle
-                              }}
                             >
                               <DraggableTableHeader header={header}>
                                 {header.isPlaceholder ? null : (
@@ -385,7 +403,7 @@ export const Table = ({
                                             "asc"
                                             ? "Sort ascending"
                                             : header.column.getNextSortingOrder() ===
-                                                "desc"
+                                              "desc"
                                               ? "Sort descending"
                                               : "Clear sort"
                                           : undefined
@@ -396,10 +414,10 @@ export const Table = ({
                                         header.getContext(),
                                       )}
                                       {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                        enableFilters &&
+                                        "filterable" in columnEntity &&
+                                        columnEntity.filterable &&
+                                        header.column.getCanFilter() ? (
                                         <div>
                                           <Filter
                                             column={header.column}
@@ -415,7 +433,7 @@ export const Table = ({
                                         header.column.getIsSorted() as string
                                       ] ?? null}
                                     </div>
-                                    {/* <div
+                                    <div
                                       {...{
                                         onDoubleClick: () =>
                                           header.column.resetSize(),
@@ -423,7 +441,7 @@ export const Table = ({
                                           header.getResizeHandler(),
                                         onTouchStart:
                                           header.getResizeHandler(),
-                                        className: `resizer ${table.options.columnResizeDirection
+                                        className: `inline resizer ${table.options.columnResizeDirection
                                           } ${header.column.getIsResizing()
                                             ? "isResizing"
                                             : ""
@@ -444,7 +462,7 @@ export const Table = ({
                                               : "",
                                         },
                                       }}
-                                    /> */}
+                                    />
                                   </>
                                 )}
                               </DraggableTableHeader>

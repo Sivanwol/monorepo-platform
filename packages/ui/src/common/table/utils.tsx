@@ -57,6 +57,8 @@ export const buildColumnDef = (
       if (column.id === "select") {
         return columnHelper.accessor((row) => row[column.id], {
           id: "select",
+          enableResizing: false,
+          size: 40,
           header: ({ table }) => (
             <IndeterminateCheckbox
               key={`select_all`}
@@ -83,10 +85,9 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       }
       if (column.type === "internal" && rowActions) {
-        console.info("rowActions", column, rowActions);
-
         return columnHelper.accessor((row) => row[column.id], {
           id: column.id,
+          enableResizing: false,
           cell: (info) =>
             rowButtonRenderer(rowActions, translations, info.row.original),
           header: () => <span>{translations.rowActions}</span>,
@@ -96,6 +97,7 @@ export const buildColumnDef = (
         if (column.type !== "internal") {
           return columnHelper.accessor((row) => row[column.id], {
             id: column.id,
+            enableResizing: true,
             cell: (info) => info.getValue(),
             header: () => <span>{column.title}</span>,
             footer: (props) => props.column.id,
@@ -163,9 +165,7 @@ export const buildCSV = (
         buildHeaders.push(column.title);
       }
     }
-    console.log("buildHeaders", buildHeaders);
   });
-  console.log("buildHeaders", buildHeaders);
   const rows = data.map((row) => {
     const rowValues: string[] = [];
     columns.forEach((column) => {

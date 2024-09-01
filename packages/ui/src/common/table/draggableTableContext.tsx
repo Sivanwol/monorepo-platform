@@ -36,7 +36,7 @@ export const DraggableTableHeader = ({
     width: header.column.getSize(),
     zIndex: isDragging ? 1 : 0,
   };
-  const hideHandle = filterColumn(header.column.id) && frozen; // columns cases that we not want allow DnD support
+  const hideHandle = !filterColumn(header.column.id) || frozen; // columns cases that we not want allow DnD support
   return (
     <div style={style} ref={setNodeRef}>
       {children}

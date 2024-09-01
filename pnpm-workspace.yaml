@@ -87,3 +87,5 @@ catalogs:
     "@dnd-kit/sortable": ^8.0.0
     "@dnd-kit/utilities": ^3.2.2
     "classnames": ^2.5.1
+    "react-resizable": ^3.0.5
+    "@types/react-resizable": ^3.0.8
