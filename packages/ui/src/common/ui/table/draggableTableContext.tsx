@@ -33,7 +33,6 @@ export const DraggableTableHeader = ({
     transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
     transition: "width transform 0.2s ease-in-out",
     whiteSpace: "nowrap",
-    width: header.column.getSize(),
     zIndex: isDragging ? 1 : 0,
   };
   const hideHandle = !filterColumn(header.column.id) || frozen; // columns cases that we not want allow DnD support
@@ -74,7 +73,6 @@ export const DragAlongCell = ({
     position: "relative",
     transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
     transition: "width transform 0.2s ease-in-out",
-    width: cell.column.getSize(),
     zIndex: isDragging ? 1 : 0,
   };
 

@@ -20,7 +20,7 @@ export const Header = ({
   return (
     <header
       className="border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white"
-      style={{ zIndex: 999 }}
+      style={{ zIndex: 8 }}
     >
       <div className="shadow-2 flex flex-grow items-center justify-between px-4 py-5 md:px-5 2xl:px-10">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">

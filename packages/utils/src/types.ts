@@ -44,13 +44,6 @@ export interface BreadcrumbProps {
   homepageTitle: string;
 }
 
-interface sortAbleHeader {
-  enable: boolean;
-  key: string;
-  desc: "asc" | "desc";
-  sortingFn?: string;
-}
-
 export interface ColumnTableProps {
   id: string;
   title: string;
@@ -61,7 +54,7 @@ export interface ColumnTableProps {
   visible?: boolean;
   filterable?: boolean;
   freeze?: boolean;
-  sort?: sortAbleHeader; // null will set sortable to false
+  sort?: boolean; // null will set sortable to false
 }
 
 export type DataTableType = Record<
@@ -89,15 +82,14 @@ export interface RowActionsTableItem {
 }
 
 export interface UserTestPageProps extends CommonLanguageProps {
+  translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
 }
 export interface TableCommonProps {
-  title: string;
   direction: "ltr" | "rtl";
   translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
   actions?: ActionsTableItem[];
-  data: DataTableType[];
   resize?: {
     minWidth: number;
     maxWidth: number;
@@ -118,4 +110,18 @@ export interface TableCommonProps {
   enableSearch?: boolean;
   searchComponent?: React.ReactNode;
   debugMode?: boolean;
+}
+
+export enum SortByDirection {
+  ASC = "asc",
+  DESC = "desc",
+}
+export interface Pagination {
+  page: number;
+  pageSize: number;
+  totalEntries: number;
+}
+export interface SoftByRow {
+  columnId: string;
+  direction: SortByDirection;
 }

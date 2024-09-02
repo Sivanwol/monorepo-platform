@@ -4,4 +4,4 @@ export * from "./events";
 export * from "./utils";
 export * from "./hooks";
 export * from "./context";
-export * from "./table";
+export * from "./ui";

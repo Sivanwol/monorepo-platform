@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import type { ColumnTableProps, PageCommonProps } from "@app/utils";
-import { LoadingPage, SortByProvider, UserTestPage } from "@app/ui";
+import { LoadingPage, TableProvider, UserTestPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
@@ -16,25 +16,38 @@ export const metadata: Metadata = {
 export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
-  console.log("lng", lng);
+  const ns = "table";
+  console.log("lng", lng, ns);
   await initTranslation(lng);
+  const translations = {
+    title: t(ns, "title"),
+    rowsPerPage: t(ns, "rawPerPage"),
+    export: t(ns, "export"),
+    rowActions: t(ns, "rowActions"),
+    actions: t(ns, "actions"),
+    reload: t(ns, "reload"),
+    noData: t(ns, "noData"),
+  };
   const columns: ColumnTableProps[] = [
     {
       id: "firstName",
       title: "First Name",
       type: "string",
+      sort: true,
       group: false,
     },
     {
       id: "lastName",
       title: "Last Name",
       type: "string",
+      sort: true,
       group: false,
     },
     {
       id: "age",
       title: "Age",
       type: "number",
+      sort: true,
       group: false,
     },
     {
@@ -53,9 +66,14 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
-              <SortByProvider>
-                <UserTestPage columns={columns} />
-              </SortByProvider>
+              <TableProvider>
+                <UserTestPage
+                  columns={columns}
+                  lng={lng}
+                  ns="table"
+                  translations={translations}
+                />
+              </TableProvider>
             </Suspense>
           </div>
         </div>

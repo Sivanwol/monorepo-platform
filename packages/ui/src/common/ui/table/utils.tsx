@@ -11,12 +11,25 @@ import type {
   TranslationRecord,
 } from "@app/utils";
 
-import type { SoftByRow } from "../context";
-import { SortByDirection } from "../context";
+import type { SoftByRow } from "../../context";
+import { SortByDirection } from "../../context";
 import { IndeterminateCheckbox } from "./indeterminateCheckbox";
 
 const columnHelper = createColumnHelper<DataTableType>();
-
+export const getColumnHeader = (
+  columnId: string,
+  columns: ColumnTableProps[] | ColumnGroupTableProps[],
+) => {
+  const columnGroupEntity = columns.find(
+    (column) => column.id === columnId,
+  ) as ColumnGroupTableProps;
+  const columnEntity = (
+    columnGroupEntity.columns !== undefined
+      ? columnGroupEntity.columns.find((column) => column.id === columnId)
+      : columnGroupEntity
+  ) as ColumnTableProps;
+  return columnEntity;
+};
 const rowButtonRenderer = (
   rowActions: RowActionsTableItem[],
   translations: TranslationRecord,
@@ -58,6 +71,7 @@ export const buildColumnDef = (
         return columnHelper.accessor((row) => row[column.id], {
           id: "select",
           enableResizing: false,
+          enableSorting: false,
           size: 40,
           header: ({ table }) => (
             <IndeterminateCheckbox
@@ -88,6 +102,7 @@ export const buildColumnDef = (
         return columnHelper.accessor((row) => row[column.id], {
           id: column.id,
           enableResizing: false,
+          enableSorting: false,
           cell: (info) =>
             rowButtonRenderer(rowActions, translations, info.row.original),
           header: () => <span>{translations.rowActions}</span>,
@@ -98,6 +113,7 @@ export const buildColumnDef = (
           return columnHelper.accessor((row) => row[column.id], {
             id: column.id,
             enableResizing: true,
+            enableSorting: column.sort ?? true,
             cell: (info) => info.getValue(),
             header: () => <span>{column.title}</span>,
             footer: (props) => props.column.id,

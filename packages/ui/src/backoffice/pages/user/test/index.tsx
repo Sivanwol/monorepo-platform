@@ -1,50 +1,43 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { DataTableType, UserTestPageProps } from "@app/utils";
-import { LoadingSpinner, SortByProvider, Table, useSort } from "@app/ui";
-import { initTranslation, mockData, t } from "@app/utils";
+import { LoadingSpinner, Table, useTable } from "@app/ui";
+import { mockData } from "@app/utils";
 
-export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
-  const [translationsLoaded, setTranslationsLoaded] = useState(false);
-  const [data, setData] = useState<DataTableType[]>([]);
+export const UserTestPage = ({
+  lng,
+  ns,
+  columns,
+  translations,
+}: UserTestPageProps) => {
+  const { data, sortBy, pagination, setData } = useTable();
+  const [loading, setLoading] = useState(false);
+
+  const fetcher = useCallback(async () => {
+    setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
+    setLoading(false);
+  }, [setData, setLoading]);
   useEffect(() => {
-    if (!translationsLoaded) {
-      const fetcher = async () => {
-        await initTranslation(lng);
-        setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
-      };
-      fetcher()
-        .catch(console.error)
-        .finally(() => {
-          setTranslationsLoaded(true);
-        });
+    console.log("load new data", data, sortBy, pagination);
+    if (data.length === 0) {
+      setLoading(true);
+      fetcher().catch(console.error);
     }
-  }, [ns, translationsLoaded, setTranslationsLoaded]);
+  }, [lng, ns, data, sortBy, pagination, setData, fetcher, setLoading]);
 
-  const { sortBy } = useSort();
   console.log("external sortBy", sortBy);
   const onReloadData = () => {
-    setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
+    setLoading(true);
+    fetcher().catch(console.error);
   };
-  const translations = {
-    title: t(ns, "title"),
-    rowsPerPage: t(ns, "rawPerPage"),
-    export: t(ns, "export"),
-    rowActions: t(ns, "rowActions"),
-    actions: t(ns, "actions"),
-    reload: t(ns, "reload"),
-  };
-  console.log(`loading ${lng}-${ns}`, translationsLoaded);
   const renderPage = (
     <Box sx={{ width: "100%" }}>
       <Table
         columns={columns}
-        data={data}
-        title={translations.title}
         translations={translations}
         onReloadDataFn={onReloadData}
         enableExport={true}
@@ -64,9 +57,9 @@ export const UserTestPage = ({ lng, ns, columns }: UserTestPageProps) => {
         ]}
         direction="rtl"
         resize={{ minWidth: 50, maxWidth: 200 }}
-        debugMode={true}
+        debugMode={false}
       />
     </Box>
   );
-  return translationsLoaded ? renderPage : <LoadingSpinner />;
+  return !loading ? renderPage : <LoadingSpinner />;
 };
