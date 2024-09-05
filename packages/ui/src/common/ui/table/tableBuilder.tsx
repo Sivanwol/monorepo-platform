@@ -511,10 +511,10 @@ export const TableBuilder = ({
                                           if (
                                             !header.column.getNextSortingOrder()
                                           ) {
-                                            reset();
+                                            setSort(tableId, null);
                                             return;
                                           }
-                                          setSort({
+                                          setSort(tableId, {
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
@@ -655,12 +655,12 @@ export const TableBuilder = ({
             page={pagination.page}
             onPageChange={(_, page) => {
               table.setPageIndex(pagination.page);
-              setPagination({ page, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
+              setPagination(tableId, { page, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
             }}
             onRowsPerPageChange={(e) => {
               const size = e.target.value ? Number(e.target.value) : 10;
               table.setPageSize(size);
-              setPagination({ page: 1, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
+              setPagination(tableId, { page: 1, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
             }}
             ActionsComponent={TablePaginating}
           />
