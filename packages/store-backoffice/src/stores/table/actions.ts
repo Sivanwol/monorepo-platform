@@ -1,8 +1,15 @@
-import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
+import type { DataTableType, ExportTableMode, Pagination, SortByOpt } from "@app/utils";
 
 export interface TableActions {
-  setData: (data: DataTableType[]) => void;
-  setPagination: (pagination: Pagination) => void;
-  setSort(sort: SortByOpt | null): void;
-  reset: () => void;
+  init: (tableId: string) => void;
+  setData: (tableId: string, data: DataTableType[]) => void;
+  setPagination: (tableId: string, pagination: Pagination) => void;
+  setExportMode: (tableId: string, mode: ExportTableMode) => void;
+  bindRequestExport: (tableId: string, requestExportCb: (data: DataTableType[]) => Promise<void>) => void;
+  bindRequestReload: (tableId: string, requestReloadCb: () => Promise<DataTableType[]>) => void;
+  requestExport: (tableId: string) => Promise<void>;
+  reload: (tableId: string) => Promise<void>;
+  setSort: (tableId: string, sort: SortByOpt | null) => void;
+  setLoading: (tableId: string, loading: boolean) => void;
+  reset: (tableId: string) => void;
 }

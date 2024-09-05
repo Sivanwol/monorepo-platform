@@ -9,10 +9,9 @@ import type {
   DataTableType,
   RowActionsTableItem,
   TranslationRecord,
+  SortByOpt,
 } from "@app/utils";
-
-import type { SoftByRow } from "../../context";
-import { SortByDirection } from "../../context";
+import { SortByDirection } from "@app/utils";
 import { IndeterminateCheckbox } from "./indeterminateCheckbox";
 
 const columnHelper = createColumnHelper<DataTableType>();
@@ -220,7 +219,7 @@ export function isObjectEmpty(obj: Record<string, unknown>): boolean {
   return Object.keys(obj).length === 0;
 }
 
-export function convertSortBy(sortBy: SoftByRow | null): SortingState {
+export function convertSortBy(sortBy: SortByOpt | null): SortingState {
   if (sortBy) {
     return [
       {

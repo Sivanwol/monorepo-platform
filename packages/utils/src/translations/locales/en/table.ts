@@ -8,6 +8,7 @@ const translate: DynamicStructure = {
   selectedExport: "Export Selected Row",
   rowsPerPage: "rows per page",
   noData: "No Records Found",
+  loading: "Loading In Process ...",
 };
 
 export default translate;

@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { createStore } from "zustand/vanilla";
+import { createStore } from 'zustand/vanilla'
+import { devtools } from 'zustand/middleware'
 
 import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
 import { rowsPerPageOptions } from "@app/utils";
@@ -35,7 +36,7 @@ export const defaultFetcherState: FetcherState = {
 export const createFetcherStore = (
   initialState: FetcherState = defaultFetcherState,
 ) =>
-  createStore<FetcherStore>((set, get) => ({
+  createStore<FetcherStore>()(devtools((set, get) => ({
     ...initialState,
     clearData: () => set((state) => ({ data: [] })),
     getLoadingState: () => get().loading,
@@ -77,7 +78,7 @@ export const createFetcherStore = (
         }));
       }
     },
-  }));
+  })));
 
 export const FetcherStoreContext = createContext<
   ReturnType<typeof createFetcherStore> | undefined

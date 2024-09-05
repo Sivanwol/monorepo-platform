@@ -98,10 +98,6 @@ interface CommonTableProps {
   enableInfinityScroll?: boolean;
   editMode?: "inline" | "modal";
   editModalComponent?: React.ReactNode;
-  onReloadDataFn?: () => void;
-  onSortFn?: (filedId: string, sort: string) => void;
-  onExportFn?: () => void;
-  onInfinityScrollUpdateFn?: () => void;
   onFilterFn?: (filedId: string, filter: string) => void;
   rowActions?: RowActionsTableItem[];
   enableSorting?: boolean;
@@ -114,11 +110,6 @@ interface CommonTableProps {
 }
 export interface TableWarpProps extends CommonTableProps {
   children?: React.ReactNode;
-  sort: SortByOpt | null;
-  pagination: Pagination;
-  data: DataTableType[];
-  onSort: (sort: SortByOpt | null) => void;
-  onPagination: (page: number, pageSize: number) => void;
 }
 export interface TableCommonProps extends CommonTableProps {
   tableId: string;
@@ -136,4 +127,9 @@ export interface Pagination {
 export interface SortByOpt {
   columnId: string;
   direction: SortByDirection;
+}
+
+export enum ExportTableMode {
+  ClientSide,
+  ServerSide,
 }
