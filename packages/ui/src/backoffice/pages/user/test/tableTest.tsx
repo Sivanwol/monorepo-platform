@@ -4,7 +4,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { TableState, TableStore } from "@app/store-backoffice";
-import type { DataTableType, UserTestPageProps } from "@app/utils";
+import type {
+  DataTableType,
+  Pagination,
+  SortByOpt,
+  UserTestPageProps,
+} from "@app/utils";
 import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 import { mockData } from "@app/utils";
@@ -17,9 +22,16 @@ export const TableTest = ({
 }: UserTestPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
   const [initialRequest, setInitialRequest] = useState<boolean>(false);
+  const [dataRequest, setDataRequest] = useState<boolean>(false);
+  const [currentPagination, setCurrentPagination] = useState<Pagination>({
+    page: 1,
+    pageSize: 10,
+    totalEntries: 0,
+  });
+  const [currentSort, setCurrentSort] = useState<SortByOpt | null>(null);
   const { setData, hasData, tables, init, bindRequestReload } =
     useTableStore<TableStore>((store) => store as TableStore);
-  const { data, pagination, sort } = tableId
+  const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       tables[tableId]!
     : ({} as TableState);
@@ -37,20 +49,57 @@ export const TableTest = ({
       setTableId(id);
     }
   }, [tableId, init, bindRequestReload, sort, pagination]);
+  useEffect(() => {
+    if (tableId) {
+      const requestNewData = false;
+      if (
+        currentPagination.page !== pagination.page ||
+        currentPagination.pageSize !== pagination.pageSize
+      ) {
+        setCurrentPagination(pagination);
+        setDataRequest(true);
+      }
+      if (
+        !currentSort !== !!currentSort ||
+        currentSort?.columnId !== sort?.columnId ||
+        currentSort?.direction !== sort?.direction
+      ) {
+        setCurrentSort(sort);
+        setDataRequest(true);
+      }
+    }
+  }, [tableId, pagination, sort, currentPagination, currentSort]);
   const fetcher = useCallback(async () => {
     const data = mockData(100).map((item) => ({ ...item }) as DataTableType);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     setData(tableId!, data);
+
     console.log("update data etcher", { data, sort, pagination });
   }, [tableId, setData, sort, pagination]);
   useEffect(() => {
     if (!tableId) return;
-    if (!initialRequest && !hasData(tableId)) {
+    if ((!initialRequest && !hasData(tableId)) || dataRequest) {
       fetcher()
         .catch(console.error)
-        .finally(() => setInitialRequest(true));
+        .finally(() => {
+          setInitialRequest(true);
+          if (dataRequest) {
+            setDataRequest(false);
+          }
+        });
     }
-  }, [lng, ns, setData, fetcher, pagination, tableId, hasData, initialRequest]);
+  }, [
+    lng,
+    ns,
+    setData,
+    fetcher,
+    dataRequest,
+    setDataRequest,
+    pagination,
+    tableId,
+    hasData,
+    initialRequest,
+  ]);
 
   const renderPage = (
     <TableWarp
