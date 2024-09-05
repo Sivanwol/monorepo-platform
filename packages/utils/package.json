@@ -28,9 +28,9 @@
     "@app/eslint-config": "workspace:*",
     "@app/prettier-config": "workspace:*",
     "@app/tsconfig": "workspace:*",
+    "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "@types/react": "catalog:react18",
     "react": "catalog:react18",
     "sort-package-json": "catalog:",
     "typescript": "catalog:"

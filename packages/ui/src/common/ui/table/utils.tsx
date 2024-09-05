@@ -8,10 +8,11 @@ import type {
   ColumnTableProps,
   DataTableType,
   RowActionsTableItem,
-  TranslationRecord,
   SortByOpt,
+  TranslationRecord,
 } from "@app/utils";
 import { SortByDirection } from "@app/utils";
+
 import { IndeterminateCheckbox } from "./indeterminateCheckbox";
 
 const columnHelper = createColumnHelper<DataTableType>();

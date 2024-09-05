@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
-import type {
-  DataTableType,
-  Pagination,
-  SortByOpt,
-  UserTestPageProps,
-} from "@app/utils";
+import type { TableState, TableStore } from "@app/store-backoffice";
+import type { DataTableType, UserTestPageProps } from "@app/utils";
+import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
-import { mockData, rowsPerPageOptions } from "@app/utils";
+import { mockData } from "@app/utils";
 
 export const TableTest = ({
   lng,
@@ -18,59 +15,49 @@ export const TableTest = ({
   columns,
   translations,
 }: UserTestPageProps) => {
-  const [data, setData] = React.useState<DataTableType[]>([]);
-  const [sortBy, setSortBy] = React.useState<SortByOpt | null>(null);
-  const [pagination, setPagination] = React.useState<Pagination>({
-    page: 1,
-    pageSize: rowsPerPageOptions[0] ?? 20,
-    totalEntries: 0,
-  });
-
-  const fetcher = useCallback(async () => {
-    setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
-    console.log("update data etcher", { data, sortBy, pagination });
-  }, [setData]);
+  const [tableId, setTableId] = useState<string | null>(null);
+  const [initialRequest, setInitialRequest] = useState<boolean>(false);
+  const { setData, hasData, tables, init, bindRequestReload } =
+    useTableStore<TableStore>((store) => store as TableStore);
+  const { data, pagination, sort } = tableId
+    ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      tables[tableId]!
+    : ({} as TableState);
   useEffect(() => {
-    if (data.length === 0) {
-      fetcher().catch(console.error);
+    if (!tableId) {
+      const id = init();
+
+      bindRequestReload(id, async () => {
+        const data = mockData(100).map(
+          (item) => ({ ...item }) as DataTableType,
+        );
+        console.log("update data etcher", { data, sort, pagination });
+        return data;
+      });
+      setTableId(id);
     }
-  }, [lng, ns, data, setData, fetcher, sortBy, pagination]);
-  const onSort = (sort: SortByOpt | null) => {
-    if (!sort && sortBy) {
-      console.log("sort changed", sort);
-      setSortBy(null);
-      return;
+  }, [tableId, init, bindRequestReload, sort, pagination]);
+  const fetcher = useCallback(async () => {
+    const data = mockData(100).map((item) => ({ ...item }) as DataTableType);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    setData(tableId!, data);
+    console.log("update data etcher", { data, sort, pagination });
+  }, [tableId, setData, sort, pagination]);
+  useEffect(() => {
+    if (!tableId) return;
+    if (!initialRequest && !hasData(tableId)) {
+      fetcher()
+        .catch(console.error)
+        .finally(() => setInitialRequest(true));
     }
-    if (sort) {
-      if (
-        !sortBy ||
-        sortBy.columnId !== sort.columnId ||
-        sortBy.direction !== sort.direction
-      ) {
-        console.log("sort changed", sort);
-        setSortBy(null);
-        fetcher().catch(console.error);
-      }
-    }
-  };
-  const onPagination = (page: number, rowsPerPage: number) => {
-    if (pagination.page === page && pagination.pageSize === rowsPerPage) return;
-    console.log("pagination changed", { page, rowsPerPage });
-    setPagination({ page, pageSize: rowsPerPage, totalEntries: data.length });
-  };
-  const onReloadData = () => {
-    fetcher().catch(console.error);
-  };
+  }, [lng, ns, setData, fetcher, pagination, tableId, hasData, initialRequest]);
+
   const renderPage = (
     <TableWarp
-      data={data}
-      onPagination={onPagination}
-      onSort={onSort}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      tableId={tableId!}
       columns={columns}
-      pagination={pagination}
-      sort={sortBy}
       translations={translations}
-      onReloadDataFn={onReloadData}
       enableExport={true}
       enableSelection={true}
       enableSorting={true}
@@ -91,5 +78,5 @@ export const TableTest = ({
       debugMode={false}
     />
   );
-  return renderPage;
+  return tableId ? renderPage : null;
 };

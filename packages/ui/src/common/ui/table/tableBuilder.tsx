@@ -53,6 +53,7 @@ import classNames from "classnames";
 import { CgExport } from "react-icons/cg";
 import { TfiReload } from "react-icons/tfi";
 
+import type { TableStore } from "@app/store-backoffice";
 import type {
   ActionsTableItem,
   ColumnGroupTableProps,
@@ -60,8 +61,13 @@ import type {
   DataTableType,
   TableCommonProps,
 } from "@app/utils";
-import { ExportTableMode, rowsPerPageOptions } from "@app/utils";
-import { SortByDirection } from "@app/utils";
+import { useTableStore } from "@app/store-backoffice";
+import {
+  ExportTableMode,
+  rowsPerPageOptions,
+  SortByDirection,
+} from "@app/utils";
+
 import { DragAlongCell, DraggableTableHeader } from "./draggableTableContext";
 import { Filter } from "./filter";
 import { TablePaginating } from "./pageing";
@@ -75,7 +81,7 @@ import {
   isGroupColumn,
   isObjectEmpty,
 } from "./utils";
-import { useTableStore } from '@app/store-backoffice';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -103,11 +109,18 @@ export const TableBuilder = ({
   if (!tableId) {
     throw new Error("Table Id is required");
   }
-  const [setPagination, setSort, tables, init, reload, requestExport] = useTableStore((store) => store);
-  let tableState = tables[tableId];
+  const tableStore = useTableStore<TableStore>((store) => store as TableStore);
+  if (!tableStore.tables[tableId]) {
+    throw new Error(
+      `Table state not found for ${tableId} please run init to populate the table state`,
+    );
+  }
+  const { setPagination, setSort, tables, reload, requestExport } = tableStore;
+  const tableState = tables[tableId];
   if (!tableState) {
-    init(tableId);
-    tableState = tables[tableId];
+    throw new Error(
+      `Table state not found for ${tableId} please run init on for populate the table state`,
+    );
   }
   const { data, pagination, sort, loading, exportMode } = tableState;
 
@@ -185,10 +198,10 @@ export const TableBuilder = ({
     }
     return isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-        columns as ColumnGroupTableProps[],
-        translations,
-        rowActions,
-      )
+          columns as ColumnGroupTableProps[],
+          translations,
+          rowActions,
+        )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
   }, [columns, data, translations, rowActions, enableSelection]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
@@ -284,7 +297,7 @@ export const TableBuilder = ({
 
   const onReload = () => {
     console.log(`${tableId} - reload data`);
-    reload(tableId);
+    reload(tableId).catch(console.error);
   };
 
   // reorder columns after drag & drop
@@ -308,7 +321,8 @@ export const TableBuilder = ({
   const onExport = () => {
     console.log(`${tableId} - export data`);
     if (exportMode === ExportTableMode.ServerSide) {
-      requestExport(tableId);
+      requestExport(tableId).catch(console.error);
+      return;
     } else {
       let dataToExport = data; // in case of no selection local export will be to all existing data
       if (
@@ -479,10 +493,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                    enableFilters &&
+                                    "filterable" in columnEntity &&
+                                    columnEntity.filterable &&
+                                    header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -518,8 +532,10 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                                "desc" ? SortByDirection.DESC : SortByDirection.ASC,
-                                          })
+                                              "desc"
+                                                ? SortByDirection.DESC
+                                                : SortByDirection.ASC,
+                                          });
                                           setSorting([
                                             {
                                               id: header.column.id,
@@ -535,10 +551,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                          enableFilters &&
-                                          "filterable" in columnEntity &&
-                                          columnEntity.filterable &&
-                                          header.column.getCanFilter() ? (
+                                        enableFilters &&
+                                        "filterable" in columnEntity &&
+                                        columnEntity.filterable &&
+                                        header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -547,14 +563,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                          header.column.getCanSort() &&
-                                          columnEntity.sort ? (
+                                        header.column.getCanSort() &&
+                                        columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                              "desc"
+                                            "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>
@@ -608,39 +624,40 @@ export const TableBuilder = ({
                       </TableCell>
                     </TableRow>
                   )}
-                  {!loading && table.getRowModel().rows.map((row) => {
-                    return (
-                      <TableRow
-                        key={row.id}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        {renderSelectionCell(row.getVisibleCells())}
-                        {row.getVisibleCells().map((cell) => {
-                          if (cell.column.columnDef.id === "select") {
-                            return null;
-                          }
-                          return (
-                            <TableCell key={cell.id}>
-                              <SortableContext
-                                key={cell.id}
-                                items={columnOrder}
-                                strategy={horizontalListSortingStrategy}
-                              >
-                                <DragAlongCell key={cell.id} cell={cell}>
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                  )}
-                                </DragAlongCell>
-                              </SortableContext>
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  {!loading &&
+                    table.getRowModel().rows.map((row) => {
+                      return (
+                        <TableRow
+                          key={row.id}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          {renderSelectionCell(row.getVisibleCells())}
+                          {row.getVisibleCells().map((cell) => {
+                            if (cell.column.columnDef.id === "select") {
+                              return null;
+                            }
+                            return (
+                              <TableCell key={cell.id}>
+                                <SortableContext
+                                  key={cell.id}
+                                  items={columnOrder}
+                                  strategy={horizontalListSortingStrategy}
+                                >
+                                  <DragAlongCell key={cell.id} cell={cell}>
+                                    {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )}
+                                  </DragAlongCell>
+                                </SortableContext>
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
                 </TableBody>
               </MuiTable>
             </TableContainer>
@@ -655,12 +672,20 @@ export const TableBuilder = ({
             page={pagination.page}
             onPageChange={(_, page) => {
               table.setPageIndex(pagination.page);
-              setPagination(tableId, { page, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
+              setPagination(tableId, {
+                page,
+                pageSize: pagination.pageSize,
+                totalEntries: pagination.totalEntries,
+              });
             }}
             onRowsPerPageChange={(e) => {
               const size = e.target.value ? Number(e.target.value) : 10;
               table.setPageSize(size);
-              setPagination(tableId, { page: 1, pageSize: pagination.pageSize, totalEntries: pagination.totalEntries });
+              setPagination(tableId, {
+                page: 1,
+                pageSize: pagination.pageSize,
+                totalEntries: pagination.totalEntries,
+              });
             }}
             ActionsComponent={TablePaginating}
           />

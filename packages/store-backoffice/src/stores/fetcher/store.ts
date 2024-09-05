@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { createStore } from 'zustand/vanilla'
-import { devtools } from 'zustand/middleware'
+import { devtools } from "zustand/middleware";
+import { createStore } from "zustand/vanilla";
 
 import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
 import { rowsPerPageOptions } from "@app/utils";
@@ -36,49 +36,52 @@ export const defaultFetcherState: FetcherState = {
 export const createFetcherStore = (
   initialState: FetcherState = defaultFetcherState,
 ) =>
-  createStore<FetcherStore>()(devtools((set, get) => ({
-    ...initialState,
-    clearData: () => set((state) => ({ data: [] })),
-    getLoadingState: () => get().loading,
-    setLoadingState: (status: boolean) => set((state) => ({ loading: status })),
-    clearLoadingState: () => set((state) => ({ loading: false })),
-    requestData: async (
-      data: DataTableType[],
-      pagination: Pagination,
-      sort: SortByOpt | null,
-      apiCallback: () => Promise<DataTableType[]>,
-    ): Promise<void> => {
-      if (get().loading) throw new Error("Request already in progress");
-      set((state) => ({
-        loading: true,
-        errorMessages: undefined,
-        status: false,
-      }));
-      try {
-        const response = await apiCallback();
+  createStore<FetcherStore>()(
+    devtools((set, get) => ({
+      ...initialState,
+      clearData: () => set((state) => ({ data: [] })),
+      getLoadingState: () => get().loading,
+      setLoadingState: (status: boolean) =>
+        set((state) => ({ loading: status })),
+      clearLoadingState: () => set((state) => ({ loading: false })),
+      requestData: async (
+        data: DataTableType[],
+        pagination: Pagination,
+        sort: SortByOpt | null,
+        apiCallback: () => Promise<DataTableType[]>,
+      ): Promise<void> => {
+        if (get().loading) throw new Error("Request already in progress");
         set((state) => ({
-          data: response,
-          loading: false,
-          status: true,
+          loading: true,
           errorMessages: undefined,
-          metadata: {
-            sort,
-            pagination: {
-              page: 1,
-              pageSize: pagination.pageSize,
-              totalEntries: response.length,
-            },
-          },
-        }));
-      } catch (error) {
-        set((state) => ({
-          loading: false,
-          errorMessages: (error as Error).message,
           status: false,
         }));
-      }
-    },
-  })));
+        try {
+          const response = await apiCallback();
+          set((state) => ({
+            data: response,
+            loading: false,
+            status: true,
+            errorMessages: undefined,
+            metadata: {
+              sort,
+              pagination: {
+                page: 1,
+                pageSize: pagination.pageSize,
+                totalEntries: response.length,
+              },
+            },
+          }));
+        } catch (error) {
+          set((state) => ({
+            loading: false,
+            errorMessages: (error as Error).message,
+            status: false,
+          }));
+        }
+      },
+    })),
+  );
 
 export const FetcherStoreContext = createContext<
   ReturnType<typeof createFetcherStore> | undefined

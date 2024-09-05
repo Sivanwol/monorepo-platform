@@ -52,8 +52,6 @@
     "@vercel/flags": "catalog:vercel",
     "@vercel/otel": "catalog:vercel",
     "@vercel/speed-insights": "^1.0.12",
-    "flowbite": "catalog:ui",
-    "flowbite-react": "catalog:ui",
     "geist": "^1.3.0",
     "http-browserify": "^1.7.0",
     "https-browserify": "^1.0.0",

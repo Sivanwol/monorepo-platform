@@ -1,9 +1,13 @@
 import { createContext } from "react";
-import { createStore } from 'zustand/vanilla'
-import { devtools } from 'zustand/middleware'
-import { ExportTableMode } from '@app/utils';
-import type { DataTableType, Pagination, SortByOpt } from '@app/utils';
+import { v4 as uuidV4 } from "uuid";
+import { devtools } from "zustand/middleware";
+import { createStore } from "zustand/vanilla";
+
+import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
+import { ExportTableMode } from "@app/utils";
+
 import type { TableActions } from "./actions";
+
 export interface TableState {
   data: DataTableType[];
   pagination: Pagination;
@@ -35,16 +39,24 @@ export const createTableStore = () =>
   createStore<TableStore>()(
     devtools((set, get) => ({
       tables: {},
-      init: (tableId) => {
+      init: () => {
         const state = get();
+        const tableId = uuidV4();
         if (!state.tables[tableId]) {
           set((state) => ({
             tables: {
               ...state.tables,
               [tableId]: { ...defaultTableState, tableId },
             },
-          }))
+          }));
         }
+        return tableId;
+      },
+      hasData: (tableId) => {
+        const state = get();
+        const tableState = state.tables[tableId];
+        if (!tableState) return false;
+        return tableState.data.length > 0;
       },
       setData: (tableId, data) => {
         const state = get();
@@ -54,7 +66,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...defaultTableState, data },
             },
-          }))
+          }));
         } else {
           const tableState = state.tables[tableId];
           set((state) => ({
@@ -62,7 +74,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, data },
             },
-          }))
+          }));
         }
       },
       setPagination: (tableId, pagination) => {
@@ -74,7 +86,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, pagination: pagination },
             },
-          }))
+          }));
         }
       },
       setExportMode: (tableId, mode) => {
@@ -86,7 +98,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, exportMode: mode },
             },
-          }))
+          }));
         }
       },
       bindRequestExport: (tableId, requestExportCb) => {
@@ -98,13 +110,16 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, requestExportCb },
             },
-          }))
+          }));
         }
       },
       requestExport: async (tableId) => {
         const { tables } = get();
         const table = tables[tableId];
-        if (table?.requestExportCb && table.exportMode === ExportTableMode.ServerSide) {
+        if (
+          table?.requestExportCb &&
+          table.exportMode === ExportTableMode.ServerSide
+        ) {
           await table.requestExportCb(table.data);
         }
       },
@@ -117,7 +132,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, requestReloadCb },
             },
-          }))
+          }));
         }
       },
       reload: async (tableId) => {
@@ -140,7 +155,11 @@ export const createTableStore = () =>
                     ...tableState,
                     loading: false,
                     data,
-                    pagination: { ...tableState.pagination, totalEntries: data.length, page: 1 },
+                    pagination: {
+                      ...tableState.pagination,
+                      totalEntries: data.length,
+                      page: 1,
+                    },
                     sort: null,
                   },
                 },
@@ -154,7 +173,11 @@ export const createTableStore = () =>
                     ...tableState,
                     loading: false,
                     data: [],
-                    pagination: { ...tableState.pagination, totalEntries: 0, page: 1 },
+                    pagination: {
+                      ...tableState.pagination,
+                      totalEntries: 0,
+                      page: 1,
+                    },
                     sort: null,
                   },
                 },
@@ -172,7 +195,7 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, sort },
             },
-          }))
+          }));
         }
       },
       setLoading: (tableId, loading) => {
@@ -184,16 +207,17 @@ export const createTableStore = () =>
               ...state.tables,
               [tableId]: { ...tableState, loading },
             },
-          }))
+          }));
         }
       },
-      reset: (tableId) => set((state) => ({
-        tables: {
-          ...state.tables,
-          [tableId]: { ...defaultTableState, tableId },
-        },
-      })),
-    }))
+      reset: (tableId) =>
+        set((state) => ({
+          tables: {
+            ...state.tables,
+            [tableId]: { ...defaultTableState, tableId },
+          },
+        })),
+    })),
   );
 
 export const TableStoreContext = createContext<

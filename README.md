@@ -62,7 +62,7 @@ packages
   ├─ validators
   |   └─ all validators both platform and backoffice
   └─ ui
-      └─ Start of a UI package for the webapp using shadcn-ui(will be removed later) , flowbite-react and mui (some element not existed in the first so use both)
+      └─ Start of a UI package for the webapp using shadcn-ui(will be removed later) , tailwind and mui (some element not existed in the first so use both)
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets

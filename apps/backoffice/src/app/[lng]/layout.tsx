@@ -5,7 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeModeScript } from "flowbite-react";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
@@ -45,9 +44,6 @@ export default function RootLayout({
 
   return (
     <html lang={lng} suppressHydrationWarning>
-      <head>
-        <ThemeModeScript />
-      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",

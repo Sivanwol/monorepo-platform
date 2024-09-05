@@ -109,6 +109,7 @@ interface CommonTableProps {
   debugMode?: boolean;
 }
 export interface TableWarpProps extends CommonTableProps {
+  tableId: string;
   children?: React.ReactNode;
 }
 export interface TableCommonProps extends CommonTableProps {
