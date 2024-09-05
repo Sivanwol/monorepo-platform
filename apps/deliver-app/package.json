@@ -9,7 +9,8 @@
     "dev": "#expo start",
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "sort:packages": "sort-package-json"
   },
   "prettier": "@app/prettier-config",
   "dependencies": {
@@ -53,6 +54,7 @@
     "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "sort-package-json": "catalog:",
     "tailwindcss": "^3.4.4",
     "typescript": "catalog:"
   }

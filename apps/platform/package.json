@@ -9,6 +9,7 @@
     "dev": "#pnpm with-env next dev --port=3000",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -46,6 +47,7 @@
     "eslint": "catalog:",
     "jiti": "^1.21.6",
     "prettier": "catalog:",
+    "sort-package-json": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }

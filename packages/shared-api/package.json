@@ -15,6 +15,7 @@
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "prettier": "@app/prettier-config",
@@ -26,6 +27,7 @@
     "@trpc/server": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
     "date-fns": "catalog:",
+    "sort-package-json": "catalog:",
     "superjson": "catalog:",
     "trpc-openapi": "catalog:",
     "zod": "catalog:"

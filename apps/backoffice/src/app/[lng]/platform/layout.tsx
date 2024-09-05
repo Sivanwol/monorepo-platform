@@ -135,16 +135,18 @@ export default async function PlatformLayout({
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
-        <DashboardLayout
-          sideMenuItems={menuGroups}
-          notifications={notifications}
-          lng={lng}
-          translations={translations}
-          blockActions={maintenance ? false : maintenance}
-          user={user}
-        >
-          {maintenance ? maintenanceRenderer : children}
-        </DashboardLayout>
+        <StoreBackofficeProvider>
+          <DashboardLayout
+            sideMenuItems={menuGroups}
+            notifications={notifications}
+            lng={lng}
+            translations={translations}
+            blockActions={maintenance ? false : maintenance}
+            user={user}
+          >
+            {maintenance ? maintenanceRenderer : children}
+          </DashboardLayout>
+        </StoreBackofficeProvider>
       </Suspense>
     </HydrateClient>
   );

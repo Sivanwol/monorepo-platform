@@ -1,97 +1,138 @@
 "use client";
 
 import type { ReactNode } from "react";
-import React, { createContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-import type { DataTableType, Pagination, SoftByRow } from "@app/utils";
+import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
 import { rowsPerPageOptions } from "@app/utils";
 
 // Define types for your context value
 export interface TableContextType {
   data: DataTableType[];
-
-  sortBy: SoftByRow | null;
+  sortBy: SortByOpt | null;
   pagination: Pagination;
-  setSort: (sort: SoftByRow) => void;
+  setSort: (sort: SortByOpt) => void;
   clearSort: () => void;
   setPage: (page: number, rowsPerPage: number) => void;
   setTableData: (data: DataTableType[]) => void;
   setData: (data: DataTableType[]) => void;
 }
-export const TableContext = createContext<TableContextType | undefined>(
-  undefined,
-);
 
-export const TableProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [sortBy, setSortBy] = useState<SoftByRow | null>(null);
+export const TableContextMap = new Map<
+  string,
+  React.Context<TableContextType | undefined>
+>();
+
+export const TableProvider: React.FC<{
+  children: ReactNode;
+  tableId: string;
+}> = ({ children, tableId }) => {
+  const [sortBy, setSortBy] = useState<SortByOpt | null>(null);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     pageSize: rowsPerPageOptions[0]!,
     totalEntries: 0,
   });
   const [dataTable, setDataTable] = useState<DataTableType[]>([]);
-  const setSort = (sort: SoftByRow) => {
-    console.log("setSort", sort, sortBy);
-    if (
-      sort.columnId === sortBy?.columnId &&
-      sort.direction === sortBy.direction
-    )
-      return;
-    setPagination({
-      page: 1,
-      pageSize: pagination.pageSize,
-      totalEntries: pagination.totalEntries,
-    });
-    setSortBy(sort);
-  };
-  const clearSort = () => {
+
+  const setSort = useCallback(
+    (sort: SortByOpt) => {
+      if (
+        sort.columnId === sortBy?.columnId &&
+        sort.direction === sortBy.direction
+      )
+        return;
+      setPagination({
+        page: 1,
+        pageSize: pagination.pageSize,
+        totalEntries: pagination.totalEntries,
+      });
+      setSortBy(sort);
+    },
+    [sortBy, setPagination, pagination, setSortBy],
+  );
+
+  const clearSort = useCallback(() => {
     if (!sortBy) return;
-    console.log("clearSort", sortBy);
     setPagination({
       page: 1,
       pageSize: pagination.pageSize,
       totalEntries: pagination.totalEntries,
     });
     setSortBy(null);
-  };
-  const setTableData = (data: DataTableType[]) => {
-    setData(data);
-  };
+  }, [sortBy, setPagination, pagination, setSortBy]);
 
-  const setPage = (page: number, rowsPerPage: number) => {
-    if (pagination.page === page && pagination.pageSize === rowsPerPage) return;
-    console.log("setPage", page, rowsPerPage, pagination);
-    setPagination({
-      page,
-      pageSize: rowsPerPage,
-      totalEntries: pagination.totalEntries,
-    });
-  };
+  const setTableData = useCallback(
+    (data: DataTableType[]) => {
+      setDataTable(data);
+    },
+    [setDataTable],
+  );
 
-  const setData = (data: DataTableType[]) => {
-    console.log("setData", data);
-    setPagination({
-      page: 1,
-      pageSize: pagination.pageSize,
-      totalEntries: data.length,
-    });
-    setSortBy(null);
-    setDataTable(data);
-  };
+  const setPage = useCallback(
+    (page: number, rowsPerPage: number) => {
+      if (pagination.page === page && pagination.pageSize === rowsPerPage)
+        return;
+      setPagination({
+        page,
+        pageSize: rowsPerPage,
+        totalEntries: pagination.totalEntries,
+      });
+    },
+    [pagination, setPagination],
+  );
 
-  const value: TableContextType = {
-    data: dataTable,
-    sortBy,
-    pagination,
-    setData,
-    setSort,
-    clearSort,
-    setPage,
-    setTableData,
-  };
+  const setData = useCallback(
+    (data: DataTableType[]) => {
+      setPagination({
+        page: 1,
+        pageSize: pagination.pageSize,
+        totalEntries: data.length,
+      });
+      setSortBy(null);
+      setDataTable(data);
+    },
+    [pagination, setSortBy, setDataTable, setPagination],
+  );
+
+  const value: TableContextType = useMemo(
+    () => ({
+      data: dataTable,
+      sortBy,
+      pagination,
+      setData,
+      setSort,
+      clearSort,
+      setPage,
+      setTableData,
+    }),
+    [
+      dataTable,
+      sortBy,
+      pagination,
+      setData,
+      setSort,
+      clearSort,
+      setPage,
+      setTableData,
+    ],
+  );
+
+  if (!TableContextMap.has(tableId)) {
+    TableContextMap.set(
+      tableId,
+      createContext<TableContextType | undefined>(undefined),
+    );
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const TableContext = TableContextMap.get(tableId)!;
 
   return (
     <TableContext.Provider value={value}>{children}</TableContext.Provider>

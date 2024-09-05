@@ -85,7 +85,8 @@ export interface UserTestPageProps extends CommonLanguageProps {
   translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
 }
-export interface TableCommonProps {
+
+interface CommonTableProps {
   direction: "ltr" | "rtl";
   translations: TranslationRecord;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
@@ -111,6 +112,17 @@ export interface TableCommonProps {
   searchComponent?: React.ReactNode;
   debugMode?: boolean;
 }
+export interface TableWarpProps extends CommonTableProps {
+  children?: React.ReactNode;
+  sort: SortByOpt | null;
+  pagination: Pagination;
+  data: DataTableType[];
+  onSort: (sort: SortByOpt | null) => void;
+  onPagination: (page: number, pageSize: number) => void;
+}
+export interface TableCommonProps extends CommonTableProps {
+  tableId: string;
+}
 
 export enum SortByDirection {
   ASC = "asc",
@@ -121,7 +133,7 @@ export interface Pagination {
   pageSize: number;
   totalEntries: number;
 }
-export interface SoftByRow {
+export interface SortByOpt {
   columnId: string;
   direction: SortByDirection;
 }

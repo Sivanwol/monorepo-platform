@@ -15,6 +15,7 @@
     "dev": "pnpm with-env next dev --port=3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -24,6 +25,7 @@
     "@app/auth": "workspace:*",
     "@app/backoffice-api": "workspace:*",
     "@app/db": "workspace:*",
+    "@app/store-backoffice": "workspace:*",
     "@app/ui": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/validators": "workspace:*",
@@ -63,6 +65,7 @@
     "react-dom": "catalog:react18",
     "react-icons": "catalog:ui",
     "server-only": "catalog:vercel",
+    "sort-package-json": "catalog:",
     "stream-browserify": "^3.0.0",
     "styled-components": "^6.1.12",
     "superjson": "2.2.1",

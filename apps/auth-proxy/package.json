@@ -5,10 +5,12 @@
   "scripts": {
     "build": "nitro build",
     "clean": "rm -rf .turbo .output .nitro node_modules",
-    "lint": "eslint",
     "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@auth/core": "0.32.0"
   },
@@ -22,7 +24,7 @@
     "h3": "^1.12.0",
     "nitropack": "^2.9.7",
     "prettier": "catalog:",
+    "sort-package-json": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

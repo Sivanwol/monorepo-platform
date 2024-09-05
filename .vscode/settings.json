@@ -36,5 +36,8 @@
       "connectString": "postgres://default:tUW0yLFZHVh7@ep-cool-dew-a2z4kc7y-pooler.eu-central-1.aws.neon.tech:5432/verceldb?sslmode=require",
       "name": "Remote Local PDB"
     }
-  ]
+  ],
+  "[jsonc]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+  }
 }

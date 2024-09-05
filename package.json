@@ -24,7 +24,8 @@
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo run typecheck",
     "prepare": "husky",
-    "ui-add": "turbo run ui-add"
+    "ui-add": "turbo run ui-add",
+    "sort:packages": "turbo run sort:packages"
   },
   "devDependencies": {
     "@app/prettier-config": "workspace:*",

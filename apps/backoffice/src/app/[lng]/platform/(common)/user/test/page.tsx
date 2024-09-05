@@ -66,14 +66,12 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
-              <TableProvider>
-                <UserTestPage
-                  columns={columns}
-                  lng={lng}
-                  ns="table"
-                  translations={translations}
-                />
-              </TableProvider>
+              <UserTestPage
+                columns={columns}
+                lng={lng}
+                ns="table"
+                translations={translations}
+              />
             </Suspense>
           </div>
         </div>
