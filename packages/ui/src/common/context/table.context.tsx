@@ -1,13 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useMemo, useState } from "react";
 
 import type { DataTableType, Pagination, SortByOpt } from "@app/utils";
 import { rowsPerPageOptions } from "@app/utils";
@@ -36,7 +30,7 @@ export const TableProvider: React.FC<{
   const [sortBy, setSortBy] = useState<SortByOpt | null>(null);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    pageSize: rowsPerPageOptions[0]!,
+    pageSize: rowsPerPageOptions[0] ?? 20, // Provide a default value (e.g., 20)
     totalEntries: 0,
   });
   const [dataTable, setDataTable] = useState<DataTableType[]>([]);

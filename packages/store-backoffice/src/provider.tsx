@@ -1,11 +1,12 @@
 import type { FC, ReactNode } from "react";
+
+import { StoreProvider } from "./helpers";
 import {
   createFetcherStore,
   createTableStore,
   FetcherStoreContext,
   TableStoreContext,
 } from "./stores";
-import { StoreProvider } from "./helpers";
 
 export const StoreBackofficeProvider: FC<{ children: ReactNode }> = ({
   children,

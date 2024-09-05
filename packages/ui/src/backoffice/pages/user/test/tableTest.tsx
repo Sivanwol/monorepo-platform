@@ -3,7 +3,12 @@
 import React, { useCallback, useEffect } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
-import type { DataTableType, SortByOpt, UserTestPageProps, Pagination } from "@app/utils";
+import type {
+  DataTableType,
+  Pagination,
+  SortByOpt,
+  UserTestPageProps,
+} from "@app/utils";
 import { TableWarp } from "@app/ui";
 import { mockData, rowsPerPageOptions } from "@app/utils";
 
@@ -15,7 +20,11 @@ export const TableTest = ({
 }: UserTestPageProps) => {
   const [data, setData] = React.useState<DataTableType[]>([]);
   const [sortBy, setSortBy] = React.useState<SortByOpt | null>(null);
-  const [pagination, setPagination] = React.useState<Pagination>({ page: 1, pageSize: rowsPerPageOptions[0] ?? 20, totalEntries: 0 });
+  const [pagination, setPagination] = React.useState<Pagination>({
+    page: 1,
+    pageSize: rowsPerPageOptions[0] ?? 20,
+    totalEntries: 0,
+  });
 
   const fetcher = useCallback(async () => {
     setData(mockData(100).map((item) => ({ ...item }) as DataTableType));
