@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext } from "react";
 import { devtools } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";

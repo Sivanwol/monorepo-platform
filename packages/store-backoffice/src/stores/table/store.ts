@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext } from "react";
 import { v4 as uuidV4 } from "uuid";
 import { devtools } from "zustand/middleware";
@@ -9,6 +11,7 @@ import { ExportTableMode } from "@app/utils";
 import type { TableActions } from "./actions";
 
 export interface TableState {
+  tableId: string;
   data: DataTableType[];
   pagination: Pagination;
   loading: boolean;
@@ -22,6 +25,7 @@ export type TableStore = {
 } & TableActions;
 
 export const defaultTableState: TableState = {
+  tableId: "",
   data: [],
   loading: false,
   pagination: {

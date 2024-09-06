@@ -7,6 +7,7 @@ import { session } from "@descope/nextjs-sdk/server";
 import type { NotificationModel, UserModel } from "@app/db/client";
 import type { MenuGroup } from "@app/ui";
 import type { LayoutCommonProps } from "@app/utils";
+import { StoreBackofficeProvider } from "@app/store-backoffice";
 import { DashboardLayout, LoadingPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 

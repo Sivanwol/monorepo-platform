@@ -54,13 +54,25 @@ const rowButtonRenderer = (
   </ButtonGroup>
 );
 
+export const totalHeaderColumns = (
+  columns: ColumnTableProps[] | ColumnGroupTableProps[],
+) => {
+  let total = 0;
+  columns.forEach((column) => {
+    if (isGroupColumn(column)) {
+      total += column.columns.length;
+    } else {
+      total += 1;
+    }
+  });
+  return total;
+};
+
 export const buildColumnDef = (
   columns: ColumnTableProps[],
   translations: TranslationRecord,
   rowActions?: RowActionsTableItem[],
 ): ColumnDef<DataTableType>[] => {
-  console.log("columns", columns);
-  console.log("rowActions", rowActions);
   const columnMap: Record<string, boolean> = {};
   return columns
     .map((column) => {

@@ -50,23 +50,21 @@ export const TableTest = ({
     }
   }, [tableId, init, bindRequestReload, sort, pagination]);
   useEffect(() => {
-    if (tableId) {
-      const requestNewData = false;
-      if (
-        currentPagination.page !== pagination.page ||
-        currentPagination.pageSize !== pagination.pageSize
-      ) {
-        setCurrentPagination(pagination);
-        setDataRequest(true);
-      }
-      if (
-        !currentSort !== !!currentSort ||
-        currentSort?.columnId !== sort?.columnId ||
-        currentSort?.direction !== sort?.direction
-      ) {
-        setCurrentSort(sort);
-        setDataRequest(true);
-      }
+    if (!tableId) return;
+    if (
+      currentPagination.page !== pagination.page ||
+      currentPagination.pageSize !== pagination.pageSize
+    ) {
+      setCurrentPagination(pagination);
+      setDataRequest(true);
+    }
+    if (
+      !currentSort !== !!currentSort ||
+      currentSort?.columnId !== sort?.columnId ||
+      currentSort?.direction !== sort?.direction
+    ) {
+      setCurrentSort(sort);
+      setDataRequest(true);
     }
   }, [tableId, pagination, sort, currentPagination, currentSort]);
   const fetcher = useCallback(async () => {

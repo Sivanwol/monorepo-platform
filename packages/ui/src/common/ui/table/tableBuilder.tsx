@@ -80,6 +80,7 @@ import {
   getColumnHeader,
   isGroupColumn,
   isObjectEmpty,
+  totalHeaderColumns,
 } from "./utils";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -133,6 +134,9 @@ export const TableBuilder = ({
   const [sorting, setSorting] = React.useState<SortingState>(
     sort ? convertSortBy(sort) : [],
   );
+  const [processHeader, setProcessHeader] = useState<
+    ColumnDef<DataTableType>[]
+  >([]);
   const headers = useMemo<ColumnDef<DataTableType>[]>(() => {
     if (columns.length === 0) {
       throw new Error("Columns is empty");
@@ -196,14 +200,30 @@ export const TableBuilder = ({
         }
       }
     }
-    return isGroupColumn(firstColumn)
+
+    if (processHeader.length > 0) {
+      console.log(`${tableId} processHeader`, processHeader);
+      return processHeader;
+    }
+    const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
           columns as ColumnGroupTableProps[],
           translations,
           rowActions,
         )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
-  }, [columns, data, translations, rowActions, enableSelection]);
+    setProcessHeader(headers);
+    return headers;
+  }, [
+    tableId,
+    columns,
+    data,
+    translations,
+    rowActions,
+    enableSelection,
+    processHeader,
+    setProcessHeader,
+  ]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
     headers.map((c) => c.id).filter((id) => id !== undefined),
   );
@@ -263,37 +283,6 @@ export const TableBuilder = ({
     getPaginationRowModel: getPaginationRowModel(),
     debugAll: debugMode ?? false,
   });
-
-  useEffect(() => {
-    const requireResetSorting = sorting.length === 0;
-    const currentSort = sorting[0];
-    const currentDirection = !currentSort?.desc
-      ? SortByDirection.ASC
-      : SortByDirection.DESC;
-
-    if (
-      (sort &&
-        (sort.columnId !== currentSort?.id ||
-          sort.direction !== currentDirection)) ||
-      !sort
-    ) {
-      if (requireResetSorting || !currentSort) {
-        setSort(tableId, null);
-        return;
-      }
-      setSort(tableId, {
-        columnId: currentSort.id,
-        direction: currentDirection,
-      });
-    }
-  }, [sorting, sort, columns, setSort, table, enableSorting]);
-
-  useEffect(() => {
-    table.setPagination({
-      pageIndex: pagination.page,
-      pageSize: pagination.pageSize,
-    });
-  }, [pagination, table]);
 
   const onReload = () => {
     console.log(`${tableId} - reload data`);
