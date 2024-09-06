@@ -124,7 +124,7 @@ export const TableBuilder = ({
     );
   }
   const { data, pagination, sort, loading, exportMode } = tableState;
-
+  console.log(`${tableId} - tableState`, tableState);
   const [columnResizeMode, setColumnResizeMode] =
     useState<ColumnResizeMode>("onChange");
   const rerender = useReducer(() => ({}), {})[1];
@@ -146,78 +146,73 @@ export const TableBuilder = ({
     }
     const firstColumn = columns[0];
     const isGroupColumnRef = isGroupColumn(firstColumn);
-    if (data.length !== 0) {
-      if (rowActions && rowActions.length > 0) {
-        const actionColumn: ColumnTableProps = {
-          id: "rowActions",
-          title: translations.rowActions ?? "Actions",
-          type: "internal",
-          group: false,
-          sort: false,
-        };
-        if (isGroupColumnRef) {
-          const lastGroup = columns[
-            columns.length - 1
-          ] as ColumnGroupTableProps;
-          if (
-            !lastGroup.columns.some((column) => column.id === actionColumn.id)
-          ) {
-            lastGroup.columns.push(actionColumn);
-          }
-        } else {
-          // add check if this item exist by id
-          const existingItem = columns.find(
-            (column) => column.id === actionColumn.id,
-          );
-          if (!existingItem) {
-            (columns as ColumnTableProps[]).push(actionColumn);
-          }
+    if (rowActions && rowActions.length > 0) {
+      const actionColumn: ColumnTableProps = {
+        id: "rowActions",
+        title: translations.rowActions ?? "Actions",
+        type: "internal",
+        group: false,
+        sort: false,
+      };
+      if (isGroupColumnRef) {
+        const lastGroup = columns[columns.length - 1] as ColumnGroupTableProps;
+        if (
+          !lastGroup.columns.some((column) => column.id === actionColumn.id)
+        ) {
+          lastGroup.columns.push(actionColumn);
         }
-      }
-      if (enableSelection) {
-        const selectColumn: ColumnTableProps = {
-          id: "select",
-          title: "",
-          type: "object",
-          width: 50,
-          sort: false,
-          group: false,
-        };
-        if (isGroupColumnRef) {
-          const firstGroup = columns[0] as ColumnGroupTableProps;
-          if (
-            !firstGroup.columns.some((column) => column.id === selectColumn.id)
-          ) {
-            firstGroup.columns.unshift(selectColumn);
-          }
-        } else {
-          const existingItem = columns.find(
-            (column) => column.id === selectColumn.id,
-          );
-          if (!existingItem) {
-            (columns as ColumnTableProps[]).unshift(selectColumn);
-          }
+      } else {
+        // add check if this item exist by id
+        const existingItem = columns.find(
+          (column) => column.id === actionColumn.id,
+        );
+        if (!existingItem) {
+          (columns as ColumnTableProps[]).push(actionColumn);
         }
       }
     }
-
+    if (enableSelection) {
+      const selectColumn: ColumnTableProps = {
+        id: "select",
+        title: "",
+        type: "object",
+        width: 50,
+        sort: false,
+        group: false,
+      };
+      if (isGroupColumnRef) {
+        const firstGroup = columns[0] as ColumnGroupTableProps;
+        if (
+          !firstGroup.columns.some((column) => column.id === selectColumn.id)
+        ) {
+          firstGroup.columns.unshift(selectColumn);
+        }
+      } else {
+        const existingItem = columns.find(
+          (column) => column.id === selectColumn.id,
+        );
+        if (!existingItem) {
+          (columns as ColumnTableProps[]).unshift(selectColumn);
+        }
+      }
+    }
     if (processHeader.length > 0) {
       console.log(`${tableId} processHeader`, processHeader);
       return processHeader;
     }
     const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-          columns as ColumnGroupTableProps[],
-          translations,
-          rowActions,
-        )
+        columns as ColumnGroupTableProps[],
+        translations,
+        rowActions,
+      )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
     setProcessHeader(headers);
+    console.log(`${tableId} headers`, headers, enableSelection, columns);
     return headers;
   }, [
     tableId,
     columns,
-    data,
     translations,
     rowActions,
     enableSelection,
@@ -482,10 +477,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                    enableFilters &&
-                                    "filterable" in columnEntity &&
-                                    columnEntity.filterable &&
-                                    header.column.getCanFilter() ? (
+                                      enableFilters &&
+                                      "filterable" in columnEntity &&
+                                      columnEntity.filterable &&
+                                      header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -521,7 +516,7 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                              "desc"
+                                                "desc"
                                                 ? SortByDirection.DESC
                                                 : SortByDirection.ASC,
                                           });
@@ -540,10 +535,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                        enableFilters &&
-                                        "filterable" in columnEntity &&
-                                        columnEntity.filterable &&
-                                        header.column.getCanFilter() ? (
+                                          enableFilters &&
+                                          "filterable" in columnEntity &&
+                                          columnEntity.filterable &&
+                                          header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -552,14 +547,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                        header.column.getCanSort() &&
-                                        columnEntity.sort ? (
+                                          header.column.getCanSort() &&
+                                          columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                            "desc"
+                                              "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>

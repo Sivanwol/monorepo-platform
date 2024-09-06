@@ -6,7 +6,10 @@ import type {
 } from "@app/utils";
 
 export interface TableActions {
-  init: () => string;
+  init: (params: {
+    requestReloadCb?: () => Promise<DataTableType[]>;
+    requestExportCb?: (data: DataTableType[]) => Promise<void>;
+  }) => string;
   setData: (tableId: string, data: DataTableType[]) => void;
   setPagination: (tableId: string, pagination: Pagination) => void;
   setExportMode: (tableId: string, mode: ExportTableMode) => void;

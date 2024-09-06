@@ -30,7 +30,7 @@ export const defaultTableState: TableState = {
   loading: false,
   pagination: {
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
     totalEntries: 0,
   },
   sort: null,
@@ -43,14 +43,22 @@ export const createTableStore = () =>
   createStore<TableStore>()(
     devtools((set, get) => ({
       tables: {},
-      init: () => {
+      init: (params: {
+        requestReloadCb?: () => Promise<DataTableType[]>;
+        requestExportCb?: (data: DataTableType[]) => Promise<void>;
+      }) => {
         const state = get();
         const tableId = uuidV4();
         if (!state.tables[tableId]) {
           set((state) => ({
             tables: {
               ...state.tables,
-              [tableId]: { ...defaultTableState, tableId },
+              [tableId]: {
+                ...defaultTableState,
+                tableId,
+                requestExportCb: params.requestExportCb,
+                requestReloadCb: params.requestReloadCb,
+              },
             },
           }));
         }
@@ -68,7 +76,14 @@ export const createTableStore = () =>
           set((state) => ({
             tables: {
               ...state.tables,
-              [tableId]: { ...defaultTableState, data },
+              [tableId]: {
+                ...defaultTableState,
+                data,
+                pagination: {
+                  ...((state.tables[tableId]?.pagination) ?? defaultTableState.pagination),
+                  totalEntries: data.length
+                }
+              },
             },
           }));
         } else {

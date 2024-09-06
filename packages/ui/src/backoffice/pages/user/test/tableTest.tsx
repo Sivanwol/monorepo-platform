@@ -21,11 +21,10 @@ export const TableTest = ({
   translations,
 }: UserTestPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
-  const [initialRequest, setInitialRequest] = useState<boolean>(false);
-  const [dataRequest, setDataRequest] = useState<boolean>(false);
+  const [tableReady, setTableReady] = useState<boolean>(false);
   const [currentPagination, setCurrentPagination] = useState<Pagination>({
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
     totalEntries: 0,
   });
   const [currentSort, setCurrentSort] = useState<SortByOpt | null>(null);
@@ -33,72 +32,58 @@ export const TableTest = ({
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
+    tables[tableId]!
     : ({} as TableState);
+  const fetcher = useCallback(async () => {
+    const data = mockData(100).map((item) => ({ ...item }) as DataTableType);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    setData(tableId!, data);
+    console.log("update data etcher", { data, sort, pagination });
+  }, [tableId, setData, sort, pagination]);
   useEffect(() => {
     if (!tableId) {
-      const id = init();
-
-      bindRequestReload(id, async () => {
-        const data = mockData(100).map(
-          (item) => ({ ...item }) as DataTableType,
-        );
-        console.log("update data etcher", { data, sort, pagination });
-        return data;
+      const id = init({
+        requestReloadCb: async () => {
+          const data = mockData(100).map(
+            (item) => ({ ...item }) as DataTableType,
+          );
+          console.log("update data etcher", { data, sort, pagination });
+          return data;
+        }
       });
       setTableId(id);
+      fetcher()
+        .catch(console.error)
+        .finally(() => {
+          setTableReady(true);
+        });
     }
-  }, [tableId, init, bindRequestReload, sort, pagination]);
+  }, [tableId, init, bindRequestReload, sort, pagination, fetcher]);
+
   useEffect(() => {
     if (!tableId) return;
     if (
       currentPagination.page !== pagination.page ||
       currentPagination.pageSize !== pagination.pageSize
     ) {
-      setCurrentPagination(pagination);
-      setDataRequest(true);
+      fetcher()
+        .catch(console.error)
+        .finally(() => {
+          setCurrentPagination(pagination);
+        });
     }
     if (
       !currentSort !== !!currentSort ||
       currentSort?.columnId !== sort?.columnId ||
       currentSort?.direction !== sort?.direction
     ) {
-      setCurrentSort(sort);
-      setDataRequest(true);
-    }
-  }, [tableId, pagination, sort, currentPagination, currentSort]);
-  const fetcher = useCallback(async () => {
-    const data = mockData(100).map((item) => ({ ...item }) as DataTableType);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    setData(tableId!, data);
-
-    console.log("update data etcher", { data, sort, pagination });
-  }, [tableId, setData, sort, pagination]);
-  useEffect(() => {
-    if (!tableId) return;
-    if ((!initialRequest && !hasData(tableId)) || dataRequest) {
       fetcher()
         .catch(console.error)
         .finally(() => {
-          setInitialRequest(true);
-          if (dataRequest) {
-            setDataRequest(false);
-          }
+          setCurrentSort(sort);
         });
     }
-  }, [
-    lng,
-    ns,
-    setData,
-    fetcher,
-    dataRequest,
-    setDataRequest,
-    pagination,
-    tableId,
-    hasData,
-    initialRequest,
-  ]);
-
+  }, [tableId, pagination, sort, currentPagination, currentSort, fetcher]);
   const renderPage = (
     <TableWarp
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -125,5 +110,5 @@ export const TableTest = ({
       debugMode={false}
     />
   );
-  return tableId ? renderPage : null;
+  return tableId && tableReady ? renderPage : null;
 };

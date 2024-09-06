@@ -21,12 +21,12 @@ export const UserTestPage = ({
         columns={columns}
         translations={translations}
       />
-      <TableTest
+      {/* <TableTest
         lng={lng}
         ns={ns}
         columns={columns}
         translations={translations}
-      />
+      /> */}
     </Box>
   );
   return renderPage;
