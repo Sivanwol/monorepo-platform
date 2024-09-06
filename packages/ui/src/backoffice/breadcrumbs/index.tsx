@@ -13,7 +13,7 @@ export const Breadcrumb = ({ homepageTitle }: BreadcrumbProps) => {
   return (
     <div className="m-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <nav>
-        <ol className="flex items-center gap-2">
+        <ol className="flex items-center gap-2" key="breadcrumbs_root">
           {BreadcrumbsArray.map((item, index) => {
             const href = "/" + BreadcrumbsArray.slice(0, index + 1).join("/");
             if (index === 0) {

@@ -14,6 +14,8 @@ import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 import { mockData } from "@app/utils";
 
+import { api } from "../../../trpc/react";
+
 export const TableTest = ({
   lng,
   ns,
@@ -22,68 +24,60 @@ export const TableTest = ({
 }: UserTestPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
   const [tableReady, setTableReady] = useState<boolean>(false);
-  const [currentPagination, setCurrentPagination] = useState<Pagination>({
-    page: 1,
-    pageSize: 20,
-    totalEntries: 0,
-  });
-  const [currentSort, setCurrentSort] = useState<SortByOpt | null>(null);
-  const { setData, hasData, tables, init, bindRequestReload } =
+
+  const utils = api.useUtils();
+  const { setData, hasData, tables, init, setLoading } =
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    tables[tableId]!
+      tables[tableId]!
     : ({} as TableState);
-  const fetcher = useCallback(async () => {
-    const data = mockData(100).map((item) => ({ ...item }) as DataTableType);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    setData(tableId!, data);
-    console.log("update data etcher", { data, sort, pagination });
-  }, [tableId, setData, sort, pagination]);
   useEffect(() => {
-    if (!tableId) {
-      const id = init({
-        requestReloadCb: async () => {
-          const data = mockData(100).map(
-            (item) => ({ ...item }) as DataTableType,
-          );
-          console.log("update data etcher", { data, sort, pagination });
-          return data;
-        }
-      });
-      setTableId(id);
-      fetcher()
-        .catch(console.error)
-        .finally(() => {
-          setTableReady(true);
-        });
-    }
-  }, [tableId, init, bindRequestReload, sort, pagination, fetcher]);
+    const fetcher = async () => {
+      const res = await utils.mock.mockData.fetch({ total: 100 });
+      return {
+        entities: res.entities,
+        total: res.total,
+      };
+    };
 
-  useEffect(() => {
-    if (!tableId) return;
-    if (
-      currentPagination.page !== pagination.page ||
-      currentPagination.pageSize !== pagination.pageSize
-    ) {
+    if (!tableId && !tableReady) {
       fetcher()
-        .catch(console.error)
-        .finally(() => {
-          setCurrentPagination(pagination);
-        });
+        .then((data) => {
+          const id = init({
+            data: data.entities,
+            onPagination: async (pagination: Pagination | null) => {
+              const data = await fetcher();
+              console.log("pagination change reload data", {
+                data,
+                sort,
+                pagination,
+              });
+              return data.entities;
+            },
+            onSort: async (sort: SortByOpt | null) => {
+              const data = await fetcher();
+              console.log("sort change reload data", {
+                data,
+                sort,
+                pagination,
+              });
+              return data.entities;
+            },
+            onReload: async () => {
+              const data = await fetcher();
+              setData(tableId!, data.entities, data.total);
+              setTableReady(true);
+              setTableId(id);
+              console.log("reload data", { data, sort, pagination });
+              return data.entities;
+            },
+          });
+        })
+        .catch(console.error);
     }
-    if (
-      !currentSort !== !!currentSort ||
-      currentSort?.columnId !== sort?.columnId ||
-      currentSort?.direction !== sort?.direction
-    ) {
-      fetcher()
-        .catch(console.error)
-        .finally(() => {
-          setCurrentSort(sort);
-        });
-    }
-  }, [tableId, pagination, sort, currentPagination, currentSort, fetcher]);
+  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady]);
+
   const renderPage = (
     <TableWarp
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

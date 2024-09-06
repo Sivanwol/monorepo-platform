@@ -7,24 +7,36 @@ import type {
 
 export interface TableActions {
   init: (params: {
-    requestReloadCb?: () => Promise<DataTableType[]>;
-    requestExportCb?: (data: DataTableType[]) => Promise<void>;
+    data?: DataTableType[];
+    onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>;
+    onPagination?: (pagination: Pagination | null) => Promise<DataTableType[]>;
+    onReload?: () => Promise<DataTableType[]>;
+    onExport?: (data: DataTableType[]) => Promise<void>;
   }) => string;
-  setData: (tableId: string, data: DataTableType[]) => void;
-  setPagination: (tableId: string, pagination: Pagination) => void;
+  setData: (
+    tableId: string,
+    data: DataTableType[],
+    totalEntities: number,
+  ) => void;
+  setPagination: (tableId: string, pagination: Pagination) => Promise<void>;
   setExportMode: (tableId: string, mode: ExportTableMode) => void;
   hasData: (tableId: string) => boolean;
-  bindRequestExport: (
+  onExport: (
     tableId: string,
-    requestExportCb: (data: DataTableType[]) => Promise<void>,
+    fn: (data: DataTableType[]) => Promise<void>,
   ) => void;
-  bindRequestReload: (
+  onReload: (tableId: string, fn: () => Promise<DataTableType[]>) => void;
+  onSort: (
     tableId: string,
-    requestReloadCb: () => Promise<DataTableType[]>,
+    fn: (sort: SortByOpt | null) => Promise<DataTableType[]>,
+  ) => void;
+  onPagination: (
+    tableId: string,
+    fn: (pagination: Pagination | null) => Promise<DataTableType[]>,
   ) => void;
   requestExport: (tableId: string) => Promise<void>;
   reload: (tableId: string) => Promise<void>;
-  setSort: (tableId: string, sort: SortByOpt | null) => void;
+  setSort: (tableId: string, sort: SortByOpt | null) => Promise<void>;
   setLoading: (tableId: string, loading: boolean) => void;
   reset: (tableId: string) => void;
 }
