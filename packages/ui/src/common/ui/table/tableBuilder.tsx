@@ -202,10 +202,10 @@ export const TableBuilder = ({
     }
     const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-        columns as ColumnGroupTableProps[],
-        translations,
-        rowActions,
-      )
+          columns as ColumnGroupTableProps[],
+          translations,
+          rowActions,
+        )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
     setProcessHeader(headers);
     console.log(`${tableId} headers`, headers, enableSelection, columns);
@@ -478,10 +478,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                    enableFilters &&
+                                    "filterable" in columnEntity &&
+                                    columnEntity.filterable &&
+                                    header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -518,7 +518,7 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                                "desc"
+                                              "desc"
                                                 ? SortByDirection.DESC
                                                 : SortByDirection.ASC,
                                           });
@@ -537,10 +537,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                          enableFilters &&
-                                          "filterable" in columnEntity &&
-                                          columnEntity.filterable &&
-                                          header.column.getCanFilter() ? (
+                                        enableFilters &&
+                                        "filterable" in columnEntity &&
+                                        columnEntity.filterable &&
+                                        header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -549,14 +549,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                          header.column.getCanSort() &&
-                                          columnEntity.sort ? (
+                                        header.column.getCanSort() &&
+                                        columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                              "desc"
+                                            "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>
