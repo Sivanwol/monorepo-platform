@@ -86,6 +86,12 @@ export interface UserTestPageProps extends CommonLanguageProps {
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
 }
 
+export interface UserPageProps extends CommonLanguageProps {
+  userId: number;
+  translations: TranslationRecord;
+  columns: ColumnTableProps[] | ColumnGroupTableProps[];
+}
+
 interface CommonTableProps {
   direction: "ltr" | "rtl";
   translations: TranslationRecord;

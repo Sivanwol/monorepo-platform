@@ -1,8 +1,7 @@
 import { Suspense } from "react";
-import { AuditManagement } from "@descope/nextjs-sdk";
 
-import type { PageCommonProps } from "@app/utils";
-import { LoadingPage, SupportAndHelp } from "@app/ui";
+import type { ColumnTableProps, PageCommonProps } from "@app/utils";
+import { LoadingPage, UserHistoryPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
@@ -14,7 +13,55 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
   const user = await api.auth.getUser();
   const aduit = await api.user.securityAudit(user.id);
   console.log("lng", lng, aduit);
+  const ns = "table";
+  console.log("lng", lng, ns);
   await initTranslation(lng);
+  const translations = {
+    title: t(ns, "title"),
+    rowsPerPage: t(ns, "rawPerPage"),
+    export: t(ns, "export"),
+    rowActions: t(ns, "rowActions"),
+    actions: t(ns, "actions"),
+    reload: t(ns, "reload"),
+    noData: t(ns, "noData"),
+  };
+  const columns: ColumnTableProps[] = [
+    {
+      id: "browser",
+      title: "Browser",
+      type: "string",
+      sort: false,
+      group: false,
+    },
+    {
+      id: "os",
+      title: "OS",
+      type: "string",
+      sort: false,
+      group: false,
+    },
+    {
+      id: "providerName",
+      title: "Provider Name",
+      type: "string",
+      sort: false,
+      group: false,
+    },
+    {
+      id: "remoteAddress",
+      title: "IP Address",
+      type: "string",
+      sort: false,
+      group: false,
+    },
+    {
+      id: "occurred",
+      title: "Occurred",
+      type: "date",
+      sort: false,
+      group: false,
+    },
+  ];
   return (
     <HydrateClient>
       <main className="container h-screen w-full py-16" style={{ zIndex: -1 }}>
@@ -24,12 +71,15 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
           </h1>
           <div className="w-full overflow-y-scroll">
             {JSON.stringify(aduit)}
-            {/* <Suspense fallback={<LoadingPage />}>
-              <AuditManagement
-                tenant="T2lLM64ZZh1o1nAjWuWmSw1iA1Mu"
-                widgetId="audit-management-widget"
+            <Suspense fallback={<LoadingPage />}>
+              <UserHistoryPage
+                columns={columns}
+                lng={lng}
+                ns="table"
+                translations={translations}
+                userId={user.id}
               />
-            </Suspense> */}
+            </Suspense>
           </div>
         </div>
       </main>

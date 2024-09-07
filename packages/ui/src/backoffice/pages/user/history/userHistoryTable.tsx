@@ -8,19 +8,20 @@ import type {
   DataTableType,
   Pagination,
   SortByOpt,
-  UserTestPageProps,
+  UserPageProps,
 } from "@app/utils";
 import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 
 import { api } from "../../../trpc/react";
 
-export const TableTest = ({
+export const UserHistoryTable = ({
+  userId,
   lng,
   ns,
   columns,
   translations,
-}: UserTestPageProps) => {
+}: UserPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
   const [tableReady, setTableReady] = useState<boolean>(false);
 
@@ -33,11 +34,11 @@ export const TableTest = ({
     : ({} as TableState);
   useEffect(() => {
     const fetcher = async () => {
-      await utils.mock.mockData.invalidate();
-      const res = await utils.mock.mockData.fetch({ total: 100 });
+      await utils.user.securityAudit.invalidate();
+      const res = await utils.user.securityAudit.fetch(userId);
       return {
-        entities: res.entities,
-        total: res.total,
+        entities: res?.map((item) => item as unknown as DataTableType) ?? [],
+        total: res?.length ?? 0,
       };
     };
 
@@ -49,15 +50,6 @@ export const TableTest = ({
             onPagination: async (pagination: Pagination | null) => {
               const data = await fetcher();
               console.log("pagination change reload data", {
-                data,
-                sort,
-                pagination,
-              });
-              return data.entities;
-            },
-            onSort: async (sort: SortByOpt | null) => {
-              const data = await fetcher();
-              console.log("sort change reload data", {
                 data,
                 sort,
                 pagination,
@@ -85,21 +77,10 @@ export const TableTest = ({
       tableId={tableId!}
       columns={columns}
       translations={translations}
-      enableExport={true}
-      enableSelection={true}
-      enableSorting={true}
-      rowActions={[
-        {
-          title: "Edit",
-          icon: <MdModeEdit />,
-          onClickEvent: (row: DataTableType) => console.log("Edit", row),
-        },
-        {
-          title: "Delete",
-          icon: <MdDelete />,
-          onClickEvent: (row: DataTableType) => console.log("Delete", row),
-        },
-      ]}
+      enableExport={false}
+      enableSelection={false}
+      enableSorting={false}
+      rowActions={[]}
       direction="rtl"
       resize={{ minWidth: 50, maxWidth: 200 }}
       debugMode={false}
