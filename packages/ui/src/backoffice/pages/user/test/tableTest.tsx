@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { cache, useEffect, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { TableState, TableStore } from "@app/store-backoffice";
@@ -14,7 +14,6 @@ import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 
 import { api } from "../../../trpc/react";
-import { cache } from 'react';
 
 export const TableTest = ({
   lng,
@@ -30,7 +29,7 @@ export const TableTest = ({
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    tables[tableId]!
+      tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
     const fetcher = async () => {
@@ -77,7 +76,17 @@ export const TableTest = ({
         })
         .catch(console.error);
     }
-  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady, utils]);
+  }, [
+    tableId,
+    init,
+    sort,
+    pagination,
+    utils,
+    setData,
+    setLoading,
+    tableReady,
+    utils,
+  ]);
 
   const renderPage = (
     <TableWarp

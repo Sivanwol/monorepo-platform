@@ -50,11 +50,13 @@ export const createTableStore = () =>
     devtools((set, get) => ({
       tables: {},
       init: (params: {
-        data?: DataTableType[],
-        onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>,
-        onPagination?: (pagination: Pagination | null) => Promise<DataTableType[]>,
-        onReload?: () => Promise<DataTableType[]>,
-        onExport?: (data: DataTableType[]) => Promise<void>
+        data?: DataTableType[];
+        onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>;
+        onPagination?: (
+          pagination: Pagination | null,
+        ) => Promise<DataTableType[]>;
+        onReload?: () => Promise<DataTableType[]>;
+        onExport?: (data: DataTableType[]) => Promise<void>;
       }) => {
         const state = get();
         const tableId = uuidV4();
