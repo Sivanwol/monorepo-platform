@@ -29,7 +29,7 @@ export const TableTest = ({
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
+    tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
     const fetcher = async () => {
@@ -77,17 +77,7 @@ export const TableTest = ({
         })
         .catch(console.error);
     }
-  }, [
-    tableId,
-    init,
-    sort,
-    pagination,
-    utils,
-    setData,
-    setLoading,
-    tableReady,
-    utils,
-  ]);
+  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady]);
 
   const renderPage = (
     <TableWarp
