@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 import type { TableState, TableStore } from "@app/store-backoffice";
@@ -12,9 +12,9 @@ import type {
 } from "@app/utils";
 import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
-import { mockData } from "@app/utils";
 
 import { api } from "../../../trpc/react";
+import { cache } from 'react';
 
 export const TableTest = ({
   lng,
@@ -30,10 +30,11 @@ export const TableTest = ({
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
+    tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
     const fetcher = async () => {
+      await utils.mock.mockData.invalidate();
       const res = await utils.mock.mockData.fetch({ total: 100 });
       return {
         entities: res.entities,
@@ -67,16 +68,16 @@ export const TableTest = ({
             onReload: async () => {
               const data = await fetcher();
               setData(tableId!, data.entities, data.total);
-              setTableReady(true);
-              setTableId(id);
               console.log("reload data", { data, sort, pagination });
               return data.entities;
             },
           });
+          setTableReady(true);
+          setTableId(id);
         })
         .catch(console.error);
     }
-  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady]);
+  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady, utils]);
 
   const renderPage = (
     <TableWarp

@@ -50,41 +50,29 @@ export const createTableStore = () =>
     devtools((set, get) => ({
       tables: {},
       init: (params: {
-        data?: DataTableType[];
-        requestReloadCb?: () => Promise<DataTableType[]>;
-        requestExportCb?: (data: DataTableType[]) => Promise<void>;
+        data?: DataTableType[],
+        onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>,
+        onPagination?: (pagination: Pagination | null) => Promise<DataTableType[]>,
+        onReload?: () => Promise<DataTableType[]>,
+        onExport?: (data: DataTableType[]) => Promise<void>
       }) => {
         const state = get();
         const tableId = uuidV4();
         if (!state.tables[tableId]) {
-          if (!params.data) {
-            set((state) => ({
-              tables: {
-                ...state.tables,
-                [tableId]: {
-                  ...defaultTableState,
-                  loading: true,
-                  tableId,
-                  requestExportCb: params.requestExportCb,
-                  requestReloadCb: params.requestReloadCb,
-                },
+          set((state) => ({
+            tables: {
+              ...state.tables,
+              [tableId]: {
+                ...defaultTableState,
+                tableId,
+                data: params.data ?? [],
+                onSortFn: params.onSort,
+                onPaginationFn: params.onPagination,
+                onReloadFn: params.onReload,
+                onExportFn: params.onExport,
               },
-            }));
-          } else {
-            set((state) => ({
-              tables: {
-                ...state.tables,
-                [tableId]: {
-                  ...defaultTableState,
-                  tableId,
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  data: params.data!,
-                  requestExportCb: params.requestExportCb,
-                  requestReloadCb: params.requestReloadCb,
-                },
-              },
-            }));
-          }
+            },
+          }));
         }
         return tableId;
       },
