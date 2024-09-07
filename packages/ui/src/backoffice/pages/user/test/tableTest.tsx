@@ -29,7 +29,7 @@ export const TableTest = ({
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
+    tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
     const fetcher = async () => {
@@ -66,6 +66,7 @@ export const TableTest = ({
             },
             onReload: async () => {
               const data = await fetcher();
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               setData(tableId!, data.entities, data.total);
               console.log("reload data", { data, sort, pagination });
               return data.entities;
