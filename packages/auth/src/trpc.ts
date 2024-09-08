@@ -4,8 +4,8 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { v4 as uuidV4 } from "uuid";
 import { ZodError } from "zod";
-import { descopeSdk } from "@app/auth";
-import { validateToken } from "@app/auth";
+
+import { descopeSdk, validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
 
 export const createTRPCContext = async (opts: {
@@ -15,7 +15,6 @@ export const createTRPCContext = async (opts: {
   db: typeof db;
   repositories: typeof repositories;
   requestId: string;
-
 }> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
   let descopeSession = session();
@@ -26,7 +25,6 @@ export const createTRPCContext = async (opts: {
     // we try if we unable load session from descope via session() method so we fetch from header (jwt) happend on client requests
     descopeSession = await descopeSdk.validateJwt(token);
     console.log(`checking session jwt... ${descopeSession.token.sub}`);
-
   }
   opts.headers.set("x-request-id", requestId);
   console.log(
@@ -66,22 +64,20 @@ const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC
-  .context<typeof createTRPCContext>()
-  .create({
-    transformer: superjson,
-    errorFormatter: ({ shape, error }) => {
-      console.error("tRPC error", error, shape);
-      return {
-        ...shape,
-        data: {
-          ...shape.data,
-          zodError:
-            error.cause instanceof ZodError ? error.cause.flatten() : null,
-        },
-      }
-    }
-  });
+const t = initTRPC.context<typeof createTRPCContext>().create({
+  transformer: superjson,
+  errorFormatter: ({ shape, error }) => {
+    console.error("tRPC error", error, shape);
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
+  },
+});
 
 /**
  * Create a server-side caller
@@ -127,8 +123,9 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!auth?.user?.id) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: `User not located user id - ${auth?.descopeSession?.userId ?? "N/A"
-        } has no db record or not existed user`,
+      message: `User not located user id - ${
+        auth?.descopeSession?.userId ?? "N/A"
+      } has no db record or not existed user`,
     });
   }
 

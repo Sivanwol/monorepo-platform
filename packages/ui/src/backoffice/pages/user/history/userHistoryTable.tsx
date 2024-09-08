@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { getSessionToken, useSession } from "@descope/react-sdk";
+import { useQuery } from "@tanstack/react-query";
 
 import type { TableState, TableStore } from "@app/store-backoffice";
 import type {
@@ -13,8 +15,6 @@ import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 
 import { api } from "../../../trpc/react";
-import { useSession, getSessionToken } from "@descope/react-sdk";
-import { useQuery } from "@tanstack/react-query";
 
 export const UserHistoryTable = ({
   userId,
@@ -28,32 +28,32 @@ export const UserHistoryTable = ({
   const { sessionToken, isAuthenticated } = useSession();
 
   const { isFetching, error, data, refetch } = useQuery({
-    queryKey: ['userHistorySecurity', { userId }],
+    queryKey: ["userHistorySecurity", { userId }],
     queryFn: async ({ queryKey }) => {
       const [_, { userId }] = queryKey as [string, { userId: number }];
-      const bearer = 'Bearer ' + sessionToken;
+      const bearer = "Bearer " + sessionToken;
       const res = await fetch(`/api/user/security/${userId}`, {
         headers: {
-          'Authorization': getSessionToken(),
-          'Content-Type': 'application/json',
-        }
-      },);
-      const data = await res.json() as UserAuditInfo[];
+          Authorization: getSessionToken(),
+          "Content-Type": "application/json",
+        },
+      });
+      const data = (await res.json()) as UserAuditInfo[];
       return {
         entities: data.map((item) => item as unknown as DataTableType),
         total: data.length,
       };
     },
     // eslint-disable-next-line no-constant-binary-expression
-    enabled: (false && isAuthenticated),
-  })
+    enabled: false && isAuthenticated,
+  });
 
   const utils = api.useUtils();
   const { setData, hasData, tables, init, setLoading } =
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    tables[tableId]!
+      tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
     if (isAuthenticated) {
@@ -108,7 +108,19 @@ export const UserHistoryTable = ({
         })
         .catch(console.error);
     }
-  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady, userId, isAuthenticated, refetch]);
+  }, [
+    tableId,
+    init,
+    sort,
+    pagination,
+    utils,
+    setData,
+    setLoading,
+    tableReady,
+    userId,
+    isAuthenticated,
+    refetch,
+  ]);
 
   const renderPage = (
     <TableWarp
@@ -126,5 +138,4 @@ export const UserHistoryTable = ({
     />
   );
   return tableId && tableReady ? renderPage : null;
-
 };

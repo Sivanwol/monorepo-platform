@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
+import { AuthProvider } from "@descope/nextjs-sdk";
 import { Box } from "@mui/material";
 
 import type { UserPageProps } from "@app/utils";
 
-import { UserHistoryTable } from "./userHistoryTable";
 import { TRPCReactProvider } from "../../../trpc/react";
-import { AuthProvider } from "@descope/nextjs-sdk";
+import { UserHistoryTable } from "./userHistoryTable";
 
 export const UserHistoryPage = ({
   userId,

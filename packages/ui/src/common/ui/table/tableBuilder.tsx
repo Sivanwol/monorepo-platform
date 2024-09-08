@@ -201,14 +201,21 @@ export const TableBuilder = ({
     }
     const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-        columns as ColumnGroupTableProps[],
-        translations,
-        rowActions,
-      )
+          columns as ColumnGroupTableProps[],
+          translations,
+          rowActions,
+        )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
     setProcessHeader(headers);
     return headers;
-  }, [columns, translations, rowActions, enableSelection, processHeader, setProcessHeader]);
+  }, [
+    columns,
+    translations,
+    rowActions,
+    enableSelection,
+    processHeader,
+    setProcessHeader,
+  ]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
     headers.map((c) => c.id).filter((id) => id !== undefined),
   );
@@ -468,10 +475,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                    enableFilters &&
+                                    "filterable" in columnEntity &&
+                                    columnEntity.filterable &&
+                                    header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -508,7 +515,7 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                                "desc"
+                                              "desc"
                                                 ? SortByDirection.DESC
                                                 : SortByDirection.ASC,
                                           });
@@ -527,10 +534,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                          enableFilters &&
-                                          "filterable" in columnEntity &&
-                                          columnEntity.filterable &&
-                                          header.column.getCanFilter() ? (
+                                        enableFilters &&
+                                        "filterable" in columnEntity &&
+                                        columnEntity.filterable &&
+                                        header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -539,14 +546,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                          header.column.getCanSort() &&
-                                          columnEntity.sort ? (
+                                        header.column.getCanSort() &&
+                                        columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                              "desc"
+                                            "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>
@@ -600,7 +607,8 @@ export const TableBuilder = ({
                       </TableCell>
                     </TableRow>
                   )}
-                  {!loading && table.getRowModel().rows.length > 0 &&
+                  {!loading &&
+                    table.getRowModel().rows.length > 0 &&
                     table.getRowModel().rows.map((row) => {
                       return (
                         <TableRow
@@ -609,7 +617,8 @@ export const TableBuilder = ({
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          {enableSelection && renderSelectionCell(row.getVisibleCells())}
+                          {enableSelection &&
+                            renderSelectionCell(row.getVisibleCells())}
                           {row.getVisibleCells().map((cell) => {
                             if (cell.column.columnDef.id === "select") {
                               return null;

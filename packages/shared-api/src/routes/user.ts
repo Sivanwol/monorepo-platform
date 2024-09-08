@@ -63,7 +63,6 @@ export const userRouter = {
         }
         return await service.fetchAuditUser(user.externalId ?? "");
       }
-
     }),
   boardingAdminUser: protectedProcedure
     .input(
