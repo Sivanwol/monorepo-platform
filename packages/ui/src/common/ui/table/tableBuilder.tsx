@@ -197,28 +197,18 @@ export const TableBuilder = ({
       }
     }
     if (processHeader.length > 0) {
-      console.log(`${tableId} processHeader`, processHeader);
       return processHeader;
     }
     const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-          columns as ColumnGroupTableProps[],
-          translations,
-          rowActions,
-        )
+        columns as ColumnGroupTableProps[],
+        translations,
+        rowActions,
+      )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
     setProcessHeader(headers);
-    console.log(`${tableId} headers`, headers, enableSelection, columns);
     return headers;
-  }, [
-    tableId,
-    columns,
-    translations,
-    rowActions,
-    enableSelection,
-    processHeader,
-    setProcessHeader,
-  ]);
+  }, [columns, translations, rowActions, enableSelection, processHeader, setProcessHeader]);
   const [columnOrder, setColumnOrder] = React.useState(() =>
     headers.map((c) => c.id).filter((id) => id !== undefined),
   );
@@ -273,7 +263,7 @@ export const TableBuilder = ({
     onColumnOrderChange: setColumnOrder,
     columnResizeDirection,
     enableSorting: enableSorting ?? false,
-    manualSorting: enableSorting ?? false,
+    manualSorting: true,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -478,10 +468,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                    enableFilters &&
-                                    "filterable" in columnEntity &&
-                                    columnEntity.filterable &&
-                                    header.column.getCanFilter() ? (
+                                      enableFilters &&
+                                      "filterable" in columnEntity &&
+                                      columnEntity.filterable &&
+                                      header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -518,7 +508,7 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                              "desc"
+                                                "desc"
                                                 ? SortByDirection.DESC
                                                 : SortByDirection.ASC,
                                           });
@@ -537,10 +527,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                        enableFilters &&
-                                        "filterable" in columnEntity &&
-                                        columnEntity.filterable &&
-                                        header.column.getCanFilter() ? (
+                                          enableFilters &&
+                                          "filterable" in columnEntity &&
+                                          columnEntity.filterable &&
+                                          header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -549,14 +539,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                        header.column.getCanSort() &&
-                                        columnEntity.sort ? (
+                                          header.column.getCanSort() &&
+                                          columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                            "desc"
+                                              "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>
@@ -587,7 +577,7 @@ export const TableBuilder = ({
                             textAlign: "center",
                           }}
                         >
-                          {translations.loading}
+                          <h2>{translations.loading}</h2>
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -610,7 +600,7 @@ export const TableBuilder = ({
                       </TableCell>
                     </TableRow>
                   )}
-                  {!loading &&
+                  {!loading && table.getRowModel().rows.length > 0 &&
                     table.getRowModel().rows.map((row) => {
                       return (
                         <TableRow
@@ -619,7 +609,7 @@ export const TableBuilder = ({
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          {renderSelectionCell(row.getVisibleCells())}
+                          {enableSelection && renderSelectionCell(row.getVisibleCells())}
                           {row.getVisibleCells().map((cell) => {
                             if (cell.column.columnDef.id === "select") {
                               return null;
@@ -665,7 +655,7 @@ export const TableBuilder = ({
               });
             }}
             onRowsPerPageChange={async (e) => {
-              const size = e.target.value ? Number(e.target.value) : 10;
+              const size = e.target.value ? Number(e.target.value) : 20;
               table.setPageSize(size);
               await setPagination(tableId, {
                 page: 1,

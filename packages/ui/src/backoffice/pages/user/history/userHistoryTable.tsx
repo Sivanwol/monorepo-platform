@@ -1,19 +1,20 @@
 "use client";
 
-import React, { cache, useEffect, useState } from "react";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import React, { useEffect, useState } from "react";
 
 import type { TableState, TableStore } from "@app/store-backoffice";
 import type {
   DataTableType,
   Pagination,
-  SortByOpt,
+  UserAuditInfo,
   UserPageProps,
 } from "@app/utils";
 import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
 
 import { api } from "../../../trpc/react";
+import { useSession, getSessionToken } from "@descope/react-sdk";
+import { useQuery } from "@tanstack/react-query";
 
 export const UserHistoryTable = ({
   userId,
@@ -24,52 +25,90 @@ export const UserHistoryTable = ({
 }: UserPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
   const [tableReady, setTableReady] = useState<boolean>(false);
+  const { sessionToken, isAuthenticated } = useSession();
+
+  const { isFetching, error, data, refetch } = useQuery({
+    queryKey: ['userHistorySecurity', { userId }],
+    queryFn: async ({ queryKey }) => {
+      const [_, { userId }] = queryKey as [string, { userId: number }];
+      const bearer = 'Bearer ' + sessionToken;
+      const res = await fetch(`/api/user/security/${userId}`, {
+        headers: {
+          'Authorization': getSessionToken(),
+          'Content-Type': 'application/json',
+        }
+      },);
+      const data = await res.json() as UserAuditInfo[];
+      return {
+        entities: data.map((item) => item as unknown as DataTableType),
+        total: data.length,
+      };
+    },
+    // eslint-disable-next-line no-constant-binary-expression
+    enabled: (false && isAuthenticated),
+  })
 
   const utils = api.useUtils();
   const { setData, hasData, tables, init, setLoading } =
     useTableStore<TableStore>((store) => store as TableStore);
   const { pagination, sort } = tableId
     ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
+    tables[tableId]!
     : ({} as TableState);
   useEffect(() => {
-    const fetcher = async () => {
-      await utils.user.securityAudit.invalidate();
-      const res = await utils.user.securityAudit.fetch(userId);
-      return {
-        entities: res?.map((item) => item as unknown as DataTableType) ?? [],
-        total: res?.length ?? 0,
-      };
-    };
+    if (isAuthenticated) {
+      return;
+    }
 
     if (!tableId && !tableReady) {
-      fetcher()
-        .then((data) => {
+      refetch()
+        .then((res) => {
+          const { data, error } = res;
+          const entities = data?.entities ?? [];
+          console.log(`fetch data`, { entities, error });
           const id = init({
-            data: data.entities,
+            data: entities,
+            totalEntities: data?.total ?? 0,
             onPagination: async (pagination: Pagination | null) => {
-              const data = await fetcher();
+              setLoading(tableId!, true);
+              const res = await refetch();
+              const { data, error } = res;
+              const entities = data?.entities ?? [];
+              console.log("fetch data", { tableId, data, error });
+              if (error || !data) {
+                throw Error("Failed to fetch data");
+              }
               console.log("pagination change reload data", {
                 data,
                 sort,
                 pagination,
               });
+              setData(tableId!, entities, data.total);
+              setLoading(tableId!, false);
               return data.entities;
             },
             onReload: async () => {
-              const data = await fetcher();
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setData(tableId!, data.entities, data.total);
+              setLoading(tableId!, true);
+              const res = await refetch();
+              const { data, error } = res;
+              const entities = data?.entities ?? [];
+              console.log("fetch data", { tableId, data, error });
+              if (error || !data) {
+                throw Error("Failed to fetch data");
+              }
+
+              setData(tableId!, entities, data.total);
               console.log("reload data", { data, sort, pagination });
+              setLoading(tableId!, false);
               return data.entities;
             },
           });
-          setTableReady(true);
           setTableId(id);
+          setTableReady(true);
         })
         .catch(console.error);
     }
-  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady]);
+  }, [tableId, init, sort, pagination, utils, setData, setLoading, tableReady, userId, isAuthenticated, refetch]);
 
   const renderPage = (
     <TableWarp
@@ -83,8 +122,9 @@ export const UserHistoryTable = ({
       rowActions={[]}
       direction="rtl"
       resize={{ minWidth: 50, maxWidth: 200 }}
-      debugMode={false}
+      debugMode={true}
     />
   );
   return tableId && tableReady ? renderPage : null;
+
 };

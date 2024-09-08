@@ -11,8 +11,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   const user = await api.auth.getUser();
-  const aduit = await api.user.securityAudit(user.id);
-  console.log("lng", lng, aduit);
+  console.log("lng", lng);
   const ns = "table";
   console.log("lng", lng, ns);
   await initTranslation(lng);
@@ -21,11 +20,19 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
     rowsPerPage: t(ns, "rawPerPage"),
     export: t(ns, "export"),
     rowActions: t(ns, "rowActions"),
+    loading: t(ns, "loading"),
     actions: t(ns, "actions"),
     reload: t(ns, "reload"),
     noData: t(ns, "noData"),
   };
   const columns: ColumnTableProps[] = [
+    {
+      id: "device",
+      title: "Device",
+      type: "string",
+      sort: false,
+      group: false,
+    },
     {
       id: "browser",
       title: "Browser",
@@ -36,13 +43,6 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
     {
       id: "os",
       title: "OS",
-      type: "string",
-      sort: false,
-      group: false,
-    },
-    {
-      id: "providerName",
-      title: "Provider Name",
       type: "string",
       sort: false,
       group: false,
@@ -70,7 +70,6 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
             {t("support", "title")}
           </h1>
           <div className="w-full overflow-y-scroll">
-            {JSON.stringify(aduit)}
             <Suspense fallback={<LoadingPage />}>
               <UserHistoryPage
                 columns={columns}

@@ -8,6 +8,7 @@ import type {
 export interface TableActions {
   init: (params: {
     data?: DataTableType[];
+    totalEntities?: number;
     onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>;
     onPagination?: (pagination: Pagination | null) => Promise<DataTableType[]>;
     onReload?: () => Promise<DataTableType[]>;

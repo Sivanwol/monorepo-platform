@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import type { ColumnTableProps, PageCommonProps } from "@app/utils";
-import { LoadingPage, TableProvider, UserTestPage } from "@app/ui";
+import { LoadingPage, UserTestPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
@@ -62,7 +62,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       <main className="container h-screen w-full py-16" style={{ zIndex: -1 }}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            {t("userTest", "title")}
+            {t("userHistory", "title")}
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>

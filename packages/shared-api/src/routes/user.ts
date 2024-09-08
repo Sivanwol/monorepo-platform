@@ -36,33 +36,34 @@ export const userRouter = {
     .input(z.number())
     .query(async ({ ctx, input }) => {
       const service = new UserService(ctx);
+      console.log(`fetching audit for user ${input}`);
       service.verifyBackofficeAccess();
       if (ctx.session.user.id === input) {
         return await service.fetchAuditUser(
           ctx.session.descopeUser?.userId ?? "",
         );
-      } else {
-        if (
-          !service.verifyPermissions([
-            backofficePermmisions.UserTrack,
-          ] as string[])
-        ) {
+      }
+      if (
+        !service.verifyPermissions([
+          backofficePermmisions.UserTrack,
+        ] as string[])
+      ) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action",
+        });
+      }
+      if (await ctx.repositories.user.HasUserExist(input)) {
+        const user = await ctx.repositories.user.GetUserById(input);
+        if (!user) {
           throw new TRPCError({
-            code: "UNAUTHORIZED",
-            message: "You are not authorized to perform this action",
+            code: "NOT_FOUND",
+            message: `User ID ${input} not found`,
           });
         }
-        if (await ctx.repositories.user.HasUserExist(input)) {
-          const user = await ctx.repositories.user.GetUserById(input);
-          if (!user) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: `User ID ${input} not found`,
-            });
-          }
-          return await service.fetchAuditUser(user.externalId ?? "");
-        }
+        return await service.fetchAuditUser(user.externalId ?? "");
       }
+
     }),
   boardingAdminUser: protectedProcedure
     .input(

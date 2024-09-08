@@ -1,11 +1,10 @@
 import type { AuthenticationInfo } from "@descope/node-sdk";
-import type { OpenApiMeta } from "trpc-openapi";
 import { session } from "@descope/nextjs-sdk/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { v4 as uuidV4 } from "uuid";
 import { ZodError } from "zod";
-
+import { descopeSdk } from "@app/auth";
 import { validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
 
@@ -16,11 +15,19 @@ export const createTRPCContext = async (opts: {
   db: typeof db;
   repositories: typeof repositories;
   requestId: string;
-  // eslint-disable-next-line @typescript-eslint/require-await
+
 }> => {
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  const descopeSession = session();
+  let descopeSession = session();
   const requestId = uuidV4();
+  const token = opts.headers.get("Authorization")?.replace("Bearer ", "");
+  if (!descopeSession && token) {
+    console.log(`checking session jwt... ${token}`);
+    // we try if we unable load session from descope via session() method so we fetch from header (jwt) happend on client requests
+    descopeSession = await descopeSdk.validateJwt(token);
+    console.log(`checking session jwt... ${descopeSession.token.sub}`);
+
+  }
   opts.headers.set("x-request-id", requestId);
   console.log(
     ">>> tRPC Request from",
@@ -29,18 +36,9 @@ export const createTRPCContext = async (opts: {
     new Date().toISOString() + "\n",
   );
   console.log(`checking session... ${descopeSession?.token.sub} `);
-  let jwtSession: AuthenticationInfo | null = null;
-  if (
-    opts.headers.get("Authorization")?.replace("Bearer ", "") !== "" &&
-    !descopeSession
-  ) {
-    jwtSession = {
-      jwt: opts.headers.get("Authorization")?.replace("Bearer ", "") ?? "",
-      token: {},
-    };
-  }
   return {
-    session: descopeSession ?? jwtSession,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    session: descopeSession!,
     db,
     repositories,
     requestId,
@@ -70,17 +68,19 @@ const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
  */
 const t = initTRPC
   .context<typeof createTRPCContext>()
-  .meta<OpenApiMeta>()
   .create({
     transformer: superjson,
-    errorFormatter: ({ shape, error }) => ({
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    }),
+    errorFormatter: ({ shape, error }) => {
+      console.error("tRPC error", error, shape);
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      }
+    }
   });
 
 /**
@@ -127,9 +127,8 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!auth?.user?.id) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: `User not located user id - ${
-        auth?.descopeSession?.userId ?? "N/A"
-      } has no db record or not existed user`,
+      message: `User not located user id - ${auth?.descopeSession?.userId ?? "N/A"
+        } has no db record or not existed user`,
     });
   }
 

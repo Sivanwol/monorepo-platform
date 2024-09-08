@@ -14,7 +14,7 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import { BiHelpCircle } from "react-icons/bi";
 import * as Icons from "react-icons/hi2";
-
+import { v4 as uuidv4 } from "uuid";
 import type { MenuGroup, SidebarProps } from "./type";
 
 export * from "./type";
@@ -74,11 +74,10 @@ export const SidebarArea = ({
 }: SidebarProps) => {
   return (
     <aside
-      className={`w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-auto border-r bg-white lg:static lg:translate-x-0 ${
-        sidebarOpen
+      className={`w-72.5 border-stroke dark:border-stroke-dark dark:bg-gray-dark absolute left-0 top-0 flex h-screen flex-col overflow-y-auto border-r bg-white lg:static lg:translate-x-0 ${sidebarOpen
           ? "translate-x-0 duration-300 ease-linear"
           : "-translate-x-full"
-      }`}
+        }`}
       style={{ zIndex: 10 }}
     >
       {/* <!-- SIDEBAR HEADER --> */}
@@ -120,14 +119,14 @@ export const SidebarArea = ({
           <>
             {group.items.length === 0 && (
               <SideItemNoCollapsed
-                key={"itemsGroup_" + groupIndex}
+                key={uuidv4()}
                 group={group}
                 rootIndex={groupIndex}
               />
             )}
             {group.items.length > 0 && (
               <SideItemWithChildren
-                key={"itemsGroup_" + groupIndex}
+                key={uuidv4()}
                 group={group}
                 rootIndex={groupIndex}
               />

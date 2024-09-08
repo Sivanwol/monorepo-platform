@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        env.VERCEL_URL!
+      env.VERCEL_URL!
       : "http://localhost:3001",
   ),
   title: "Backoffice of monorepo Platform",
@@ -51,7 +51,7 @@ export default function RootLayout({
           GeistMono.variable,
         )}
       >
-        <AuthProvider projectId={env.NEXT_PUBLIC_AUTH_DESCOPE_ID}>
+        <AuthProvider projectId={env.NEXT_PUBLIC_AUTH_DESCOPE_ID} sessionTokenViaCookie>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={AdminTheme}>
               <CssBaseline />

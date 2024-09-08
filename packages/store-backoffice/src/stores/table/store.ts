@@ -51,6 +51,7 @@ export const createTableStore = () =>
       tables: {},
       init: (params: {
         data?: DataTableType[];
+        totalEntities?: number;
         onSort?: (sort: SortByOpt | null) => Promise<DataTableType[]>;
         onPagination?: (
           pagination: Pagination | null,
@@ -67,6 +68,10 @@ export const createTableStore = () =>
               [tableId]: {
                 ...defaultTableState,
                 tableId,
+                pagination: {
+                  ...defaultTableState.pagination,
+                  totalEntries: params.totalEntities ?? 0,
+                },
                 data: params.data ?? [],
                 onSortFn: params.onSort,
                 onPaginationFn: params.onPagination,

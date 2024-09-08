@@ -6,6 +6,8 @@ import { Box } from "@mui/material";
 import type { UserPageProps } from "@app/utils";
 
 import { UserHistoryTable } from "./userHistoryTable";
+import { TRPCReactProvider } from "../../../trpc/react";
+import { AuthProvider } from "@descope/nextjs-sdk";
 
 export const UserHistoryPage = ({
   userId,
@@ -15,15 +17,17 @@ export const UserHistoryPage = ({
   translations,
 }: UserPageProps) => {
   const renderPage = (
-    <Box sx={{ width: "100%" }}>
-      <UserHistoryTable
-        userId={userId}
-        lng={lng}
-        ns={ns}
-        columns={columns}
-        translations={translations}
-      />
-    </Box>
+    <TRPCReactProvider>
+      <Box sx={{ width: "100%" }}>
+        <UserHistoryTable
+          userId={userId}
+          lng={lng}
+          ns={ns}
+          columns={columns}
+          translations={translations}
+        />
+      </Box>
+    </TRPCReactProvider>
   );
   return renderPage;
 };

@@ -122,7 +122,7 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       } else {
         if (column.type !== "internal") {
-          return columnHelper.accessor((row) => row[column.id], {
+          return columnHelper.accessor((row) => column.id, {
             id: column.id,
             enableResizing: true,
             enableSorting: column.sort ?? true,
