@@ -13,7 +13,6 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // void api.post.all.prefetch();
 
   const user = await api.auth.getUser();
-
   console.log("lng", lng);
   await initTranslation(lng);
   const translation = {
