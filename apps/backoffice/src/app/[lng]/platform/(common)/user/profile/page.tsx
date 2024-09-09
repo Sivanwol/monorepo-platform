@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 
 import type { PageCommonProps } from "@app/utils";
 import { LoadingPage, UserProfilePage } from "@app/ui";
-import { initTranslation, t, genders } from "@app/utils";
+import { genders, initTranslation, t } from "@app/utils";
 
 import { api, HydrateClient } from "~/trpc/server";
 
@@ -29,7 +29,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
     errorFirstName: t("userProfile", "errors.firstName"),
     errorLastName: t("userProfile", "errors.lastName"),
     errorEmail: t("userProfile", "errors.email"),
-  }
+  };
   return (
     <HydrateClient>
       <main className="container h-screen py-16">
@@ -58,7 +58,8 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
                       email: user.email ?? "",
                       gender: user.gender ?? genders[0],
                       aboutMe: user.aboutMe ?? "",
-                    }} />
+                    }}
+                  />
                 </CardContent>
               </Card>
             </Suspense>
