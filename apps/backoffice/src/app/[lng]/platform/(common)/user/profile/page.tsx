@@ -35,33 +35,24 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       <main className="container h-screen py-16">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            {t("support", "title")}
+            {t("userProfile", "title")}
           </h1>
           <div className="w-full max-w-2xl overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
-              <Card>
-                <CardHeader>
-                  <Typography gutterBottom variant="h2" component="div">
-                    {t("userProfile", "title")}
-                  </Typography>
-                </CardHeader>
-                <CardContent>
-                  <UserProfilePage
-                    userId={user.id}
-                    actorUserId={user.id}
-                    lng={lng}
-                    ns="userProfile"
-                    translations={translation}
-                    user={{
-                      firstName: user.firstName ?? "",
-                      lastName: user.lastName ?? "",
-                      email: user.email ?? "",
-                      gender: user.gender ?? genders[0],
-                      aboutMe: user.aboutMe ?? "",
-                    }}
-                  />
-                </CardContent>
-              </Card>
+              <UserProfilePage
+                userId={user.id}
+                actorUserId={user.id}
+                lng={lng}
+                ns="userProfile"
+                translations={translation}
+                user={{
+                  firstName: user.firstName ?? "",
+                  lastName: user.lastName ?? "",
+                  email: user.email ?? "",
+                  gender: user.gender ?? genders[0],
+                  aboutMe: user.aboutMe ?? "",
+                }}
+              />
             </Suspense>
           </div>
         </div>

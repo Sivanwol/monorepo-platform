@@ -35,6 +35,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // get the error status code
+  console.error(error);
   return (
     <html lang="en">
       <head>
@@ -47,7 +49,7 @@ export default function GlobalError({
             <div className="relative h-48 w-48 overflow-hidden rounded-full bg-primary">
               <div className="absolute inset-0 flex items-center justify-center">
                 <h1 className="text-6xl font-bold text-primary-foreground">
-                  404
+                  500
                 </h1>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">

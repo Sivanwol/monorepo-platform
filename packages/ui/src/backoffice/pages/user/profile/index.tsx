@@ -25,7 +25,6 @@ export const UserProfilePage = ({
       <InputLabel htmlFor="firstName" shrink>
         {translations.firstName}
       </InputLabel>
-      );
       <Input
         id="firstName"
         aria-describedby="my-helper-text"
@@ -35,7 +34,7 @@ export const UserProfilePage = ({
   );
   const firstNameViewRender = (
     <>
-      <Typography gutterBottom variant="h4" component="div">
+      <Typography variant="h4" component="div">
         {translations.firstName}
       </Typography>
       <div className="text-sm font-medium">
@@ -61,7 +60,7 @@ export const UserProfilePage = ({
   );
   const lastNameViewRender = (
     <>
-      <Typography gutterBottom variant="h4" component="div">
+      <Typography variant="h4" component="div">
         {translations.lastName}
       </Typography>
       <div className="text-sm font-medium">
@@ -77,10 +76,10 @@ export const UserProfilePage = ({
         <div className="grid gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              {editMode ? firstNameEditRender : firstNameViewRender}
+              {!editMode ? firstNameViewRender : firstNameEditRender}
             </div>
             <div className="grid gap-2">
-              {editMode ? lastNameViewRender : lastNameEditRender}
+              {!editMode ? lastNameViewRender : lastNameEditRender}
             </div>
           </div>
         </div>

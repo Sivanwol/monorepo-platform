@@ -35,7 +35,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -80,7 +80,6 @@ import {
   getColumnHeader,
   isGroupColumn,
   isObjectEmpty,
-  totalHeaderColumns,
 } from "./utils";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -92,6 +91,26 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.applyStyles("dark", {
     backgroundColor: "#1A2027",
   }),
+}));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    borderBottom: "1px solid",
+    color: theme.palette.common.black,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
 }));
 export const TableBuilder = ({
   tableId,
@@ -475,7 +494,7 @@ export const TableBuilder = ({
                             return null;
                           }
                           return (
-                            <TableCell
+                            <StyledTableCell
                               key={header.id}
                               colSpan={header.colSpan}
                               style={{
@@ -578,7 +597,7 @@ export const TableBuilder = ({
                                   </>
                                 )}
                               </DraggableTableHeader>
-                            </TableCell>
+                            </StyledTableCell>
                           );
                         })}
                       </SortableContext>
@@ -587,8 +606,8 @@ export const TableBuilder = ({
                 </TableHead>
                 <TableBody>
                   {loading && (
-                    <TableRow>
-                      <TableCell colSpan={totalTableHeaders}>
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={totalTableHeaders}>
                         <Typography
                           variant="h3"
                           component="div"
@@ -601,12 +620,12 @@ export const TableBuilder = ({
                         >
                           <h2>{translations.loading}</h2>
                         </Typography>
-                      </TableCell>
-                    </TableRow>
+                      </StyledTableCell>
+                    </StyledTableRow>
                   )}
                   {!loading && table.getRowModel().rows.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={totalTableHeaders}>
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={totalTableHeaders}>
                         <Typography
                           variant="h3"
                           component="div"
@@ -619,14 +638,14 @@ export const TableBuilder = ({
                         >
                           {translations.noData}
                         </Typography>
-                      </TableCell>
-                    </TableRow>
+                      </StyledTableCell>
+                    </StyledTableRow>
                   )}
                   {!loading &&
                     table.getRowModel().rows.length > 0 &&
                     table.getRowModel().rows.map((row) => {
                       return (
-                        <TableRow
+                        <StyledTableRow
                           key={row.id}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
@@ -639,7 +658,7 @@ export const TableBuilder = ({
                               return null;
                             }
                             return (
-                              <TableCell key={cell.id}>
+                              <StyledTableCell key={cell.id}>
                                 <SortableContext
                                   key={cell.id}
                                   items={columnOrder}
@@ -652,10 +671,10 @@ export const TableBuilder = ({
                                     )}
                                   </DragAlongCell>
                                 </SortableContext>
-                              </TableCell>
+                              </StyledTableCell>
                             );
                           })}
-                        </TableRow>
+                        </StyledTableRow>
                       );
                     })}
                 </TableBody>
