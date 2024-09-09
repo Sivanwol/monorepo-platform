@@ -58,6 +58,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       id: "occurred",
       title: "Occurred",
       type: "date",
+      dateFormat: "MM/dd/yyyy HH:mm:ss",
       sort: false,
       group: false,
     },

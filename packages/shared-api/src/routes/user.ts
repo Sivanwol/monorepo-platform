@@ -2,6 +2,7 @@ import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
+import type { DataTableType } from "@app/utils";
 import { protectedProcedure, publicProcedure } from "@app/auth";
 import {
   CreateMediaSchema,
@@ -39,9 +40,15 @@ export const userRouter = {
       console.log(`fetching audit for user ${input}`);
       service.verifyBackofficeAccess();
       if (ctx.session.user.id === input) {
-        return await service.fetchAuditUser(
+        const audits = await service.fetchAuditUser(
           ctx.session.descopeUser?.userId ?? "",
         );
+        return {
+          entities: audits.map((item) => ({
+            ...(item as unknown as DataTableType),
+          })),
+          total: audits.length,
+        };
       }
       if (
         !service.verifyPermissions([
@@ -61,7 +68,13 @@ export const userRouter = {
             message: `User ID ${input} not found`,
           });
         }
-        return await service.fetchAuditUser(user.externalId ?? "");
+        const audits = await service.fetchAuditUser(user.externalId ?? "");
+        return {
+          entities: audits.map((item) => ({
+            ...(item as unknown as DataTableType),
+          })),
+          total: audits.length,
+        };
       }
     }),
   boardingAdminUser: protectedProcedure

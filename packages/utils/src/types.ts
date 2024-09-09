@@ -32,7 +32,7 @@ export interface UserAuditInfo {
   os: string;
   osVersion: string;
   providerName: string;
-  occurred: Date;
+  occurred: Date | string | number;
 }
 
 export interface CommonLanguageProps {
@@ -54,6 +54,7 @@ export interface ColumnTableProps {
   visible?: boolean;
   filterable?: boolean;
   freeze?: boolean;
+  dateFormat?: string;
   sort?: boolean; // null will set sortable to false
 }
 

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { fromUnixTime } from "date-fns";
+import { fromUnixTime, toDate } from "date-fns";
 
 import type { UserAuditInfo } from "@app/utils";
 import { descopeSdk } from "@app/auth";
@@ -32,7 +32,7 @@ export class UserService extends BaseService {
         os: item.data.os as string,
         osVersion: item.data.osVersion as string,
         providerName: item.data.providerName as string,
-        occurred: fromUnixTime(item.occurred),
+        occurred: item.occurred,
       })) ?? []
     );
   }

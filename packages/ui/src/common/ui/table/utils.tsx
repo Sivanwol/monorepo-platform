@@ -2,6 +2,7 @@ import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import React from "react";
 import { Button, ButtonGroup } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 import type {
   ColumnGroupTableProps,
@@ -121,16 +122,32 @@ export const buildColumnDef = (
           footer: (props) => props.column.id,
         }) as ColumnDef<DataTableType>;
       } else {
-        if (column.type !== "internal") {
-          return columnHelper.accessor((row) => column.id, {
-            id: column.id,
-            enableResizing: true,
-            enableSorting: column.sort ?? true,
-            cell: (info) => info.getValue(),
-            header: () => <span>{column.title}</span>,
-            footer: (props) => props.column.id,
-          }) as ColumnDef<DataTableType>;
+        if (column.type === "date" && column.dateFormat) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return columnHelper.accessor(
+            (row) =>
+              format(
+                row[column.id] as string | number | Date,
+                column.dateFormat!,
+              ),
+            {
+              id: column.id,
+              enableResizing: true,
+              enableSorting: column.sort ?? true,
+              cell: (info) => info.getValue(),
+              header: () => <span>{column.title}</span>,
+              footer: (props) => props.column.id,
+            },
+          ) as ColumnDef<DataTableType>;
         }
+        return columnHelper.accessor((row) => row[column.id], {
+          id: column.id,
+          enableResizing: true,
+          enableSorting: column.sort ?? true,
+          cell: (info) => info.getValue(),
+          header: () => <span>{column.title}</span>,
+          footer: (props) => props.column.id,
+        }) as ColumnDef<DataTableType>;
       }
     })
     .filter((element): element is ColumnTableProps => !!element);

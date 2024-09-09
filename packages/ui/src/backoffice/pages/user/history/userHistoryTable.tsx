@@ -38,11 +38,11 @@ export const UserHistoryTable = ({
           "Content-Type": "application/json",
         },
       });
-      const data = (await res.json()) as UserAuditInfo[];
-      return {
-        entities: data.map((item) => item as unknown as DataTableType),
-        total: data.length,
+      const data = (await res.json()) as {
+        entities: DataTableType[];
+        total: number;
       };
+      return data;
     },
     // eslint-disable-next-line no-constant-binary-expression
     enabled: false && isAuthenticated,
