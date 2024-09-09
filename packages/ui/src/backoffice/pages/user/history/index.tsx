@@ -3,7 +3,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-import type { UserPageProps } from "@app/utils";
+import type { UserHistoryPageProps } from "@app/utils";
 
 import { UserHistoryTable } from "./userHistoryTable";
 
@@ -15,7 +15,7 @@ export const UserHistoryPage = ({
   ns,
   columns,
   translations,
-}: UserPageProps) => {
+}: UserHistoryPageProps) => {
   const renderPage = (
     <Box sx={{ width: "100%" }}>
       <UserHistoryTable

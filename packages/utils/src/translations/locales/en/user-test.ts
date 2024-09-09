@@ -1,7 +1,7 @@
 import type { DynamicStructure } from "../../type";
 
 const translate: DynamicStructure = {
-  title: "User Test Page",
+  title: "Testing Page",
 };
 
 export default translate;

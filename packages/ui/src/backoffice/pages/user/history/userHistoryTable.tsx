@@ -8,8 +8,7 @@ import type { TableState, TableStore } from "@app/store-backoffice";
 import type {
   DataTableType,
   Pagination,
-  UserAuditInfo,
-  UserPageProps,
+  UserHistoryPageProps,
 } from "@app/utils";
 import { useTableStore } from "@app/store-backoffice";
 import { TableWarp } from "@app/ui";
@@ -24,7 +23,7 @@ export const UserHistoryTable = ({
   ns,
   columns,
   translations,
-}: UserPageProps) => {
+}: UserHistoryPageProps) => {
   const [tableId, setTableId] = useState<string | null>(null);
   const [tableReady, setTableReady] = useState<boolean>(false);
   const { sessionToken, isAuthenticated } = useSession();

@@ -87,13 +87,32 @@ export interface UserTestPageProps extends CommonLanguageProps {
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
 }
 
-export interface UserPageProps extends CommonLanguageProps {
+export interface UserHistoryPageProps extends CommonLanguageProps {
   userId: number;
   // tableId: string;
   translations: TranslationRecord;
   data: DataTableType[];
   totalRecords: number;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
+}
+
+interface UserProfile {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: Gender;
+  aboutMe: string;
+}
+
+type UserProfileInput = Omit<UserProfile, "userId">;
+
+export interface UserProfilePageProps extends CommonLanguageProps {
+  actorUserId: number;
+  userId: number;
+  // tableId: string;
+  translations: TranslationRecord;
+  user: UserProfileInput;
 }
 
 interface CommonTableProps {

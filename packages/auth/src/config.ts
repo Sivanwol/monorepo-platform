@@ -32,9 +32,9 @@ export const authConfig = {
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
     ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
+      skipCSRFCheck: skipCSRFCheck,
+      trustHost: true,
+    }
     : {}),
   secret: env.AUTH_SECRET,
   providers: [
@@ -99,6 +99,7 @@ const sendAndParseUserInformation = async (
         userResp.picture ??
         gravatar.url(userResp.email ?? "", { s: "200" }),
       phone: user?.phone ?? null,
+      aboutMe: user?.aboutMe ?? "",
     },
     userProfile: user,
     expires: fromUnixTime(authExpDate).toISOString(),

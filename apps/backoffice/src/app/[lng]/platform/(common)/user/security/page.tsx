@@ -11,9 +11,7 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
   const user = await api.auth.getUser();
-  console.log("lng", lng);
   const ns = "table";
-  console.log("lng", lng, ns);
   await initTranslation(lng);
   const res = await api.user.securityAudit(user.id);
   const translations = {

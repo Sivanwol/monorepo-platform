@@ -13,6 +13,7 @@ export type Namespaces =
   | "dashboardLayout"
   | "support"
   | "userHistory"
+  | "userProfile"
   | "table"
   | "userTest";
 export type TranslationKeys = Namespaces;
