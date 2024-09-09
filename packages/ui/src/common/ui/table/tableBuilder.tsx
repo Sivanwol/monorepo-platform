@@ -110,6 +110,9 @@ export const TableBuilder = ({
   if (!tableId) {
     throw new Error("Table Id is required");
   }
+  const defaultTimeout = 5000;
+  const [disableReload, setDisableReload] = useState(false);
+  const [disableExport, setDisableExport] = useState(false);
   const tableStore = useTableStore<TableStore>((store) => store as TableStore);
   if (!tableStore.tables[tableId]) {
     throw new Error(
@@ -201,10 +204,10 @@ export const TableBuilder = ({
     }
     const headers = isGroupColumn(firstColumn)
       ? buildGroupColumnDef(
-        columns as ColumnGroupTableProps[],
-        translations,
-        rowActions,
-      )
+          columns as ColumnGroupTableProps[],
+          translations,
+          rowActions,
+        )
       : buildColumnDef(columns as ColumnTableProps[], translations, rowActions);
     setProcessHeader(headers);
     return headers;
@@ -281,6 +284,10 @@ export const TableBuilder = ({
   const onReload = () => {
     console.log(`${tableId} - reload data`);
     reload(tableId).catch(console.error);
+    setDisableReload(true);
+    setTimeout(() => {
+      setDisableReload(false);
+    }, defaultTimeout);
   };
 
   // reorder columns after drag & drop
@@ -317,6 +324,10 @@ export const TableBuilder = ({
       }
       const csv = buildCSV(dataToExport, columns);
       downloadCsv(csv, `export-${new Date().toISOString()}.csv`);
+      setDisableExport(true);
+      setTimeout(() => {
+        setDisableExport(false);
+      }, defaultTimeout);
     }
     return;
   };
@@ -351,11 +362,13 @@ export const TableBuilder = ({
   let totalTableHeaders = 0;
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="h2" component="div" gutterBottom>
-          {translations.title}
-        </Typography>
-      </Box>
+      {translations.title !== "" && (
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h2" component="div" gutterBottom>
+            {translations.title}
+          </Typography>
+        </Box>
+      )}
       <Stack spacing={2} divider={null}>
         <Item>
           <Stack
@@ -384,6 +397,7 @@ export const TableBuilder = ({
                       <Button
                         variant="outlined"
                         startIcon={<CgExport />}
+                        disabled={disableExport}
                         onClick={() => onExport()}
                       >
                         {translations.export}
@@ -399,6 +413,7 @@ export const TableBuilder = ({
                     <Button
                       variant="outlined"
                       startIcon={<TfiReload />}
+                      disabled={disableReload}
                       onClick={() => onReload()}
                     >
                       {translations.reload}
@@ -475,10 +490,10 @@ export const TableBuilder = ({
                                       header.getContext(),
                                     )}
                                     {columnEntity &&
-                                      enableFilters &&
-                                      "filterable" in columnEntity &&
-                                      columnEntity.filterable &&
-                                      header.column.getCanFilter() ? (
+                                    enableFilters &&
+                                    "filterable" in columnEntity &&
+                                    columnEntity.filterable &&
+                                    header.column.getCanFilter() ? (
                                       <div>
                                         <Filter
                                           column={header.column}
@@ -515,7 +530,7 @@ export const TableBuilder = ({
                                             columnId: header.column.id,
                                             direction:
                                               header.column.getNextSortingOrder() ===
-                                                "desc"
+                                              "desc"
                                                 ? SortByDirection.DESC
                                                 : SortByDirection.ASC,
                                           });
@@ -534,10 +549,10 @@ export const TableBuilder = ({
                                           header.getContext(),
                                         )}
                                         {columnEntity &&
-                                          enableFilters &&
-                                          "filterable" in columnEntity &&
-                                          columnEntity.filterable &&
-                                          header.column.getCanFilter() ? (
+                                        enableFilters &&
+                                        "filterable" in columnEntity &&
+                                        columnEntity.filterable &&
+                                        header.column.getCanFilter() ? (
                                           <div>
                                             <Filter
                                               column={header.column}
@@ -546,14 +561,14 @@ export const TableBuilder = ({
                                           </div>
                                         ) : null}
                                         {!!header.column.getIsSorted() &&
-                                          header.column.getCanSort() &&
-                                          columnEntity.sort ? (
+                                        header.column.getCanSort() &&
+                                        columnEntity.sort ? (
                                           <Box
                                             component="span"
                                             sx={visuallyHidden}
                                           >
                                             {header.column.getIsSorted() ===
-                                              "desc"
+                                            "desc"
                                               ? "sorted descending"
                                               : "sorted ascending"}
                                           </Box>

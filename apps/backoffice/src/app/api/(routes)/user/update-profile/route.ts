@@ -4,11 +4,8 @@ import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { userId: string } },
-) {
-  console.log(`${req.method} /api/user/security`, params);
+export async function POST(req: Request) {
+  console.log(`${req.method} /api/user/update-profile`, req.body);
   const headers = new Headers();
   headers.set("Authorization", req.headers.get("authorization") || "");
   headers.set("Content-Type", "application/json");
@@ -17,24 +14,26 @@ export async function GET(
   const ctx = await createTRPCContext({ headers });
   const caller = createCaller(ctx);
   try {
-    const data = await caller.user.securityAudit(parseInt(params.userId));
-    console.log("data", data);
-    return Response.json(data);
+    // const data = await caller.user.);
+    // console.log("data", data);
+    // return Response.json(data);
   } catch (cause) {
     if (cause instanceof TRPCError) {
       // An error from tRPC occurred
       const httpCode = getHTTPStatusCodeFromError(cause);
 
-      return Response.json(
-        { message: "Internal server error", cause, stack: cause.stack },
-        { status: httpCode },
-      );
+      return Response.json({
+        message: "Internal server error",
+        cause,
+        success: false,
+      });
     }
     // Another error occurred
     console.error(cause);
-    return Response.json(
-      { message: "Internal server error", cause },
-      { status: 500 },
-    );
+    return Response.json({
+      message: "Internal server error",
+      cause,
+      success: false,
+    });
   }
 }

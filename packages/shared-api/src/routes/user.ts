@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -7,7 +8,7 @@ import { protectedProcedure, publicProcedure } from "@app/auth";
 import {
   CreateMediaSchema,
   Media,
-  OnBoardAdminUserSchema,
+  UpdateUserProfileSchema,
 } from "@app/db/schema";
 import { backofficePermmisions, genders } from "@app/utils";
 
@@ -76,6 +77,23 @@ export const userRouter = {
           total: audits.length,
         };
       }
+    }),
+  updateMyProfile: protectedProcedure
+    .input(UpdateUserProfileSchema)
+    .mutation(async ({ ctx, input }) => {
+      const service = new UserService(ctx);
+      console.log(`updating user profile... ${JSON.stringify(input)}`);
+      await service.UpdateUserProfile(
+        ctx.session.user.id,
+        ctx.session.user.id,
+        {
+          firstName: input.firstName!,
+          lastName: input.lastName!,
+          aboutMe: input.aboutMe!,
+          gender: input.gender!,
+        },
+      );
+      return { success: true };
     }),
   boardingAdminUser: protectedProcedure
     .input(

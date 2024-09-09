@@ -57,6 +57,7 @@
     "swagger-ui-react": "5.17.14",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "catalog:",
     "uuid": "catalog:",
     "zod": "catalog:"
   },

@@ -15,8 +15,8 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
   const ns = "table";
   console.log("lng", lng, ns);
   await initTranslation(lng);
+  const res = await api.user.securityAudit(user.id);
   const translations = {
-    title: t(ns, "title"),
     rowsPerPage: t(ns, "rawPerPage"),
     export: t(ns, "export"),
     rowActions: t(ns, "rowActions"),
@@ -68,12 +68,14 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
       <main className="container h-screen w-full py-16" style={{ zIndex: -1 }}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            {t("support", "title")}
+            {t("userHistory", "title")}
           </h1>
           <div className="w-full overflow-y-scroll">
             <Suspense fallback={<LoadingPage />}>
               <UserHistoryPage
                 columns={columns}
+                data={res?.entities ?? []}
+                totalRecords={res?.total ?? 0}
                 lng={lng}
                 ns="table"
                 translations={translations}

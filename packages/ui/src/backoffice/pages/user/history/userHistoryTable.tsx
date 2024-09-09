@@ -18,6 +18,8 @@ import { api } from "../../../trpc/react";
 
 export const UserHistoryTable = ({
   userId,
+  data,
+  totalRecords,
   lng,
   ns,
   columns,
@@ -27,7 +29,7 @@ export const UserHistoryTable = ({
   const [tableReady, setTableReady] = useState<boolean>(false);
   const { sessionToken, isAuthenticated } = useSession();
 
-  const { isFetching, error, data, refetch } = useQuery({
+  const { isFetching, error, refetch } = useQuery({
     queryKey: ["userHistorySecurity", { userId }],
     queryFn: async ({ queryKey }) => {
       const [_, { userId }] = queryKey as [string, { userId: number }];
@@ -61,52 +63,45 @@ export const UserHistoryTable = ({
     }
 
     if (!tableId && !tableReady) {
-      refetch()
-        .then((res) => {
+      const id = init({
+        data: data,
+        totalEntities: totalRecords,
+        onPagination: async (pagination: Pagination | null) => {
+          setLoading(tableId!, true);
+          const res = await refetch();
           const { data, error } = res;
           const entities = data?.entities ?? [];
-          console.log(`fetch data`, { entities, error });
-          const id = init({
-            data: entities,
-            totalEntities: data?.total ?? 0,
-            onPagination: async (pagination: Pagination | null) => {
-              setLoading(tableId!, true);
-              const res = await refetch();
-              const { data, error } = res;
-              const entities = data?.entities ?? [];
-              console.log("fetch data", { tableId, data, error });
-              if (error || !data) {
-                throw Error("Failed to fetch data");
-              }
-              console.log("pagination change reload data", {
-                data,
-                sort,
-                pagination,
-              });
-              setData(tableId!, entities, data.total);
-              setLoading(tableId!, false);
-              return data.entities;
-            },
-            onReload: async () => {
-              setLoading(tableId!, true);
-              const res = await refetch();
-              const { data, error } = res;
-              const entities = data?.entities ?? [];
-              console.log("fetch data", { tableId, data, error });
-              if (error || !data) {
-                throw Error("Failed to fetch data");
-              }
-
-              setData(tableId!, entities, data.total);
-              console.log("reload data", { data, sort, pagination });
-              setLoading(tableId!, false);
-              return data.entities;
-            },
+          console.log("fetch data", { tableId, data, error });
+          if (error || !data) {
+            throw Error("Failed to fetch data");
+          }
+          console.log("pagination change reload data", {
+            data,
+            sort,
+            pagination,
           });
-          setTableId(id);
-          setTableReady(true);
-        })
-        .catch(console.error);
+          setData(tableId!, entities, data.total);
+          setLoading(tableId!, false);
+          return data.entities;
+        },
+        onReload: async () => {
+          setLoading(tableId!, true);
+          const res = await refetch();
+          const { data, error } = res;
+          const entities = data?.entities ?? [];
+          console.log("fetch data", { tableId, data, error });
+          if (error || !data) {
+            throw Error("Failed to fetch data");
+          }
+
+          setData(tableId!, entities, data.total);
+          console.log("reload data", { data, sort, pagination });
+          setLoading(tableId!, false);
+          return data.entities;
+        },
+      });
+      setTableId(id);
+      setTableReady(true);
     }
   }, [
     tableId,
@@ -120,6 +115,8 @@ export const UserHistoryTable = ({
     userId,
     isAuthenticated,
     refetch,
+    data,
+    totalRecords,
   ]);
 
   const renderPage = (

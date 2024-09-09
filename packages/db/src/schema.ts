@@ -127,12 +127,10 @@ export const OnBoardAdminUserSchema = createInsertSchema(User, {
 });
 
 export const UpdateUserProfileSchema = createInsertSchema(User, {
-  firstName: z.string().min(2).max(100).optional().or(z.literal("")),
-  lastName: z.string().min(2).max(100).optional().or(z.literal("")),
-  gender: z.enum(genders).optional().or(z.literal("")),
-  aboutMe: z.string().min(2).max(500).optional().or(z.literal("")),
-  avatar: z.string().min(5).max(500).optional().or(z.literal("")),
-  phone: z.string().min(2).max(20).optional().or(z.literal("")),
+  firstName: z.string().min(2).max(100),
+  lastName: z.string().min(2).max(100),
+  gender: z.enum(genders),
+  aboutMe: z.string().min(2).max(500),
 }).omit({
   id: true,
   externalId: true,
@@ -140,9 +138,20 @@ export const UpdateUserProfileSchema = createInsertSchema(User, {
   clientId: true,
   IsWorker: true,
   IsPrivate: true,
+  avatar: true,
   createdAt: true,
   updatedAt: true,
   onboardingAt: true,
+});
+
+export const ActivityLog = pgTable("activity_log", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  action: varchar("action", { length: 255 }).notNull(),
+  entity: varchar("entity", { length: 255 }).notNull(),
+  entityId: integer("entity_id").notNull(),
+  metaData: json("meta_data").default({}),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const Notification = pgTable("notification", {

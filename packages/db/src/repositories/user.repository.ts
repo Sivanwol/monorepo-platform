@@ -1,12 +1,16 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq, isNull, or } from "drizzle-orm";
 
-import type { OnBoardAdminUserRequest, RegisterUserRequest } from "@app/utils";
+import type {
+  OnBoardAdminUserRequest,
+  RegisterUserRequest,
+  UpdateUserProfilePayload,
+} from "@app/utils";
 
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
 import * as schema from "../schema";
-import { CreateUserSchema, User } from "../schema";
+import { ActivityLog, CreateUserSchema, User } from "../schema";
 
 export class UserRepository {
   constructor(public db: VercelPgDatabase<typeof schema>) {}
@@ -44,6 +48,33 @@ export class UserRepository {
       where: eq(schema.User.id, userId),
     });
     return !!user;
+  }
+
+  public async UpdateUserProfile(
+    actorUserId: number,
+    userId: number,
+    payload: UpdateUserProfilePayload,
+  ) {
+    console.log(`update user ${userId} profile`);
+    await this.db
+      .update(User)
+      .set({
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        aboutMe: payload.aboutMe,
+      })
+      .where(eq(User.id, userId));
+    await this.db.insert(ActivityLog).values({
+      userId: actorUserId,
+      action: "Update User Entity by ${actorUserId}",
+      entity: "User",
+      entityId: userId,
+      metaData: {
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        aboutMe: payload.aboutMe,
+      },
+    });
   }
 
   public async GetUsers(): Promise<(typeof schema.User.$inferSelect)[]> {

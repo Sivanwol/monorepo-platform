@@ -1,10 +1,12 @@
 import { TRPCError } from "@trpc/server";
-import { fromUnixTime, toDate } from "date-fns";
 
-import type { UserAuditInfo } from "@app/utils";
+import type {
+  InputOnboardingAdminUserPayload,
+  UpdateUserProfilePayload,
+  UserAuditInfo,
+} from "@app/utils";
 import { descopeSdk } from "@app/auth";
 
-import type { InputOnboardingAdminUserPayload } from "./types";
 import { BaseService } from "./base.service";
 
 export class UserService extends BaseService {
@@ -36,6 +38,45 @@ export class UserService extends BaseService {
       })) ?? []
     );
   }
+
+  public async UpdateUserProfile(
+    actorUserId: number,
+    userId: number,
+    payload: UpdateUserProfilePayload,
+  ) {
+    console.log(`update user profile ${userId} by ${actorUserId}`);
+    if (actorUserId === userId) {
+      if (await this.ctx.repositories.user.HasUserExist(userId)) {
+        await this.ctx.repositories.user.UpdateUserProfile(
+          actorUserId,
+          userId,
+          payload,
+        );
+        return;
+      } else {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User not found",
+        });
+      }
+    }
+    if (
+      (await this.ctx.repositories.user.HasUserExist(userId)) &&
+      (await this.ctx.repositories.user.HasUserExist(actorUserId))
+    ) {
+      await this.ctx.repositories.user.UpdateUserProfile(
+        actorUserId,
+        userId,
+        payload,
+      );
+      return;
+    }
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "User not found",
+    });
+  }
+
   public async onBoardAdminUser(
     userId: number,
     payload: InputOnboardingAdminUserPayload,

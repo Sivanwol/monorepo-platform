@@ -16,12 +16,3 @@ export interface ContextTRPC {
   repositories: typeof repositories;
   requestId: string;
 }
-
-export interface InputOnboardingAdminUserPayload {
-  firstName: string;
-  lastName: string;
-  gender: Gender;
-  aboutMe?: string | undefined;
-  phone?: string | undefined;
-  avatar?: string | undefined;
-}

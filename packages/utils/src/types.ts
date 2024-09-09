@@ -91,6 +91,8 @@ export interface UserPageProps extends CommonLanguageProps {
   userId: number;
   // tableId: string;
   translations: TranslationRecord;
+  data: DataTableType[];
+  totalRecords: number;
   columns: ColumnTableProps[] | ColumnGroupTableProps[];
 }
 
@@ -141,4 +143,20 @@ export interface SortByOpt {
 export enum ExportTableMode {
   ClientSide,
   ServerSide,
+}
+
+export interface UpdateUserProfilePayload {
+  firstName: string;
+  lastName: string;
+  aboutMe: string;
+  gender: Gender;
+}
+
+export interface InputOnboardingAdminUserPayload {
+  firstName: string;
+  lastName: string;
+  gender: Gender;
+  aboutMe?: string | undefined;
+  phone?: string | undefined;
+  avatar?: string | undefined;
 }
