@@ -4,8 +4,6 @@ import SuperJSON from "superjson";
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
 
-// export const runtime = "edge";
-
 /**
  * Configure basic CORS headers
  * You should extend this to match your needs

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   description: "Backoffice of monorepo Platform For both mobile and web app",
 };
 
-// export const runtime = "edge";
 export default async function HomePage({ params: { lng } }: PageCommonProps) {
   // You can await this here if you don't want to show Suspense fallback below
   // void api.post.all.prefetch();
