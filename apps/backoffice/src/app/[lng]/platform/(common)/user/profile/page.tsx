@@ -14,7 +14,6 @@ export default async function HomePage({ params: { lng } }: PageCommonProps) {
 
   const user = await api.auth.getUser();
   console.log("lng", lng);
-
   await initTranslation(lng);
   const translation = {
     firstName: t("userProfile", "firstName"),
