@@ -16,7 +16,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "sort:packages": "sort-package-json",
-    "start": "pnpm with-env next start",
+    "start": "pnpm with-env node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
