@@ -112,4 +112,4 @@ CMD ["sh", "-c", "echo '{ \
 }' > ecosystem.config.json"]
 
 # Use PM2 to start the application
-CMD ["sh", "-c", "pm2-runtime start ecosystem.config.json"]
+CMD ["sh", "-c", "pm2 start ecosystem.config.json"]
