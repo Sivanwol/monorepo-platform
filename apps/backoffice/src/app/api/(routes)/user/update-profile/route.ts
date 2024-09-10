@@ -7,7 +7,7 @@ import { createCaller, createTRPCContext } from "@app/backoffice-api";
 export async function POST(req: Request) {
   console.log(`${req.method} /api/user/update-profile`, req.body);
   const headers = new Headers();
-  headers.set("Authorization", req.headers.get("authorization") || "");
+  headers.set("Authorization", req.headers.get("authorization") ?? "");
   headers.set("Content-Type", "application/json");
   headers.set("x-trpc-source", "backoffice-api");
   console.log("headers", headers);

@@ -10,7 +10,7 @@ export async function GET(
 ) {
   console.log(`${req.method} /api/user/security`, params);
   const headers = new Headers();
-  headers.set("Authorization", req.headers.get("authorization") || "");
+  headers.set("Authorization", req.headers.get("authorization") ?? "");
   headers.set("Content-Type", "application/json");
   headers.set("x-trpc-source", "backoffice-api");
   console.log("headers", headers);

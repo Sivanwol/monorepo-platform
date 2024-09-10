@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -19,8 +20,6 @@ export const UserHistoryTable = ({
   userId,
   data,
   totalRecords,
-  lng,
-  ns,
   columns,
   translations,
 }: UserHistoryPageProps) => {
@@ -52,10 +51,7 @@ export const UserHistoryTable = ({
   const utils = api.useUtils();
   const { setData, hasData, tables, init, setLoading } =
     useTableStore<TableStore>((store) => store as TableStore);
-  const { pagination, sort } = tableId
-    ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      tables[tableId]!
-    : ({} as TableState);
+  const { pagination, sort } = tableId ? tables[tableId]! : ({} as TableState);
   useEffect(() => {
     if (isAuthenticated) {
       return;
@@ -120,7 +116,6 @@ export const UserHistoryTable = ({
 
   const renderPage = (
     <TableWarp
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       tableId={tableId!}
       columns={columns}
       translations={translations}

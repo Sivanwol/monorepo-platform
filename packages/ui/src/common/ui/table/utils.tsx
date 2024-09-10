@@ -24,11 +24,13 @@ export const getColumnHeader = (
   const columnGroupEntity = columns.find(
     (column) => column.id === columnId,
   ) as ColumnGroupTableProps;
-  const columnEntity = (
-    columnGroupEntity.columns !== undefined
-      ? columnGroupEntity.columns.find((column) => column.id === columnId)
-      : columnGroupEntity
-  ) as ColumnTableProps;
+  const columnEntity =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    (
+      columnGroupEntity.columns !== undefined
+        ? columnGroupEntity.columns.find((column) => column.id === columnId)
+        : columnGroupEntity
+    ) as ColumnTableProps;
   return columnEntity;
 };
 const rowButtonRenderer = (
@@ -123,11 +125,11 @@ export const buildColumnDef = (
         }) as ColumnDef<DataTableType>;
       } else {
         if (column.type === "date" && column.dateFormat) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           return columnHelper.accessor(
             (row) =>
               format(
                 row[column.id] as string | number | Date,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 column.dateFormat!,
               ),
             {
