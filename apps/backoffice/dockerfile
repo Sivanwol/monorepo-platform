@@ -72,8 +72,7 @@ RUN pnpm install --frozen-lockfile
 CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
 
 FROM base AS runner
-WORKDIR /app
-RUN npm install -g pnpm
+WORKDIR /application
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Don't run production as root
@@ -89,4 +88,4 @@ CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
 
 EXPOSE 3001
 ENV PORT 3001
-CMD ["sh", "-c", "pnpm start:docker"]
+CMD ["sh", "-c", "npm start:docker"]
