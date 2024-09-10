@@ -21,7 +21,6 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 ENV NODE_ENV production
 ENV CI         true
 ENV SKIP_ENV_VALIDATION true
-RUN npm config set python /usr/bin/python3
 
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
