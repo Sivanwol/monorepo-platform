@@ -90,4 +90,4 @@ CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
 
 EXPOSE 3001
 ENV PORT 3001
-CMD ["sh", "-c", "pnpm start"]
+CMD ["sh", "-c", "pnpm start:docker"]
