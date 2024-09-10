@@ -6,6 +6,9 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "*"
+      ],
       "outputs": [
         "node_modules/.cache/tsbuildinfo.json",
         "dist/**"
