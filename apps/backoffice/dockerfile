@@ -43,12 +43,12 @@ ARG AUTH_DESCOPE_MAIN_TENANT_ID
 ARG DEBUG_DOCKER_MODE
 
 RUN \
-if [[ -z "${DEBUG_DOCKER_MODE}" ]] ; \
-  RUN echo -e "\e[1;33mDEBUG_DOCKER_MODE is not set\e[0m" ; \
+if [[ -z "${DEBUG_DOCKER_MODE}" ]]; then \
+  echo -e "\e[1;33mDEBUG_DOCKER_MODE is not set\e[0m"; \
 else \
-  RUN echo -e "\e[1;33mDEBUG_DOCKER_MODE is set to ${DEBUG_DOCKER_MODE}\e[0m" ; \
-  RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m"
-  RUN env
+  echo -e "\e[1;33mDEBUG_DOCKER_MODE is set to ${DEBUG_DOCKER_MODE}\e[0m"; \
+  echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m"; \
+  env; \
 fi
 
 ENV POSTGRES_URL=${POSTGRES_URL}
