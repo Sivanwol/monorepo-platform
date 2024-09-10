@@ -13,8 +13,6 @@ RUN npm install -g pnpm husky turbo pm2
 
 FROM base as installer
 WORKDIR /app
-
-
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
@@ -75,6 +73,7 @@ CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
 
 FROM base AS runner
 WORKDIR /app
+RUN npm install -g pnpm
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Don't run production as root
