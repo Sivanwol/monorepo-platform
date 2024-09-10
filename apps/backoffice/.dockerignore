@@ -1,5 +1,17 @@
-node_modules
+.env
 
-# This line is **EXTREMELY** important
-# https://github.com/vercel/turbo/issues/1997#issuecomment-1273565773
-**/node_modules
+Dockerfile
+./**/*/Dockerfile
+
+.dockerignore
+
+node_modules
+./**/*/node_modules
+
+pnpm-debug.log
+./**/*/pnpm-debug.log
+
+
+README.md
+.next
+.git
