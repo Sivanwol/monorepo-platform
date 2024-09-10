@@ -7,14 +7,13 @@ ARG APP_FOLDER=backoffice
 # Use the build-time variable to set an environment variable
 ENV APP_FOLDER=${APP_FOLDER}
 RUN echo -e "\e[1;33mBuilding application ${APP_FOLDER}\e[0m"
-RUN npm install -g turbo
 COPY . .
 RUN turbo prune --scope=@app/${APP_FOLDER} --docker
+RUN npm install -g pnpm husky turbo pm2
 
 FROM base as installer
 WORKDIR /app
 
-RUN npm install -g pnpm husky turbo pm2
 
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
