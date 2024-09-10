@@ -68,7 +68,6 @@ ENV AUTH_DESCOPE_MAIN_TENANT_ID=${AUTH_DESCOPE_MAIN_TENANT_ID}
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 RUN pnpm install --frozen-lockfile
@@ -76,22 +75,19 @@ CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
 
 FROM base AS runner
 WORKDIR /app
-
-EXPOSE 3001
-ENV PORT 3001
-
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
-
 CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
               cp /app/apps/${APP_FOLDER}/package.json . && \
               cp -r /app/apps/${APP_FOLDER}/.next/standalone ./ && \
               cp -r /app/apps/${APP_FOLDER}/.next/static ./apps/${APP_FOLDER}/.next/static && \
               cp -r /app/apps/${APP_FOLDER}/public ./apps/${APP_FOLDER}/public"]
-
 # Use PM2 to start the application
-CMD ["sh", "-c", "cd /app/apps/${APP_FOLDER} && pnpm start"]
+
+EXPOSE 3001
+ENV PORT 3001
+CMD ["sh", "-c", "pnpm start"]
