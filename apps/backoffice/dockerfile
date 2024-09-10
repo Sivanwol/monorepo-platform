@@ -93,22 +93,5 @@ CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
               cp -r /app/apps/${APP_FOLDER}/.next/static ./apps/${APP_FOLDER}/.next/static && \
               cp -r /app/apps/${APP_FOLDER}/public ./apps/${APP_FOLDER}/public"]
 
-# Create a PM2 ecosystem file
-CMD ["sh", "-c", "echo '{ \
-  \"apps\": [{ \
-    \"name\": \"${APP_FOLDER}-app\", \
-    \"script\": \"pnpm\", \
-    \"args\": \"start\", \
-    \"instances\": \"max\", \
-    \"exec_mode\": \"cluster\", \
-    \"autorestart\": true, \
-    \"watch\": false, \
-    \"max_memory_restart\": \"1G\", \
-    \"env\": { \
-      \"NODE_ENV\": \"production\" \
-    } \
-  }] \
-}' > ecosystem.config.json"]
-
 # Use PM2 to start the application
-CMD ["sh", "-c", "pm2 start ecosystem.config.json"]
+CMD ["sh", "-c", "cd /app/apps/${APP_FOLDER} && pnpm start"]
