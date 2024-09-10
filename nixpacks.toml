@@ -1,5 +1,0 @@
-[phases.setup]
-nixPkgs = ["curl", "wget"]
-
-[phases.install]
-cmds = ["npm install -g corepack", "corepack enable", "corepack prepare pnpm@9.9.0 --activate", "pnpm install"]
