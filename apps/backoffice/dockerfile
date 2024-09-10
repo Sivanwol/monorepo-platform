@@ -14,7 +14,7 @@ RUN turbo prune --scope=@app/${APP_FOLDER} --docker
 FROM base as installer
 WORKDIR /app
 
-RUN npm install -g pnpm husky turbo
+RUN npm install -g pnpm husky turbo pm2
 
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
@@ -73,7 +73,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 RUN pnpm install --frozen-lockfile
-RUN ["pnpm", "turbo", "build", "--filter=@app/${APP_FOLDER}"]
+RUN bash -c "pnpm turbo build --filter=@app/${APP_FOLDER}"
 
 FROM base AS runner
 WORKDIR /app
@@ -97,4 +97,21 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/${APP_FOLDER}/.next/standa
 COPY --from=installer --chown=nextjs:nodejs /app/apps/${APP_FOLDER}/.next/static ./apps/${APP_FOLDER}/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/${APP_FOLDER}/public ./apps/${APP_FOLDER}/public
 
-CMD node apps/${APP_FOLDER}/server.js
+# Create a PM2 ecosystem file
+RUN echo '{\
+  "apps": [{\
+    "name": "${APP_FOLDER}-app",\
+    "script": "apps/'${APP_FOLDER}'/server.js",\
+    "instances": "max",\
+    "exec_mode": "cluster",\
+    "autorestart": true,\
+    "watch": false,\
+    "max_memory_restart": "1G",\
+    "env": {\
+      "NODE_ENV": "production"\
+    }\
+  }]\
+}' > ecosystem.config.json
+
+# Use PM2 to start the application
+CMD ["pm2-runtime", "start", "ecosystem.config.json"]
