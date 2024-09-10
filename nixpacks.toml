@@ -1,2 +1,4 @@
+buildImage = 'ghcr.io/railwayapp/nixpacks:ubuntu-1725321821'
+
 [phases.install]
-cmds = ['npm install -g corepack', 'corepack enable', 'corepack prepare pnpm@latest --activate', 'pnpm install']
+cmds = ["npm install -g corepack", "corepack enable", "corepack prepare pnpm@9.9.0 --activate", "pnpm install"]

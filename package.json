@@ -4,7 +4,7 @@
   "engines": {
     "node": "20"
   },
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
