@@ -24,13 +24,11 @@ export const getColumnHeader = (
   const columnGroupEntity = columns.find(
     (column) => column.id === columnId,
   ) as ColumnGroupTableProps;
-  const columnEntity =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    (
-      columnGroupEntity.columns !== undefined
-        ? columnGroupEntity.columns.find((column) => column.id === columnId)
-        : columnGroupEntity
-    ) as ColumnTableProps;
+  const columnEntity = (
+    columnGroupEntity.columns !== undefined
+      ? columnGroupEntity.columns.find((column) => column.id === columnId)
+      : columnGroupEntity
+  ) as ColumnTableProps;
   return columnEntity;
 };
 const rowButtonRenderer = (
