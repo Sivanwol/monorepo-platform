@@ -1,13 +1,12 @@
 FROM node:20-alpine AS base
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache python3 make g++ libc6-compat && apk update
-
-FROM base AS builder
-WORKDIR /app
-
 ENV NODE_ENV production
 ENV CI         true
 ENV SKIP_ENV_VALIDATION true
+
+FROM base AS builder
+WORKDIR /app
 
 RUN npm install -g turbo
 COPY . .
@@ -32,12 +31,8 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
-RUN ls -ga
-RUN ls -ga /app/
 RUN pnpm install --frozen-lockfile
-## This would be useful for browser environment variables that are actually baked at build time and you aren't passing them in otherwise.
-# COPY .env.production .env.production
-RUN CI=true SKIP_ENV_VALIDATION=true turbo run build --filter=@app/backoffice
+RUN pnpm turbo build --filter=@app/backoffice
 
 FROM base AS runner
 WORKDIR /app
