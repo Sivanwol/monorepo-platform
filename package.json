@@ -36,7 +36,8 @@
     "husky": "^9.0.11",
     "prettier": "catalog:",
     "turbo": "^2.1.1",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "dotenv-cli": "^7.1.0"
   },
   "config": {
     "commitizen": {
