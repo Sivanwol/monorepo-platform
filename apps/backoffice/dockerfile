@@ -73,7 +73,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 RUN pnpm install --frozen-lockfile
-RUN pnpm turbo build --filter=@app/$APP_FOLDER
+CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
 
 FROM base AS runner
 WORKDIR /app
