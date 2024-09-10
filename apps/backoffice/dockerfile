@@ -70,9 +70,10 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder /app/out/full/ .
 RUN pnpm install --frozen-lockfile
 CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
+RUN ls -la
 
 FROM base AS runner
-WORKDIR /application
+WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Don't run production as root
