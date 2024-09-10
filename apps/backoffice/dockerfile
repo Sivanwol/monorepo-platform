@@ -8,6 +8,7 @@ ARG APP_FOLDER=backoffice
 ENV APP_FOLDER=${APP_FOLDER}
 RUN echo -e "\e[1;33mBuilding application ${APP_FOLDER}\e[0m"
 COPY . .
+RUN ls -la
 RUN turbo prune --scope=@app/${APP_FOLDER} --docker
 RUN npm install -g pnpm husky turbo pm2
 
