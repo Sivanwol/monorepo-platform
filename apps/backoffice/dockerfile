@@ -98,7 +98,8 @@ CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
 CMD ["sh", "-c", "echo '{ \
   \"apps\": [{ \
     \"name\": \"${APP_FOLDER}-app\", \
-    \"script\": \"apps/${APP_FOLDER}/server.js\", \
+    \"script\": \"pnpm\", \
+    \"args\": \"start\", \
     \"instances\": \"max\", \
     \"exec_mode\": \"cluster\", \
     \"autorestart\": true, \
@@ -111,4 +112,4 @@ CMD ["sh", "-c", "echo '{ \
 }' > ecosystem.config.json"]
 
 # Use PM2 to start the application
-CMD ["sh", "-c", "cd /app/apps/${APP_FOLDER} && pm2-runtime start ecosystem.config.json"]
+CMD ["sh", "-c", "pm2-runtime start ecosystem.config.json"]
