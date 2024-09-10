@@ -1,3 +1,7 @@
+// @ts-nocheck
+import { fileURLToPath } from "url";
+import createJiti from "jiti";
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
  * This is especially useful for Docker builds and Linting.
@@ -5,12 +9,10 @@
 console.log("process.env.SKIP_ENV_VALIDATION", process.env.SKIP_ENV_VALIDATION);
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 console.log("pwd", process.cwd());
-// @ts-nocheck
-import { fileURLToPath } from "url";
-import createJiti from "jiti";
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
-!process.env.SKIP_ENV_VALIDATION && createJiti(fileURLToPath(import.meta.url))("./src/env");
+!process.env.SKIP_ENV_VALIDATION &&
+  createJiti(fileURLToPath(import.meta.url))("./src/env");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -78,7 +80,7 @@ const config = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  output: 'standalone',
+  output: "standalone",
 };
 
 export default config;
