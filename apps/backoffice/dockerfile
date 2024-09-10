@@ -1,6 +1,5 @@
 FROM node:20-alpine AS base
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache python3 make g++ gcc libc-dev linux-headers libc6-compat && apt-get update
+RUN apk add --no-cache python3 make g++ gcc libc-dev linux-headers libc6-compat
 ENV PYTHON=/usr/bin/python3
 
 FROM base AS builder
