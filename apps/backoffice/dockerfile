@@ -2,23 +2,21 @@ FROM node:20-alpine AS base
 RUN apk add --no-cache python3 make g++ gcc libc-dev linux-headers libc6-compat
 
 FROM base AS builder
-WORKDIR /app
-ARG APP_FOLDER=backoffice
-# Use the build-time variable to set an environment variable
-ENV APP_FOLDER=${APP_FOLDER}
-RUN echo -e "\e[1;33mBuilding application ${APP_FOLDER}\e[0m"
-COPY . .
-RUN ls -la
-RUN turbo prune --scope=@app/${APP_FOLDER} --docker
-RUN npm install -g pnpm husky turbo pm2
 
-FROM base as installer
 WORKDIR /app
+RUN echo -e "\e[1;33mBuilding application backoffice\e[0m"
+COPY . .
+RUN npm install -g turbo
+RUN turbo prune --scope=@app/backoffice --docker
+
+FROM base AS installer
+WORKDIR /app
+RUN npm install -g pnpm husky turbo
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
-ENV TURBO_TEAM=$TURBO_TEAM
-ENV TURBO_TOKEN=$TURBO_TOKEN
+ENV TURBO_TEAM $TURBO_TEAM
+ENV TURBO_TOKEN $TURBO_TOKEN
 ENV CI         true
 ENV SKIP_ENV_VALIDATION true
 
@@ -38,56 +36,53 @@ ARG AUTH_DESCOPE_SECRET
 ARG AUTH_DESCOPE_ISSUER
 ARG AUTH_DESCOPE_MGT_KEY
 ARG AUTH_DESCOPE_MAIN_TENANT_ID
-ARG DEBUG_DOCKER_MODE
 
-ENV DEBUG_DOCKER_MODE=${DEBUG_DOCKER_MODE}
-RUN \
-if [[ -z "${DEBUG_DOCKER_MODE}" ]]; then \
-  echo -e "\e[1;33mDEBUG_DOCKER_MODE is not set\e[0m"; \
-else \
-  echo -e "\e[1;33mDEBUG_DOCKER_MODE is set to ${DEBUG_DOCKER_MODE}\e[0m"; \
-  echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m"; \
-  env; \
-fi
+ENV POSTGRES_URL ${POSTGRES_URL}
+ENV BLOB_STORAGE_URL ${BLOB_STORAGE_URL}
+ENV KV_URL ${KV_URL}
+ENV KV_REST_API_URL ${KV_REST_API_URL}
+ENV KV_REST_API_TOKEN ${KV_REST_API_TOKEN}
+ENV KV_REST_API_READ_ONLY_TOKEN ${KV_REST_API_READ_ONLY_TOKEN}
+ENV EDGE_CONFIG ${EDGE_CONFIG}
+ENV AUTH_SECRET ${AUTH_SECRET}
+ENV NEXT_PUBLIC_AUTH_DESCOPE_ID ${NEXT_PUBLIC_AUTH_DESCOPE_ID}
+ENV AUTH_DESCOPE_SECRET ${AUTH_DESCOPE_SECRET}
+ENV AUTH_DESCOPE_ISSUER ${AUTH_DESCOPE_ISSUER}
+ENV AUTH_DESCOPE_MGT_KEY ${AUTH_DESCOPE_MGT_KEY}
+ENV AUTH_DESCOPE_MAIN_TENANT_ID ${AUTH_DESCOPE_MAIN_TENANT_ID}
 
-ENV POSTGRES_URL=${POSTGRES_URL}
-ENV BLOB_STORAGE_URL=${BLOB_STORAGE_URL}
-ENV KV_URL=${KV_URL}
-ENV KV_REST_API_URL=${KV_REST_API_URL}
-ENV KV_REST_API_TOKEN=${KV_REST_API_TOKEN}
-ENV KV_REST_API_READ_ONLY_TOKEN=${KV_REST_API_READ_ONLY_TOKEN}
-ENV EDGE_CONFIG=${EDGE_CONFIG}
-ENV AUTH_SECRET=${AUTH_SECRET}
-ENV NEXT_PUBLIC_AUTH_DESCOPE_ID=${NEXT_PUBLIC_AUTH_DESCOPE_ID}
-ENV AUTH_DESCOPE_SECRET=${AUTH_DESCOPE_SECRET}
-ENV AUTH_DESCOPE_ISSUER=${AUTH_DESCOPE_ISSUER}
-ENV AUTH_DESCOPE_MGT_KEY=${AUTH_DESCOPE_MGT_KEY}
-ENV AUTH_DESCOPE_MAIN_TENANT_ID=${AUTH_DESCOPE_MAIN_TENANT_ID}
+
+RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
+RUN env | grep -E 'POSTGRES_URL|BLOB_STORAGE_URL|KV_URL|KV_REST_API_URL|KV_REST_API_TOKEN|KV_REST_API_READ_ONLY_TOKEN|EDGE_CONFIG|AUTH_SECRET|NEXT_PUBLIC_AUTH_DESCOPE_ID|AUTH_DESCOPE_SECRET|AUTH_DESCOPE_ISSUER|AUTH_DESCOPE_MGT_KEY|AUTH_DESCOPE_MAIN_TENANT_ID|NODE_ENV'
 # First install dependencies (as they change less often)
-COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
+
 RUN pnpm install --frozen-lockfile
-CMD ["sh", "-c", "pnpm turbo build --filter=@app/${APP_FOLDER}"]
-RUN ls -la
+RUN pnpm turbo build --filter=@app/backoffice
 
 FROM base AS runner
+
 WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm install -g pm2 dotenv-cli
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
-CMD ["sh", "-c", "cp /app/apps/${APP_FOLDER}/next.config.mjs . && \
-              cp /app/apps/${APP_FOLDER}/package.json . && \
-              cp -r /app/apps/${APP_FOLDER}/.next/standalone ./ && \
-              cp -r /app/apps/${APP_FOLDER}/.next/static ./apps/${APP_FOLDER}/.next/static && \
-              cp -r /app/apps/${APP_FOLDER}/public ./apps/${APP_FOLDER}/public"]
-RUN ls -la
-RUN cat package.json
+COPY --from=installer /app/apps/backoffice/next.config.mjs .
+COPY --from=installer /app/apps/backoffice/package.json .
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static ./apps/backoffice/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./apps/backoffice/public
+WORKDIR /app/apps/backoffice
+
 EXPOSE 3001
 ENV PORT 3001
-CMD ["sh", "-c", "npm start:docker"]
+RUN npm run start:docker

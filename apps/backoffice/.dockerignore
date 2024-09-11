@@ -10,7 +10,7 @@ node_modules
 
 pnpm-debug.log
 ./**/*/pnpm-debug.log
-
+./**/*/dist
 
 README.md
 .next
