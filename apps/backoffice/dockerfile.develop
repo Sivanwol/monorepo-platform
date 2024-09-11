@@ -86,7 +86,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/standalon
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static ./apps/backoffice/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./apps/backoffice/public
 WORKDIR /app/apps/backoffice
-
+COPY ecosystem.config.js ./
 EXPOSE 3001
 ENV PORT 3001
 CMD ["pm2", "start", "ecosystem.config.js"]
