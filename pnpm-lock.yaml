@@ -12,6 +12,9 @@ catalogs:
     '@descope/node-sdk':
       specifier: ^1.6.9
       version: 1.6.9
+    '@logtail/node':
+      specifier: ^0.5.0
+      version: 0.5.0
     '@svgr/webpack':
       specifier: ^8.1.0
       version: 8.1.0
@@ -292,6 +295,9 @@ importers:
       '@emotion/styled':
         specifier: catalog:ui
         version: 11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@mui/icons-material':
         specifier: catalog:ui
         version: 5.16.4(@mui/material@5.16.4(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
@@ -634,6 +640,9 @@ importers:
       '@app/validators':
         specifier: workspace:*
         version: link:../../packages/validators
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.3)(zod@3.23.8)
@@ -734,6 +743,9 @@ importers:
       '@descope/node-sdk':
         specifier: 'catalog:'
         version: 1.6.9
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.3)(zod@3.23.8)
@@ -801,6 +813,9 @@ importers:
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
@@ -844,6 +859,9 @@ importers:
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@t3-oss/env-core':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.3)(zod@3.23.8)
@@ -908,6 +926,9 @@ importers:
       '@app/utils':
         specifier: workspace:*
         version: link:../utils
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
@@ -957,6 +978,9 @@ importers:
       '@descope/node-sdk':
         specifier: 'catalog:'
         version: 1.6.9
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.0.0-rc.466
@@ -1239,6 +1263,9 @@ importers:
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
+      '@logtail/node':
+        specifier: 'catalog:'
+        version: 0.5.0
     devDependencies:
       '@app/eslint-config':
         specifier: workspace:*
@@ -1312,7 +1339,7 @@ importers:
         version: 7.35.0(eslint@9.7.0)
       eslint-plugin-react-hooks:
         specifier: rc
-        version: 5.1.0-rc-3dfd5d9e-20240910(eslint@9.7.0)
+        version: 5.1.0-rc-d6cb4e77-20240911(eslint@9.7.0)
       eslint-plugin-turbo:
         specifier: ^2.0.8
         version: 2.0.9(eslint@9.7.0)
@@ -3059,9 +3086,25 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
+  '@logtail/core@0.5.0':
+    resolution: {integrity: sha512-zHl1wx5fqqICVOjM+IVzJ6vqlDobcQu0AK2TL7yPTxCNa8C3gTCtOKsc5sX/yMnSFqCK4KcYpY7DPUAYYGzezg==}
+
+  '@logtail/node@0.5.0':
+    resolution: {integrity: sha512-nTyEpdei/qaXJT55OXkiUE6RuMgmRfQ5eMkExHCQe4MB/SAbMbXd+1ULv6cHLAj+S5xMvPGdpMyaydfHtPAkXA==}
+
+  '@logtail/tools@0.5.0':
+    resolution: {integrity: sha512-xCN7Cvq9DJ8loJkaPdihQImsLPAUVYlDK3qJiMneuIgIBJm5awVJ6BUZhycLmtz5NlLG1M2SJbuxEYU7WU3sDg==}
+
+  '@logtail/types@0.5.0':
+    resolution: {integrity: sha512-wO+uw142K5WFS1lD3bmx2u8U3bMRVtaW48j6AlkMfq+yJfQlNzLL4EP5wR2b3QmcFN6LC240dJ3Aq7phR250Ig==}
+
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
+
+  '@msgpack/msgpack@2.8.0':
+    resolution: {integrity: sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==}
+    engines: {node: '>= 10'}
 
   '@mui/core-downloads-tracker@5.16.4':
     resolution: {integrity: sha512-rNdHXhclwjEZnK+//3SR43YRx0VtjdHnUFhMSGYmAMJve+KiwEja/41EYh8V3pZKqF2geKyfcFUenTfDTYUR4w==}
@@ -4507,6 +4550,9 @@ packages:
 
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
+
+  '@types/stack-trace@0.0.33':
+    resolution: {integrity: sha512-O7in6531Bbvlb2KEsJ0dq0CHZvc3iWSR5ZYMtvGgnHA56VgriAN/AU2LorfmcvAl2xc9N5fbCTRyMRRl8nd74g==}
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
@@ -6122,8 +6168,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
 
-  eslint-plugin-react-hooks@5.1.0-rc-3dfd5d9e-20240910:
-    resolution: {integrity: sha512-bB2mPM2fKSgb+rrHtksYrawCribuatIBq8t1gZTyEwNbrWTDFc1H0r7FWZVgqOvR9n5hwOxF16KVXkgFwvGQMw==}
+  eslint-plugin-react-hooks@5.1.0-rc-d6cb4e77-20240911:
+    resolution: {integrity: sha512-bVg0IJv+ti3rSR6LSStSSaLSbEVX31gE9Id9SxvK+4fLHMXQHPakeusjipFpzgM1XvRSDqQPucxOhI2+i7KMNQ==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -9546,6 +9592,9 @@ packages:
     resolution: {integrity: sha512-MGrFH9Z4NP9Iyhqn16sDtBpRRNJ0Y2hNa6D65h736fVSaPCHr4DM4sWUNvVaSuC+0OBGhwsrydQwmgfg5LncqQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
+  stack-trace@0.0.10:
+    resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
+
   stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
     engines: {node: '>=10'}
@@ -12741,6 +12790,36 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
+  '@logtail/core@0.5.0':
+    dependencies:
+      '@logtail/tools': 0.5.0
+      '@logtail/types': 0.5.0
+      serialize-error: 8.1.0
+    transitivePeerDependencies:
+      - encoding
+
+  '@logtail/node@0.5.0':
+    dependencies:
+      '@logtail/core': 0.5.0
+      '@logtail/types': 0.5.0
+      '@msgpack/msgpack': 2.8.0
+      '@types/stack-trace': 0.0.33
+      cross-fetch: 4.0.0
+      minimatch: 9.0.5
+      serialize-error: 8.1.0
+      stack-trace: 0.0.10
+    transitivePeerDependencies:
+      - encoding
+
+  '@logtail/tools@0.5.0':
+    dependencies:
+      '@logtail/types': 0.5.0
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+
+  '@logtail/types@0.5.0': {}
+
   '@mapbox/node-pre-gyp@1.0.11':
     dependencies:
       detect-libc: 2.0.3
@@ -12755,6 +12834,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@msgpack/msgpack@2.8.0': {}
 
   '@mui/core-downloads-tracker@5.16.4': {}
 
@@ -14609,6 +14690,8 @@ snapshots:
 
   '@types/shimmer@1.2.0': {}
 
+  '@types/stack-trace@0.0.33': {}
+
   '@types/stack-utils@2.0.3': {}
 
   '@types/stylis@4.2.5': {}
@@ -16396,7 +16479,7 @@ snapshots:
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
 
-  eslint-plugin-react-hooks@5.1.0-rc-3dfd5d9e-20240910(eslint@9.7.0):
+  eslint-plugin-react-hooks@5.1.0-rc-d6cb4e77-20240911(eslint@9.7.0):
     dependencies:
       eslint: 9.7.0
 
@@ -20319,6 +20402,8 @@ snapshots:
   ssri@10.0.6:
     dependencies:
       minipass: 7.1.2
+
+  stack-trace@0.0.10: {}
 
   stack-utils@2.0.6:
     dependencies:

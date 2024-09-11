@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserProfile } from "@descope/nextjs-sdk";
 
 import type { Namespaces, Translations } from "./type";
 

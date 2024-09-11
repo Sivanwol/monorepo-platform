@@ -3,6 +3,7 @@ import SuperJSON from "superjson";
 
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
+import { logger } from "@app/utils";
 
 /**
  * Configure basic CORS headers
@@ -44,7 +45,7 @@ const handler = auth(async (req) => {
       if (req.method === "POST") {
         input = (await req.json()) as Record<string, unknown>;
       }
-      console.error(
+      await logger.error(
         `>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`,
         error,
       );

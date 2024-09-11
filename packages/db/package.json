@@ -34,6 +34,7 @@
   "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/utils": "workspace:*",
+    "@logtail/node": "catalog:",
     "@t3-oss/env-core": "^0.10.1",
     "@vercel/kv": "catalog:vercel",
     "@vercel/postgres": "^0.9.0",

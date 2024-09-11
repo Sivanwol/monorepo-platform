@@ -10,7 +10,7 @@ import {
   Media,
   UpdateUserProfileSchema,
 } from "@app/db/schema";
-import { backofficePermmisions, genders } from "@app/utils";
+import { backofficePermmisions, genders, logger } from "@app/utils";
 
 import { UserService } from "../services";
 
@@ -38,7 +38,7 @@ export const userRouter = {
     .input(z.number())
     .query(async ({ ctx, input }) => {
       const service = new UserService(ctx);
-      console.log(`fetching audit for user ${input}`);
+      await logger.info(`fetching audit for user ${input}`);
       service.verifyBackofficeAccess();
       if (ctx.session.user.id === input) {
         const audits = await service.fetchAuditUser(
@@ -82,7 +82,7 @@ export const userRouter = {
     .input(UpdateUserProfileSchema)
     .mutation(async ({ ctx, input }) => {
       const service = new UserService(ctx);
-      console.log(`updating user profile... ${JSON.stringify(input)}`);
+      await logger.info(`updating user profile... ${JSON.stringify(input)}`);
       await service.UpdateUserProfile(
         ctx.session.user.id,
         ctx.session.user.id,
@@ -107,7 +107,7 @@ export const userRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log(`onboarding user... ${JSON.stringify(input)} `);
+      await logger.info(`onboarding user... ${JSON.stringify(input)} `);
       const service = new UserService(ctx);
       service.verifyBackofficeAccess();
       return await service.onBoardAdminUser(ctx.session.user.id, input);

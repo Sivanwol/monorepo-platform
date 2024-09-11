@@ -6,6 +6,7 @@ import type {
   RegisterUserRequest,
   UpdateUserProfilePayload,
 } from "@app/utils";
+import { logger } from "@app/utils";
 
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
@@ -18,7 +19,7 @@ export class UserRepository {
   public async GetUserById(
     user_id: number,
   ): Promise<typeof schema.User.$inferSelect | null> {
-    console.log(`locate user ${user_id}`);
+    await logger.log(`locate user ${user_id}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.id, user_id),
     });
@@ -26,7 +27,7 @@ export class UserRepository {
   }
 
   public async locateUserByExternalId(externalId: string): Promise<boolean> {
-    console.log(`locate user by external id ${externalId}`);
+    await logger.info(`locate user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, externalId),
     });
@@ -35,7 +36,7 @@ export class UserRepository {
   public async GetUserShortInfoByExternalId(
     externalId: string,
   ): Promise<UserModel | null> {
-    console.log(`get short info user by external id ${externalId}`);
+    await logger.info(`get short info user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, externalId),
     });
@@ -43,7 +44,7 @@ export class UserRepository {
   }
 
   public async HasUserExist(userId: number): Promise<boolean> {
-    console.log(`check user ${userId} exist`);
+    await logger.log(`check user ${userId} exist`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.id, userId),
     });
@@ -55,7 +56,7 @@ export class UserRepository {
     userId: number,
     payload: UpdateUserProfilePayload,
   ) {
-    console.log(`update user ${userId} profile`);
+    await logger.info(`update user ${userId} profile`);
     await this.db
       .update(User)
       .set({
@@ -78,21 +79,21 @@ export class UserRepository {
   }
 
   public async GetUsers(): Promise<(typeof schema.User.$inferSelect)[]> {
-    console.log(`get users`);
+    await logger.info(`get users`);
     const users = await this.db.query.User.findMany();
     return users;
   }
   public async GetUserByEmail(
     email: string,
   ): Promise<typeof schema.User.$inferSelect | null> {
-    console.log(`get user by email ${email}`);
+    await logger.log(`get user by email ${email}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.email, email),
     });
     return user ?? null;
   }
   public async HasUserNeedOnBoarding(externalId: string): Promise<boolean> {
-    console.log(`check user ${externalId} need onboarding`);
+    await logger.info(`check user ${externalId} need onboarding`);
     const user = await this.db.query.User.findFirst({
       where: and(eq(User.externalId, externalId), isNull(User.onboardingAt)),
     });
@@ -104,10 +105,10 @@ export class UserRepository {
    * @param userData user data
    */
   public async Register(userData: RegisterUserRequest) {
-    console.log(`verify user ${userData.externalId} payload `);
+    await logger.info(`verify user ${userData.externalId} payload `);
     const result = CreateUserSchema.safeParse(userData);
     if (result.success) {
-      console.log(`insert user ${userData.externalId} payload `);
+      await logger.info(`insert user ${userData.externalId} payload `);
       await this.db.insert(User).values({
         externalId: userData.externalId,
         email: userData.email,
@@ -118,17 +119,16 @@ export class UserRepository {
       });
       return;
     }
-    console.log(
-      `verify user ${userData.externalId} payload failed `,
-      result.error,
-    );
+    await logger.info(`verify user ${userData.externalId} payload failed `, {
+      error: result.error,
+    });
   }
 
   public async BoardingAdminUser(
     userId: number,
     payload: OnBoardAdminUserRequest,
   ) {
-    console.log(`update user ${userId} onboarding`);
+    await logger.info(`update user ${userId} onboarding`);
     if (await this.HasUserExist(userId)) {
       const user = await this.db.query.User.findFirst({
         where: eq(schema.User.id, userId),
@@ -154,7 +154,7 @@ export class UserRepository {
           })
           .where(eq(User.id, userId));
       } else {
-        console.log(`user ${userId} not exist`);
+        await logger.info(`user ${userId} not exist`);
       }
     }
   }

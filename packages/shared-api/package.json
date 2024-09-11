@@ -24,6 +24,7 @@
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
     "@descope/node-sdk": "catalog:",
+    "@logtail/node": "catalog:",
     "@trpc/server": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
     "date-fns": "catalog:",

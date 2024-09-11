@@ -19,6 +19,7 @@ export const env = createEnv({
         ? z.string().min(1)
         : z.string().min(1).optional(),
     NODE_ENV: z.enum(["development", "production"]).optional(),
+    BETTER_LOGS_TOKEN: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_AUTH_DESCOPE_ID: z.string().min(1),

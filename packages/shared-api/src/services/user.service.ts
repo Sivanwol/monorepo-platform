@@ -6,6 +6,7 @@ import type {
   UserAuditInfo,
 } from "@app/utils";
 import { descopeSdk } from "@app/auth";
+import { logger } from "@app/utils";
 
 import { BaseService } from "./base.service";
 
@@ -13,11 +14,11 @@ export class UserService extends BaseService {
   public async fetchAuditUser(userId: string): Promise<UserAuditInfo[]> {
     const searchOptions = {
       userIds: [userId],
-      tenants: ["T2lLM64ZZh1o1nAjWuWmSw1iA1Mu"],
+      tenants: [process.env.AUTH_DESCOPE_MAIN_TENANT_ID ?? ""],
       from: Date.now() - 10 * 24 * 60 * 60 * 1000,
       actions: ["LoginSucceed"],
     };
-    console.log(`service search options ${JSON.stringify(searchOptions)}`);
+    await logger.log(`service search options ${JSON.stringify(searchOptions)}`);
     const auditRes = await descopeSdk.management.audit.search(searchOptions);
     if (!auditRes.ok) {
       throw new TRPCError({
@@ -44,7 +45,7 @@ export class UserService extends BaseService {
     userId: number,
     payload: UpdateUserProfilePayload,
   ) {
-    console.log(`update user profile ${userId} by ${actorUserId}`);
+    await logger.log(`update user profile ${userId} by ${actorUserId}`);
     if (actorUserId === userId) {
       if (await this.ctx.repositories.user.HasUserExist(userId)) {
         await this.ctx.repositories.user.UpdateUserProfile(

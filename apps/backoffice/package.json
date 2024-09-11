@@ -34,6 +34,7 @@
     "@emotion/cache": "catalog:ui",
     "@emotion/react": "catalog:ui",
     "@emotion/styled": "catalog:ui",
+    "@logtail/node": "catalog:",
     "@mui/icons-material": "catalog:ui",
     "@mui/material": "catalog:ui",
     "@mui/material-nextjs": "catalog:ui",

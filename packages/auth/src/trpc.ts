@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 
 import { descopeSdk, validateToken } from "@app/auth";
 import { db, repositories } from "@app/db/client";
+import { logger } from "@app/utils";
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
@@ -21,17 +22,14 @@ export const createTRPCContext = async (opts: {
   const requestId = uuidV4();
   const token = opts.headers.get("Authorization")?.replace("Bearer ", "");
   if (!descopeSession && token) {
-    console.log(`checking session jwt... ${token}`);
+    await logger.log(`checking session jwt... ${token}`);
     // we try if we unable load session from descope via session() method so we fetch from header (jwt) happend on client requests
     descopeSession = await descopeSdk.validateJwt(token);
-    console.log(`checking session jwt... ${descopeSession.token.sub}`);
+    await logger.log(`checking session jwt... ${descopeSession.token.sub}`);
   }
   opts.headers.set("x-request-id", requestId);
-  console.log(
-    ">>> tRPC Request from",
-    source,
-    "at",
-    new Date().toISOString() + "\n",
+  await logger.log(
+    `>>> tRPC Request from ${source} at ${new Date().toISOString()}`,
   );
   console.log(`checking session... ${descopeSession?.token.sub} `);
   return {
@@ -48,7 +46,7 @@ export const createTRPCContext = async (opts: {
  * - Next.js requests will have a session token in cookies
  */
 const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
-  console.log(`checking session... ${session?.token.sub} `);
+  await logger.log(`checking session... ${session?.token.sub} `);
   if (session) return validateToken(session.jwt);
   return {
     session: null,
@@ -117,7 +115,7 @@ export const publicProcedure = t.procedure;
  */
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
-  console.log(
+  await logger.log(
     `incoming protected procedure... user id - ${JSON.stringify(auth?.user?.id)}... at ${new Date().toISOString()}`,
   );
   if (!auth?.user?.id) {

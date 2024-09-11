@@ -3,9 +3,10 @@ import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
+import { logger } from "@app/utils";
 
 export async function POST(req: Request) {
-  console.log(`${req.method} /api/user/update-profile`, req.body);
+  await logger.log(`${req.method} /api/user/update-profile`, req.body);
   const headers = new Headers();
   headers.set("Authorization", req.headers.get("authorization") ?? "");
   headers.set("Content-Type", "application/json");
@@ -29,7 +30,9 @@ export async function POST(req: Request) {
       });
     }
     // Another error occurred
-    console.error(cause);
+    await logger.error(`${req.method} /api/user/update-profile error`, {
+      cause,
+    });
     return Response.json({
       message: "Internal server error",
       cause,

@@ -3,12 +3,13 @@ import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
+import { logger } from "@app/utils";
 
 export async function GET(
   req: Request,
   { params }: { params: { userId: string } },
 ) {
-  console.log(`${req.method} /api/user/security`, params);
+  await logger.info(`${req.method} /api/user/security`, { params });
   const headers = new Headers();
   headers.set("Authorization", req.headers.get("authorization") ?? "");
   headers.set("Content-Type", "application/json");
@@ -32,7 +33,7 @@ export async function GET(
       });
     }
     // Another error occurred
-    console.error(cause);
+    await logger.error(`${req.method} /api/user/security error`, { cause });
     return Response.json({
       message: "Internal server error",
       cause,

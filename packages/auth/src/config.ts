@@ -17,6 +17,7 @@ import gravatar from "gravatar";
 import type { UserModel } from "@app/db/client";
 import type { UserResponse } from "@app/utils";
 import { db, repositories } from "@app/db/client";
+import { logger } from "@app/utils";
 
 import { env } from "../env";
 
@@ -64,12 +65,12 @@ declare module "next-auth" {
 }
 
 const registerInitialUserForOnboarding = async (user: UserResponse) => {
-  console.log(`check if user by id ${user.userId} need do onboarding`);
+  await logger.info(`check if user by id ${user.userId} need do onboarding`);
   const requiredOnborading = await repositories.user.HasUserNeedOnBoarding(
     user.userId,
   );
   if (requiredOnborading) {
-    console.log(`user did onboarding ${user.userId} not required`);
+    await logger.info(`user did onboarding ${user.userId} not required`);
     const splitName = user.name?.split(" ") ?? ["", ""];
     await repositories.user.Register({
       externalId: user.userId,
@@ -118,9 +119,9 @@ export const validateToken = async (
   let sessionRes = null;
   try {
     sessionRes = await descopeSdk.validateSession(token);
-    console.log(`user validated to user ${sessionRes.token.sub}`);
+    await logger.info(`user validated to user ${sessionRes.token.sub}`);
   } catch (error) {
-    console.error("Could not validate user session ", error);
+    await logger.error("Could not validate user session ", { error });
     return null;
   }
   const authToken = sessionRes.token;
@@ -135,7 +136,7 @@ export const validateToken = async (
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const authExpDate = authToken.exp!;
   let user = await repositories.user.GetUserShortInfoByExternalId(userId);
-  console.log(`found user ${userId}`, user);
+  await logger.info(`found user ${userId}`, { user });
   if (!user) {
     console.warn(`User not register need onboarding ${userId}`);
     await registerInitialUserForOnboarding(descopeUserInfo);
@@ -153,7 +154,7 @@ export const validateToken = async (
 };
 
 export const fetchCurrentDescopeUserDetails = async (externalId: string) => {
-  console.log(`fetch user details ${externalId}`);
+  await logger.info(`fetch user details ${externalId}`);
   const request = await descopeSdk.management.user.loadByUserId(externalId);
   if (request.ok) {
     return request.data;
