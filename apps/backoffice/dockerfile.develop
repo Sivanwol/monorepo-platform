@@ -89,4 +89,22 @@ WORKDIR /app/apps/backoffice
 COPY ecosystem.config.js ./
 EXPOSE 3001
 ENV PORT 3001
+RUN echo 'module.exports = {' > ecosystem.config.js && \
+    echo '  apps: [' >> ecosystem.config.js && \
+    echo '    {' >> ecosystem.config.js && \
+    echo '      name: "backoffice",' >> ecosystem.config.js && \
+    echo '      script: "npm",' >> ecosystem.config.js && \
+    echo '      args: "run start:docker",' >> ecosystem.config.js && \
+    echo '      env: {' >> ecosystem.config.js && \
+    echo '        PORT: 3001' >> ecosystem.config.js && \
+    echo '      },' >> ecosystem.config.js && \
+    echo '      instances: 1,' >> ecosystem.config.js && \
+    echo '      autorestart: true,' >> ecosystem.config.js && \
+    echo '      watch: false,' >> ecosystem.config.js && \
+    echo '      max_restarts: 5,' >> ecosystem.config.js && \
+    echo '      restart_delay: 5000,' >> ecosystem.config.js && \
+    echo '      max_memory_restart: "300M"' >> ecosystem.config.js && \
+    echo '    }' >> ecosystem.config.js && \
+    echo '  ]' >> ecosystem.config.js && \
+    echo '};' >> ecosystem.config.js
 CMD ["pm2", "start", "ecosystem.config.js"]
