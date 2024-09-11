@@ -3,8 +3,6 @@ import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
@@ -22,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        env.VERCEL_URL!
+      env.VERCEL_URL!
       : "http://localhost:3001",
   ),
   title: "Backoffice of monorepo Platform",
@@ -63,8 +61,6 @@ export default function RootLayout({
           </AppRouterCacheProvider>
         </AuthProvider>
       </body>
-      <Analytics />
-      <SpeedInsights />
     </html>
   );
 }
