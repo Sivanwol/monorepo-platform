@@ -89,22 +89,22 @@ WORKDIR /app/apps/backoffice
 
 EXPOSE 3001
 ENV PORT 3001
-RUN echo 'module.exports = {' > ecosystem.config.js && \
-    echo '  apps: [' >> ecosystem.config.js && \
-    echo '    {' >> ecosystem.config.js && \
-    echo '      name: "backoffice",' >> ecosystem.config.js && \
-    echo '      script: "npm",' >> ecosystem.config.js && \
-    echo '      args: "run start:docker",' >> ecosystem.config.js && \
-    echo '      env: {' >> ecosystem.config.js && \
-    echo '        PORT: 3001' >> ecosystem.config.js && \
-    echo '      },' >> ecosystem.config.js && \
-    echo '      instances: 1,' >> ecosystem.config.js && \
-    echo '      autorestart: true,' >> ecosystem.config.js && \
-    echo '      watch: false,' >> ecosystem.config.js && \
-    echo '      max_restarts: 5,' >> ecosystem.config.js && \
-    echo '      restart_delay: 5000,' >> ecosystem.config.js && \
-    echo '      max_memory_restart: "300M"' >> ecosystem.config.js && \
-    echo '    }' >> ecosystem.config.js && \
-    echo '  ]' >> ecosystem.config.js && \
-    echo '};' >> ecosystem.config.js
-CMD ["pm2", "start", "ecosystem.config.js"]
+RUN echo 'module.exports = {' > ecosystem.config.mjs && \
+    echo '  apps: [' >> ecosystem.config.mjs && \
+    echo '    {' >> ecosystem.config.mjs && \
+    echo '      name: "backoffice",' >> ecosystem.config.mjs && \
+    echo '      script: "npm",' >> ecosystem.config.mjs && \
+    echo '      args: "run start:docker",' >> ecosystem.config.mjs && \
+    echo '      env: {' >> ecosystem.config.mjs && \
+    echo '        PORT: 3001' >> ecosystem.config.mjs && \
+    echo '      },' >> ecosystem.config.mjs && \
+    echo '      instances: 1,' >> ecosystem.config.mjs && \
+    echo '      autorestart: true,' >> ecosystem.config.mjs && \
+    echo '      watch: false,' >> ecosystem.config.mjs && \
+    echo '      max_restarts: 5,' >> ecosystem.config.mjs && \
+    echo '      restart_delay: 5000,' >> ecosystem.config.mjs && \
+    echo '      max_memory_restart: "300M"' >> ecosystem.config.mjs && \
+    echo '    }' >> ecosystem.config.mjs && \
+    echo '  ]' >> ecosystem.config.mjs && \
+    echo '};' >> ecosystem.config.mjs
+CMD ["pm2", "start", "ecosystem.config.mjs"]
