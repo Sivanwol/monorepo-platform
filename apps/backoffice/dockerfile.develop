@@ -54,6 +54,9 @@ ENV AUTH_DESCOPE_MAIN_TENANT_ID ${AUTH_DESCOPE_MAIN_TENANT_ID}
 
 RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
 RUN env | grep -E 'POSTGRES_URL|BLOB_STORAGE_URL|KV_URL|KV_REST_API_URL|KV_REST_API_TOKEN|KV_REST_API_READ_ONLY_TOKEN|EDGE_CONFIG|AUTH_SECRET|NEXT_PUBLIC_AUTH_DESCOPE_ID|AUTH_DESCOPE_SECRET|AUTH_DESCOPE_ISSUER|AUTH_DESCOPE_MGT_KEY|AUTH_DESCOPE_MAIN_TENANT_ID|NODE_ENV'
+
+RUN env >> .env
+RUN cat .env
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
@@ -73,6 +76,7 @@ RUN npm install -g pm2 dotenv-cli
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
+COPY --from=installer /app/.env .
 COPY --from=installer /app/apps/backoffice/next.config.mjs .
 COPY --from=installer /app/apps/backoffice/package.json .
 
