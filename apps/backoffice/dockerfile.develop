@@ -62,6 +62,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 
+ENV NODE_ENV development
 RUN pnpm install --frozen-lockfile
 RUN pnpm turbo build --filter=@app/backoffice
 
