@@ -55,8 +55,6 @@ ENV AUTH_DESCOPE_MAIN_TENANT_ID ${AUTH_DESCOPE_MAIN_TENANT_ID}
 RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
 RUN env | grep -E 'POSTGRES_URL|BLOB_STORAGE_URL|KV_URL|KV_REST_API_URL|KV_REST_API_TOKEN|KV_REST_API_READ_ONLY_TOKEN|EDGE_CONFIG|AUTH_SECRET|NEXT_PUBLIC_AUTH_DESCOPE_ID|AUTH_DESCOPE_SECRET|AUTH_DESCOPE_ISSUER|AUTH_DESCOPE_MGT_KEY|AUTH_DESCOPE_MAIN_TENANT_ID|NODE_ENV'
 
-RUN env >> .env
-RUN cat .env
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
@@ -71,7 +69,7 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV development
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN npm install -g pm2 dotenv-cli
+RUN npm install -g dotenv-cli
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -89,22 +87,4 @@ WORKDIR /app/apps/backoffice
 
 EXPOSE 3001
 ENV PORT 3001
-RUN echo 'module.exports = {' > ecosystem.config.mjs && \
-    echo '  apps: [' >> ecosystem.config.mjs && \
-    echo '    {' >> ecosystem.config.mjs && \
-    echo '      name: "backoffice",' >> ecosystem.config.mjs && \
-    echo '      script: "npm",' >> ecosystem.config.mjs && \
-    echo '      args: "run start:docker",' >> ecosystem.config.mjs && \
-    echo '      env: {' >> ecosystem.config.mjs && \
-    echo '        PORT: 3001' >> ecosystem.config.mjs && \
-    echo '      },' >> ecosystem.config.mjs && \
-    echo '      instances: 1,' >> ecosystem.config.mjs && \
-    echo '      autorestart: true,' >> ecosystem.config.mjs && \
-    echo '      watch: false,' >> ecosystem.config.mjs && \
-    echo '      max_restarts: 5,' >> ecosystem.config.mjs && \
-    echo '      restart_delay: 5000,' >> ecosystem.config.mjs && \
-    echo '      max_memory_restart: "300M"' >> ecosystem.config.mjs && \
-    echo '    }' >> ecosystem.config.mjs && \
-    echo '  ]' >> ecosystem.config.mjs && \
-    echo '};' >> ecosystem.config.mjs
-CMD ["pm2", "start", "ecosystem.config.mjs"]
+CMD ["sh", "-c", "npm start:docker"]
