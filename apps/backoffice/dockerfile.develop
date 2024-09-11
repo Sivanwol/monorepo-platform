@@ -1,0 +1,88 @@
+FROM node:20-alpine AS base
+RUN apk add --no-cache python3 make g++ gcc libc-dev linux-headers libc6-compat
+
+FROM base AS builder
+
+WORKDIR /app
+RUN echo -e "\e[1;33mBuilding application backoffice\e[0m"
+COPY . .
+RUN npm install -g turbo
+RUN turbo prune --scope=@app/backoffice --docker
+
+FROM base AS installer
+WORKDIR /app
+RUN npm install -g pnpm husky turbo
+ARG TURBO_TEAM
+ARG TURBO_TOKEN
+
+ENV TURBO_TEAM $TURBO_TEAM
+ENV TURBO_TOKEN $TURBO_TOKEN
+ENV CI         true
+ENV SKIP_ENV_VALIDATION true
+
+# Set environment variables for application
+
+ARG POSTGRES_URL
+ARG BLOB_STORAGE_URL
+ARG BLOB_READ_WRITE_TOKEN
+ARG KV_URL
+ARG KV_REST_API_URL
+ARG BLOB_READ_WRITE_TOKEN
+ARG KV_REST_API_READ_ONLY_TOKEN
+ARG EDGE_CONFIG
+ARG AUTH_SECRET
+ARG NEXT_PUBLIC_AUTH_DESCOPE_ID
+ARG AUTH_DESCOPE_SECRET
+ARG AUTH_DESCOPE_ISSUER
+ARG AUTH_DESCOPE_MGT_KEY
+ARG AUTH_DESCOPE_MAIN_TENANT_ID
+
+ENV POSTGRES_URL ${POSTGRES_URL}
+ENV BLOB_STORAGE_URL ${BLOB_STORAGE_URL}
+ENV KV_URL ${KV_URL}
+ENV KV_REST_API_URL ${KV_REST_API_URL}
+ENV KV_REST_API_TOKEN ${KV_REST_API_TOKEN}
+ENV KV_REST_API_READ_ONLY_TOKEN ${KV_REST_API_READ_ONLY_TOKEN}
+ENV EDGE_CONFIG ${EDGE_CONFIG}
+ENV AUTH_SECRET ${AUTH_SECRET}
+ENV NEXT_PUBLIC_AUTH_DESCOPE_ID ${NEXT_PUBLIC_AUTH_DESCOPE_ID}
+ENV AUTH_DESCOPE_SECRET ${AUTH_DESCOPE_SECRET}
+ENV AUTH_DESCOPE_ISSUER ${AUTH_DESCOPE_ISSUER}
+ENV AUTH_DESCOPE_MGT_KEY ${AUTH_DESCOPE_MGT_KEY}
+ENV AUTH_DESCOPE_MAIN_TENANT_ID ${AUTH_DESCOPE_MAIN_TENANT_ID}
+
+
+RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
+RUN env | grep -E 'POSTGRES_URL|BLOB_STORAGE_URL|KV_URL|KV_REST_API_URL|KV_REST_API_TOKEN|KV_REST_API_READ_ONLY_TOKEN|EDGE_CONFIG|AUTH_SECRET|NEXT_PUBLIC_AUTH_DESCOPE_ID|AUTH_DESCOPE_SECRET|AUTH_DESCOPE_ISSUER|AUTH_DESCOPE_MGT_KEY|AUTH_DESCOPE_MAIN_TENANT_ID|NODE_ENV'
+# First install dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+# Build the project and its dependencies
+COPY --from=builder /app/out/full/ .
+
+RUN pnpm install --frozen-lockfile
+RUN pnpm turbo build --filter=@app/backoffice
+
+FROM base AS runner
+
+WORKDIR /app
+ENV NODE_ENV development
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm install -g pm2 dotenv-cli
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+COPY --from=installer /app/apps/backoffice/next.config.mjs .
+COPY --from=installer /app/apps/backoffice/package.json .
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static ./apps/backoffice/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./apps/backoffice/public
+WORKDIR /app/apps/backoffice
+
+EXPOSE 3001
+ENV PORT 3001
+CMD ["sh", "-c", "npm run start:docker"]
