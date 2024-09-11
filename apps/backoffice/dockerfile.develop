@@ -88,4 +88,4 @@ WORKDIR /app/apps/backoffice
 
 EXPOSE 3001
 ENV PORT 3001
-CMD ["sh", "-c", "npm start:docker"]
+CMD ["sh", "-c", "npm run start:docker"]
