@@ -18,6 +18,7 @@
     "sort:packages": "sort-package-json",
     "start": "pnpm with-env next start",
     "start:docker": "node server.js",
+    "start:docker:backoffice": "npm run start:docker --prefix ./apps/backoffice",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

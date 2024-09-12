@@ -1,7 +1,11 @@
 {
   "extends": "@app/tsconfig/internal-package.json",
   "compilerOptions": {
-    "target": "ES2015"
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
   "include": ["*.ts", "src"],
   "exclude": ["node_modules"]
