@@ -10,14 +10,14 @@ export interface NotificationEventModel {
 }
 export const NotificationRouter = {
   getLastNotification: protectedProcedure.query(async ({ ctx }) => {
-    await logger.info("getting last notification");
+    logger.info("getting last notification");
     try {
       const res = await ctx.repositories.notification.GetLastNotification(
         ctx.session.user.id,
       );
       return { items: res };
     } catch (error) {
-      await logger.error("Error getting last notification:", { error });
+      logger.error("Error getting last notification:", { error });
       return { items: [] };
     }
   }),

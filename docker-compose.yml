@@ -5,7 +5,7 @@ services:
     container_name: backoffice
     restart: always
     ports:
-      - 3001:3001
+      - 3000:3000
     build:
       context: .
       dockerfile: ./apps/backoffice/dockerfile
@@ -24,7 +24,7 @@ services:
         AUTH_DESCOPE_ISSUER: ${AUTH_DESCOPE_ISSUER}
         AUTH_DESCOPE_MGT_KEY: ${AUTH_DESCOPE_MGT_KEY}
         AUTH_DESCOPE_MAIN_TENANT_ID: ${AUTH_DESCOPE_MAIN_TENANT_ID}
-        BETTER_LOGS_TOKEN: ${BETTER_LOGS_TOKEN}
+        NEXT_PUBLIC_BETTER_LOGS_TOKEN: ${NEXT_PUBLIC_BETTER_LOGS_TOKEN}
     networks:
       - app_network
     environment:
@@ -44,7 +44,7 @@ services:
       - AUTH_DESCOPE_MGT_KEY=${AUTH_DESCOPE_MGT_KEY}
       - AUTH_DESCOPE_MAIN_TENANT_ID=${AUTH_DESCOPE_MAIN_TENANT_ID}
       - NEXT_PUBLIC_ABLY_API_KEY=${NEXT_PUBLIC_ABLY_API_KEY}
-      - BETTER_LOGS_TOKEN=${BETTER_LOGS_TOKEN}
+      - NEXT_PUBLIC_BETTER_LOGS_TOKEN=${NEXT_PUBLIC_BETTER_LOGS_TOKEN}
 
 networks:
   app_network:

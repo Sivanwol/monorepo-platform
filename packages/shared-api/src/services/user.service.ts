@@ -18,7 +18,7 @@ export class UserService extends BaseService {
       from: Date.now() - 10 * 24 * 60 * 60 * 1000,
       actions: ["LoginSucceed"],
     };
-    await logger.log(`service search options ${JSON.stringify(searchOptions)}`);
+    logger.info(`service search options ${JSON.stringify(searchOptions)}`);
     const auditRes = await descopeSdk.management.audit.search(searchOptions);
     if (!auditRes.ok) {
       throw new TRPCError({
@@ -45,7 +45,7 @@ export class UserService extends BaseService {
     userId: number,
     payload: UpdateUserProfilePayload,
   ) {
-    await logger.log(`update user profile ${userId} by ${actorUserId}`);
+    logger.info(`update user profile ${userId} by ${actorUserId}`);
     if (actorUserId === userId) {
       if (await this.ctx.repositories.user.HasUserExist(userId)) {
         await this.ctx.repositories.user.UpdateUserProfile(

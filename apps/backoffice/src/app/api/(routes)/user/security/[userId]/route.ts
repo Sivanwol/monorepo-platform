@@ -9,7 +9,7 @@ export async function GET(
   req: Request,
   { params }: { params: { userId: string } },
 ) {
-  await logger.info(`${req.method} /api/user/security`, { params });
+  logger.info(`${req.method} /api/user/security`, { params });
   const headers = new Headers();
   headers.set("Authorization", req.headers.get("authorization") ?? "");
   headers.set("Content-Type", "application/json");
@@ -33,7 +33,7 @@ export async function GET(
       });
     }
     // Another error occurred
-    await logger.error(`${req.method} /api/user/security error`, { cause });
+    logger.error(`${req.method} /api/user/security error`, { cause });
     return Response.json({
       message: "Internal server error",
       cause,

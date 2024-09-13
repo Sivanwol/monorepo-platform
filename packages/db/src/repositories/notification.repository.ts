@@ -13,7 +13,7 @@ export class NotificationRepository {
   public async GetLastNotification(
     userId: number,
   ): Promise<NotificationModel[]> {
-    await logger.info(`fetch get last notification for user id ${userId}`);
+    logger.info(`fetch get last notification for user id ${userId}`);
     const res = await this.db
       .select()
       .from(schema.Notification)

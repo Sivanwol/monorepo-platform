@@ -24,7 +24,6 @@
     "@app/db": "workspace:*",
     "@app/shared-api": "workspace:*",
     "@app/utils": "workspace:*",
-    "@logtail/node": "catalog:",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"

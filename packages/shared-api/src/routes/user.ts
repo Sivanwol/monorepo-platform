@@ -38,7 +38,7 @@ export const userRouter = {
     .input(z.number())
     .query(async ({ ctx, input }) => {
       const service = new UserService(ctx);
-      await logger.info(`fetching audit for user ${input}`);
+      logger.info(`fetching audit for user ${input}`);
       service.verifyBackofficeAccess();
       if (ctx.session.user.id === input) {
         const audits = await service.fetchAuditUser(
@@ -82,7 +82,7 @@ export const userRouter = {
     .input(UpdateUserProfileSchema)
     .mutation(async ({ ctx, input }) => {
       const service = new UserService(ctx);
-      await logger.info(`updating user profile... ${JSON.stringify(input)}`);
+      logger.info(`updating user profile... ${JSON.stringify(input)}`);
       await service.UpdateUserProfile(
         ctx.session.user.id,
         ctx.session.user.id,
@@ -107,7 +107,7 @@ export const userRouter = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await logger.info(`onboarding user... ${JSON.stringify(input)} `);
+      logger.info(`onboarding user... ${JSON.stringify(input)} `);
       const service = new UserService(ctx);
       service.verifyBackofficeAccess();
       return await service.onBoardAdminUser(ctx.session.user.id, input);

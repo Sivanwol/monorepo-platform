@@ -6,7 +6,7 @@ import { createCaller, createTRPCContext } from "@app/backoffice-api";
 import { logger } from "@app/utils";
 
 export async function POST(req: Request) {
-  await logger.info(`${req.method} /api/user/update-profile`, {
+  logger.info(`${req.method} /api/user/update-profile`, {
     payload: req.body,
   });
   const headers = new Headers();
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       });
     }
     // Another error occurred
-    await logger.error(`${req.method} /api/user/update-profile error`, {
+    logger.error(`${req.method} /api/user/update-profile error`, {
       cause,
     });
     return Response.json({

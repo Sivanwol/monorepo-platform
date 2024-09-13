@@ -65,12 +65,12 @@ declare module "next-auth" {
 }
 
 const registerInitialUserForOnboarding = async (user: UserResponse) => {
-  await logger.info(`check if user by id ${user.userId} need do onboarding`);
+  logger.info(`check if user by id ${user.userId} need do onboarding`);
   const requiredOnborading = await repositories.user.HasUserNeedOnBoarding(
     user.userId,
   );
   if (requiredOnborading) {
-    await logger.info(`user did onboarding ${user.userId} not required`);
+    logger.info(`user did onboarding ${user.userId} not required`);
     const splitName = user.name?.split(" ") ?? ["", ""];
     await repositories.user.Register({
       externalId: user.userId,
@@ -119,9 +119,9 @@ export const validateToken = async (
   let sessionRes = null;
   try {
     sessionRes = await descopeSdk.validateSession(token);
-    await logger.info(`user validated to user ${sessionRes.token.sub}`);
+    logger.info(`user validated to user ${sessionRes.token.sub}`);
   } catch (error) {
-    await logger.error("Could not validate user session ", { error });
+    logger.error("Could not validate user session ", { error });
     return null;
   }
   const authToken = sessionRes.token;
@@ -136,7 +136,7 @@ export const validateToken = async (
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const authExpDate = authToken.exp!;
   let user = await repositories.user.GetUserShortInfoByExternalId(userId);
-  await logger.info(`found user ${userId}`, { user });
+  logger.info(`found user ${userId}`, { user });
   if (!user) {
     console.warn(`User not register need onboarding ${userId}`);
     await registerInitialUserForOnboarding(descopeUserInfo);
@@ -154,7 +154,7 @@ export const validateToken = async (
 };
 
 export const fetchCurrentDescopeUserDetails = async (externalId: string) => {
-  await logger.info(`fetch user details ${externalId}`);
+  logger.info(`fetch user details ${externalId}`);
   const request = await descopeSdk.management.user.loadByUserId(externalId);
   if (request.ok) {
     return request.data;

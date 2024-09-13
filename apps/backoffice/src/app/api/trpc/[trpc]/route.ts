@@ -45,7 +45,7 @@ const handler = auth(async (req) => {
       if (req.method === "POST") {
         input = (await req.json()) as Record<string, unknown>;
       }
-      await logger.error(
+      logger.error(
         `>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`,
         error,
       );

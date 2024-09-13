@@ -19,7 +19,7 @@ export class UserRepository {
   public async GetUserById(
     user_id: number,
   ): Promise<typeof schema.User.$inferSelect | null> {
-    await logger.log(`locate user ${user_id}`);
+    logger.info(`locate user ${user_id}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.id, user_id),
     });
@@ -27,7 +27,7 @@ export class UserRepository {
   }
 
   public async locateUserByExternalId(externalId: string): Promise<boolean> {
-    await logger.info(`locate user by external id ${externalId}`);
+    logger.info(`locate user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, externalId),
     });
@@ -36,7 +36,7 @@ export class UserRepository {
   public async GetUserShortInfoByExternalId(
     externalId: string,
   ): Promise<UserModel | null> {
-    await logger.info(`get short info user by external id ${externalId}`);
+    logger.info(`get short info user by external id ${externalId}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.externalId, externalId),
     });
@@ -44,7 +44,7 @@ export class UserRepository {
   }
 
   public async HasUserExist(userId: number): Promise<boolean> {
-    await logger.log(`check user ${userId} exist`);
+    logger.info(`check user ${userId} exist`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.id, userId),
     });
@@ -56,7 +56,7 @@ export class UserRepository {
     userId: number,
     payload: UpdateUserProfilePayload,
   ) {
-    await logger.info(`update user ${userId} profile`);
+    logger.info(`update user ${userId} profile`);
     await this.db
       .update(User)
       .set({
@@ -79,21 +79,21 @@ export class UserRepository {
   }
 
   public async GetUsers(): Promise<(typeof schema.User.$inferSelect)[]> {
-    await logger.info(`get users`);
+    logger.info(`get users`);
     const users = await this.db.query.User.findMany();
     return users;
   }
   public async GetUserByEmail(
     email: string,
   ): Promise<typeof schema.User.$inferSelect | null> {
-    await logger.log(`get user by email ${email}`);
+    logger.info(`get user by email ${email}`);
     const user = await this.db.query.User.findFirst({
       where: eq(schema.User.email, email),
     });
     return user ?? null;
   }
   public async HasUserNeedOnBoarding(externalId: string): Promise<boolean> {
-    await logger.info(`check user ${externalId} need onboarding`);
+    logger.info(`check user ${externalId} need onboarding`);
     const user = await this.db.query.User.findFirst({
       where: and(eq(User.externalId, externalId), isNull(User.onboardingAt)),
     });
@@ -105,10 +105,10 @@ export class UserRepository {
    * @param userData user data
    */
   public async Register(userData: RegisterUserRequest) {
-    await logger.info(`verify user ${userData.externalId} payload `);
+    logger.info(`verify user ${userData.externalId} payload `);
     const result = CreateUserSchema.safeParse(userData);
     if (result.success) {
-      await logger.info(`insert user ${userData.externalId} payload `);
+      logger.info(`insert user ${userData.externalId} payload `);
       await this.db.insert(User).values({
         externalId: userData.externalId,
         email: userData.email,
@@ -119,7 +119,7 @@ export class UserRepository {
       });
       return;
     }
-    await logger.info(`verify user ${userData.externalId} payload failed `, {
+    logger.info(`verify user ${userData.externalId} payload failed `, {
       error: result.error,
     });
   }
@@ -128,7 +128,7 @@ export class UserRepository {
     userId: number,
     payload: OnBoardAdminUserRequest,
   ) {
-    await logger.info(`update user ${userId} onboarding`);
+    logger.info(`update user ${userId} onboarding`);
     if (await this.HasUserExist(userId)) {
       const user = await this.db.query.User.findFirst({
         where: eq(schema.User.id, userId),
@@ -154,7 +154,7 @@ export class UserRepository {
           })
           .where(eq(User.id, userId));
       } else {
-        await logger.info(`user ${userId} not exist`);
+        logger.info(`user ${userId} not exist`);
       }
     }
   }

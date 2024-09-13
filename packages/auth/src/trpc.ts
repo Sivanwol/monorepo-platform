@@ -22,15 +22,13 @@ export const createTRPCContext = async (opts: {
   const requestId = uuidV4();
   const token = opts.headers.get("Authorization")?.replace("Bearer ", "");
   if (!descopeSession && token) {
-    await logger.log(`checking session jwt... ${token}`);
+    logger.info(`checking session jwt... ${token}`);
     // we try if we unable load session from descope via session() method so we fetch from header (jwt) happend on client requests
     descopeSession = await descopeSdk.validateJwt(token);
-    await logger.log(`checking session jwt... ${descopeSession.token.sub}`);
+    logger.info(`checking session jwt... ${descopeSession.token.sub}`);
   }
   opts.headers.set("x-request-id", requestId);
-  await logger.log(
-    `>>> tRPC Request from ${source} at ${new Date().toISOString()}`,
-  );
+  logger.info(`>>> tRPC Request from ${source} at ${new Date().toISOString()}`);
   console.log(`checking session... ${descopeSession?.token.sub} `);
   return {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -46,7 +44,7 @@ export const createTRPCContext = async (opts: {
  * - Next.js requests will have a session token in cookies
  */
 const isomorphicGetSession = async (session: AuthenticationInfo | null) => {
-  await logger.log(`checking session... ${session?.token.sub} `);
+  logger.info(`checking session... ${session?.token.sub} `);
   if (session) return validateToken(session.jwt);
   return {
     session: null,
@@ -115,7 +113,7 @@ export const publicProcedure = t.procedure;
  */
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   const auth = await isomorphicGetSession(ctx.session);
-  await logger.log(
+  logger.info(
     `incoming protected procedure... user id - ${JSON.stringify(auth?.user?.id)}... at ${new Date().toISOString()}`,
   );
   if (!auth?.user?.id) {

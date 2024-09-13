@@ -6,12 +6,12 @@ import { logger } from "@app/utils";
 
 export const authRouter = {
   getUser: protectedProcedure.query(async ({ ctx }) => {
-    await logger.info(`requesting user data`, { user: ctx.session.user });
+    logger.info(`requesting user data`, { user: ctx.session.user });
     return ctx.session.user;
   }),
 
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    await logger.info(`signing out user`, { user: ctx.session.user });
+    logger.info(`signing out user`, { user: ctx.session.user });
     if (ctx.session.jwt) {
       await descopeSdk.logout(ctx.session.jwt);
     }
