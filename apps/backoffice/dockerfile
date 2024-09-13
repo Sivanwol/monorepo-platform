@@ -37,7 +37,7 @@ ARG AUTH_DESCOPE_SECRET
 ARG AUTH_DESCOPE_ISSUER
 ARG AUTH_DESCOPE_MGT_KEY
 ARG AUTH_DESCOPE_MAIN_TENANT_ID
-ARG BETTER_LOGS_TOKEN
+ARG NEXT_PUBLIC_BETTER_LOGS_TOKEN
 
 ENV POSTGRES_URL ${POSTGRES_URL}
 ENV BLOB_STORAGE_URL ${BLOB_STORAGE_URL}
@@ -52,13 +52,12 @@ ENV AUTH_DESCOPE_SECRET ${AUTH_DESCOPE_SECRET}
 ENV AUTH_DESCOPE_ISSUER ${AUTH_DESCOPE_ISSUER}
 ENV AUTH_DESCOPE_MGT_KEY ${AUTH_DESCOPE_MGT_KEY}
 ENV AUTH_DESCOPE_MAIN_TENANT_ID ${AUTH_DESCOPE_MAIN_TENANT_ID}
-ENV BETTER_LOGS_TOKEN ${BETTER_LOGS_TOKEN}
+ENV NEXT_PUBLIC_BETTER_LOGS_TOKEN ${NEXT_PUBLIC_BETTER_LOGS_TOKEN}
 
 
 RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
 # Create a .env file with all the environment variables but CI
 RUN env >> .env
-RUN cat .env
 RUN echo -e "\e[1;33mBuilding application backoffice\e[0m"
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json .
@@ -66,10 +65,10 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./
 COPY --from=builder /app/out/full .
 RUN pnpm install
 RUN pnpm build --filter=@app/backoffice
-RUN ls -la  /app/apps/backoffice/.next/standalone
 
 FROM base AS runner
 WORKDIR /app
+
 ENV NEXT_TELEMETRY_DISABLED 1
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
@@ -84,8 +83,8 @@ USER nextjs
 
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next  ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/standalone  ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static  ./standalone/apps/backoffice/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static  ./standalone/apps/backoffice/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./standalone/apps/backoffice/public
 COPY --from=installer /app/.env .
 RUN ls -la ./
 RUN ls -la ./standalone
