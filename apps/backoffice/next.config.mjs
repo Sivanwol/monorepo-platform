@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { fileURLToPath } from "url";
 import createJiti from "jiti";
 
@@ -61,6 +60,8 @@ const config = {
     //     'next-intl/config': './src/i18n.ts',
     //   },
     // },
+
+    esmExternals: true,
     instrumentationHook: true,
   },
   images: {
@@ -83,4 +84,5 @@ const config = {
   output: "standalone",
 };
 
+// export default withTm(config);
 export default config;

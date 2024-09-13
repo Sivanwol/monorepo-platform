@@ -17,8 +17,6 @@
     "lint": "eslint",
     "sort:packages": "sort-package-json",
     "start": "pnpm with-env next start",
-    "start:docker": "node server.js",
-    "start:docker:backoffice": "npm run start:docker --prefix ./apps/backoffice",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -57,8 +55,7 @@
     "http-browserify": "^1.7.0",
     "https-browserify": "^1.0.0",
     "next": "catalog:",
-    "next-swagger-doc": "catalog:",
-    "openapi-types": "catalog:",
+    "next-transpile-modules": "catalog:",
     "react": "catalog:react18",
     "react-admin": "^5.0.5",
     "react-dom": "catalog:react18",
@@ -68,7 +65,6 @@
     "stream-browserify": "^3.0.0",
     "styled-components": "^6.1.12",
     "superjson": "2.2.1",
-    "trpc-openapi": "catalog:",
     "uuid": "^10.0.0",
     "zod": "catalog:"
   },

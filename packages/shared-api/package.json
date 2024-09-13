@@ -30,7 +30,6 @@
     "date-fns": "catalog:",
     "sort-package-json": "catalog:",
     "superjson": "catalog:",
-    "trpc-openapi": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

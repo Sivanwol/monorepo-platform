@@ -28,7 +28,6 @@
     "@trpc/server": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
     "superjson": "catalog:",
-    "trpc-openapi": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

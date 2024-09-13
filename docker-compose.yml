@@ -2,8 +2,10 @@ version: "3.7"
 
 services:
   backoffice:
+    container_name: backoffice
+    restart: always
     ports:
-      - "3001:3001"
+      - 3001:3001
     build:
       context: .
       dockerfile: ./apps/backoffice/dockerfile
@@ -23,6 +25,8 @@ services:
         AUTH_DESCOPE_MGT_KEY: ${AUTH_DESCOPE_MGT_KEY}
         AUTH_DESCOPE_MAIN_TENANT_ID: ${AUTH_DESCOPE_MAIN_TENANT_ID}
         BETTER_LOGS_TOKEN: ${BETTER_LOGS_TOKEN}
+    networks:
+      - app_network
     environment:
       - POSTGRES_URL=${POSTGRES_URL}
       - BLOB_STORAGE_URL=${BLOB_STORAGE_URL}
@@ -41,3 +45,6 @@ services:
       - AUTH_DESCOPE_MAIN_TENANT_ID=${AUTH_DESCOPE_MAIN_TENANT_ID}
       - NEXT_PUBLIC_ABLY_API_KEY=${NEXT_PUBLIC_ABLY_API_KEY}
       - BETTER_LOGS_TOKEN=${BETTER_LOGS_TOKEN}
+
+networks:
+  app_network:
