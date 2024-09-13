@@ -1,6 +1,6 @@
 FROM node:20-alpine AS base
 RUN apk add python3 make g++ gcc libc-dev linux-headers libc6-compat
-RUN npm install -g turbo ts-node
+RUN npm install -g turbo
 RUN corepack enable
 RUN corepack prepare pnpm@9.9.0 --activate
 
@@ -58,6 +58,7 @@ ENV NEXT_PUBLIC_BETTER_LOGS_TOKEN ${NEXT_PUBLIC_BETTER_LOGS_TOKEN}
 RUN echo -e "\e[1;33mENVIRONMENT VARIABLES\e[0m";
 # Create a .env file with all the environment variables but CI
 RUN env >> .env
+RUN cat .env
 RUN echo -e "\e[1;33mBuilding application backoffice\e[0m"
 # First install dependencies (as they change less often)
 COPY --from=builder /app/out/json .
