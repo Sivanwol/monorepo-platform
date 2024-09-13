@@ -84,6 +84,7 @@ USER nextjs
 
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next  ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/standalone  ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/.next/static  ./standalone/apps/backoffice/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/backoffice/public ./public
 COPY --from=installer /app/.env .
 RUN ls -la ./
