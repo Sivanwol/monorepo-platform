@@ -32,6 +32,7 @@ export async function GET(
         success: false,
       });
     }
+
     // Another error occurred
     logger.error(`${req.method} /api/user/security error`, { cause });
     return Response.json({
