@@ -1,18 +1,20 @@
 import type { VercelPgDatabase } from "drizzle-orm/vercel-postgres";
 import { and, eq, isNull, or } from "drizzle-orm";
+
 import type {
   OnBoardAdminUserRequest,
   RegisterUserRequest,
   UpdateUserProfilePayload,
 } from "@app/utils";
 import { logger } from "@app/utils";
+
 import type { UserModel } from "../Models/user.model";
 import { convertToUserModel } from "../Models/user.model";
 import * as schema from "../schema";
 import { ActivityLog, CreateUserSchema, User } from "../schema";
 
 export class UserRepository {
-  constructor(public db: VercelPgDatabase<typeof schema>) { }
+  constructor(public db: VercelPgDatabase<typeof schema>) {}
 
   public async GetUserById(
     user_id: number,
