@@ -6,6 +6,17 @@ it has 2 main parts:
 backoffice - where admin and any activity that need that not expose to normal user will found here
 platform - where normal user lived
 
+### package management
+this <b>critical</b> this system use <b><u>PNPM</u></b>
+
+### sentry & logs
+the system use betterstack as logs (thu u can use vercel but it lacking baddly)
+as well sentry (if u dont have the account contact Project Owner for provide you what u missing)
+before build please enter this command
+```sh
+export SENTRY_RELEASE=$(git rev-parse --short HEAD)
+pnpm build
+```
 ---
 
 ### External services

@@ -10,19 +10,21 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run sentry:sourcemaps",
     "clean": "rm -rf .turbo dist node_modules",
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "sort:packages": "sort-package-json",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org testing-zone --project mono-repo ./dist && sentry-cli --url https://sentry.io/ sourcemaps upload --org testing-zone --project mono-repo ./dist"
   },
   "prettier": "@app/prettier-config",
   "dependencies": {
     "@descope/nextjs-sdk": "catalog:",
     "@descope/node-sdk": "catalog:",
-    "@faker-js/faker": "^8.4.1"
+    "@faker-js/faker": "^8.4.1",
+    "@sentry/cli": "^2.36.1"
   },
   "devDependencies": {
     "@app/eslint-config": "workspace:*",
