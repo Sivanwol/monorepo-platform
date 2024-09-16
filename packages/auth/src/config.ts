@@ -28,7 +28,7 @@ export const descopeSdk = createSdk({
   projectId: env.NEXT_PUBLIC_AUTH_DESCOPE_ID || "",
   managementKey: env.AUTH_DESCOPE_MGT_KEY || "",
 });
-export const authConfig = {
+export const authConfig: NextAuthConfig = {
   adapter,
   // In development, we need to skip checks to allow Expo to work
   ...(!isSecureContext
@@ -52,7 +52,7 @@ export const authConfig = {
     },
   },
   debug: env.NODE_ENV !== "production" ? true : false,
-} satisfies NextAuthConfig;
+};
 
 declare module "next-auth" {
   interface Session {

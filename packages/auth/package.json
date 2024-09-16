@@ -23,7 +23,7 @@
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/validators": "workspace:*",
-    "@auth/core": "0.32.0",
+    "@auth/core": "0.35.0",
     "@auth/drizzle-adapter": "^1.4.1",
     "@descope/node-sdk": "catalog:",
     "@t3-oss/env-nextjs": "^0.10.1",
