@@ -22,10 +22,7 @@
   "dependencies": {
     "@descope/nextjs-sdk": "catalog:",
     "@descope/node-sdk": "catalog:",
-    "@faker-js/faker": "^8.4.1",
-    "@logtail/node": "catalog:",
-    "@logtail/winston": "catalog:",
-    "winston": "catalog:"
+    "@faker-js/faker": "^8.4.1"
   },
   "devDependencies": {
     "@app/eslint-config": "workspace:*",

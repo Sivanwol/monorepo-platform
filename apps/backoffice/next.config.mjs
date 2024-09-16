@@ -16,16 +16,19 @@ console.log("pwd", process.cwd());
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  webpack(config) {
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        os: false,
+        path: false,
+      };
+    }
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-    config.resolve.fallback = {
-      ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified
-      // by next.js will be dropped. Doesn't make much sense, but how it is
-      fs: false, // the solution
-    };
     return config;
   },
 

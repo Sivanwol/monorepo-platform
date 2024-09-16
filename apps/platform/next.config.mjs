@@ -1,12 +1,36 @@
+import path from "path";
 import { fileURLToPath } from "url";
 import createJiti from "jiti";
 
-// Import env files to validate at build time. Use jiti so we can load .ts files in here.
-createJiti(fileURLToPath(import.meta.url))("./src/env");
+/**
+ * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
+ * This is especially useful for Docker builds and Linting.
+ */
+console.log("process.env.SKIP_ENV_VALIDATION", process.env.SKIP_ENV_VALIDATION);
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("pwd", process.cwd());
 
+// Import env files to validate at build time. Use jiti so we can load .ts files in here.
+!process.env.SKIP_ENV_VALIDATION &&
+  createJiti(fileURLToPath(import.meta.url))("./src/env");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        os: false,
+        path: false,
+      };
+    }
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
+
   async headers() {
     return [
       {
@@ -31,6 +55,7 @@ const config = {
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@app/platform-api",
+    "@app/backoffice-api",
     "@app/auth",
     "@app/db",
     "@app/ui",
@@ -43,6 +68,8 @@ const config = {
     //     'next-intl/config': './src/i18n.ts',
     //   },
     // },
+
+    esmExternals: true,
     instrumentationHook: true,
   },
   images: {
@@ -54,9 +81,16 @@ const config = {
     ],
   },
 
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  // output: "standalone",
 };
 
+// export default withTm(config);
 export default config;

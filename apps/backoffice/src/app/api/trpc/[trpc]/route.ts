@@ -3,7 +3,6 @@ import SuperJSON from "superjson";
 
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
-import { logger } from "@app/utils";
 
 export const runtime = "edge";
 /**
@@ -46,7 +45,7 @@ const handler = auth(async (req) => {
       if (req.method === "POST") {
         input = (await req.json()) as Record<string, unknown>;
       }
-      logger.error(
+      console.error(
         `>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`,
         error,
       );
