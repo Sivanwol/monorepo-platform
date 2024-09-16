@@ -1,4 +1,5 @@
 import type { NotificationModel, UserModel } from "@app/db/client";
+import type { TranslationRecord } from "@app/utils";
 
 import type { MenuGroup } from "..";
 
@@ -10,6 +11,5 @@ export interface DashboardLayoutProps {
   notifications: NotificationModel[];
   user: UserModel;
   lng: string;
-  translations: translationRecord;
+  translations: TranslationRecord;
 }
-export type translationRecord = Record<string, string>;

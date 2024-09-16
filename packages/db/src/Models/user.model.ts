@@ -11,6 +11,7 @@ export interface UserModel {
   isWorker: boolean;
   isPrivate: boolean;
   avatar: string;
+  aboutMe: string;
   gender: "male" | "female" | "other";
   createdAt: Date;
 }
@@ -25,6 +26,7 @@ export const convertToUserModel = (
   country: data.country ?? "IL",
   city: data.city ?? "",
   avatar: data.avatar,
+  aboutMe: data.aboutMe ?? "",
   isWorker: data.IsWorker ?? false,
   isPrivate: data.IsPrivate ?? false,
   gender: data.gender ?? "other",

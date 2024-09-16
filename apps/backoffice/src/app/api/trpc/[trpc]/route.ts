@@ -1,9 +1,9 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import SuperJSON from "superjson";
 
 import { auth } from "@app/auth";
 import { appRouter, createTRPCContext } from "@app/backoffice-api";
-
-export const runtime = "edge";
+import { logger } from "@app/utils";
 
 /**
  * Configure basic CORS headers
@@ -33,8 +33,22 @@ const handler = auth(async (req) => {
       createTRPCContext({
         headers: req.headers,
       }),
-    onError({ error, path }) {
-      console.error(`>>> tRPC Error on '${path}'`, error);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    async onError({ error, path, req }) {
+      let input: Record<string, unknown> = {};
+      if (req.method === "GET") {
+        const { searchParams } = new URL(req.url);
+        const param = searchParams.get("input") ?? "{}";
+
+        input = JSON.parse(param);
+      }
+      if (req.method === "POST") {
+        input = (await req.json()) as Record<string, unknown>;
+      }
+      logger.error(
+        `>>> tRPC Error on '${path}' input ${SuperJSON.stringify(input)}`,
+        error,
+      );
     },
   });
 

@@ -1,23 +1,32 @@
-// @ts-nocheck
+import path from "path";
 import { fileURLToPath } from "url";
 import createJiti from "jiti";
 
+/**
+ * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
+ * This is especially useful for Docker builds and Linting.
+ */
+console.log("process.env.SKIP_ENV_VALIDATION", process.env.SKIP_ENV_VALIDATION);
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("pwd", process.cwd());
+
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
-createJiti(fileURLToPath(import.meta.url))("./src/env");
+!process.env.SKIP_ENV_VALIDATION &&
+  createJiti(fileURLToPath(import.meta.url))("./src/env");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-
-  productionBrowserSourceMaps: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+    config.resolve.fallback = {
+      ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified
+      // by next.js will be dropped. Doesn't make much sense, but how it is
+      fs: false, // the solution
+    };
     return config;
-  },
-  optimization: {
-    minimize: false,
   },
 
   async headers() {
@@ -57,6 +66,8 @@ const config = {
     //     'next-intl/config': './src/i18n.ts',
     //   },
     // },
+
+    esmExternals: true,
     instrumentationHook: true,
   },
   images: {
@@ -67,9 +78,17 @@ const config = {
       },
     ],
   },
+
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  // output: "standalone",
 };
 
+// export default withTm(config);
 export default config;

@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { handlers, isSecureContext } from "@app/auth";
 
-export const runtime = "edge";
-
 const EXPO_COOKIE_NAME = "__monorepo-backoffice-redirect-state";
 const AUTH_COOKIE_PATTERN = /sabo\.session-token=([^;]+)/;
 

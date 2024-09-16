@@ -3,20 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "browser": {
+    "http": false,
+    "https": false,
+    "stream": false,
+    "util": false
+  },
   "scripts": {
     "build": "pnpm with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules dist",
     "dev": "pnpm with-env next dev --port=3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/backoffice-api": "workspace:*",
     "@app/db": "workspace:*",
+    "@app/store-backoffice": "workspace:*",
     "@app/ui": "workspace:*",
     "@app/utils": "workspace:*",
     "@app/validators": "workspace:*",
@@ -39,20 +48,23 @@
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
-    "@vercel/analytics": "catalog:vercel",
-    "@vercel/flags": "catalog:vercel",
     "@vercel/otel": "catalog:vercel",
-    "flowbite": "catalog:ui",
-    "flowbite-react": "catalog:ui",
+    "dotenv-cli": "^7.4.2",
     "geist": "^1.3.0",
+    "http-browserify": "^1.7.0",
+    "https-browserify": "^1.0.0",
     "next": "catalog:",
+    "next-transpile-modules": "catalog:",
     "react": "catalog:react18",
     "react-admin": "^5.0.5",
     "react-dom": "catalog:react18",
     "react-icons": "catalog:ui",
     "server-only": "catalog:vercel",
+    "sort-package-json": "catalog:",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^6.1.12",
     "superjson": "2.2.1",
+    "uuid": "^10.0.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -63,8 +75,8 @@
     "@types/node": "^20.14.9",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "catalog:ui",
-    "dotenv-cli": "^7.4.2",
     "eslint": "catalog:",
     "jiti": "^1.21.6",
     "postcss": "catalog:ui",
@@ -72,6 +84,5 @@
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

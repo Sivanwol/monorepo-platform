@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { Namespaces, Translations } from "./type";
 
 const locales = ["en"];
@@ -29,6 +30,10 @@ export const initTranslation = async (lng: string) => {
     dashboardLayout: (await import(`./locales/${currentLng}/dashboard-layout`))
       .default,
     support: (await import(`./locales/${currentLng}/support`)).default,
+    userHistory: (await import(`./locales/${currentLng}/user-history`)).default,
+    table: (await import(`./locales/${currentLng}/table`)).default,
+    userTest: (await import(`./locales/${currentLng}/user-test`)).default,
+    userProfile: (await import(`./locales/${currentLng}/user-profile`)).default,
   };
   console.log(`Translations loaded for ${currentLng}`);
 };

@@ -7,6 +7,7 @@ import { session } from "@descope/nextjs-sdk/server";
 import type { NotificationModel, UserModel } from "@app/db/client";
 import type { MenuGroup } from "@app/ui";
 import type { LayoutCommonProps } from "@app/utils";
+import { StoreBackofficeProvider } from "@app/store-backoffice";
 import { DashboardLayout, LoadingPage } from "@app/ui";
 import { initTranslation, t } from "@app/utils";
 
@@ -118,7 +119,8 @@ export default async function PlatformLayout({
     shortTitle: t(currentNS, "shortTitle"),
     support: t(currentNS, "support"),
     toggleSidebar: t(currentNS, "toggle-sidebar"),
-    userSettings: t(currentNS, "user.settings"),
+    securityAudit: t(currentNS, "user.securityAudit"),
+    homepageTitle: t(currentNS, "homepageTitle"),
     userProfile: t(currentNS, "user.profile"),
     userLogout: t(currentNS, "user.logout"),
     notificationsTitle: t(currentNS, "notifications.title"),
@@ -134,16 +136,18 @@ export default async function PlatformLayout({
   return (
     <HydrateClient>
       <Suspense fallback={<LoadingPage />}>
-        <DashboardLayout
-          sideMenuItems={menuGroups}
-          notifications={notifications}
-          lng={lng}
-          translations={translations}
-          blockActions={maintenance ? false : maintenance}
-          user={user}
-        >
-          {maintenance ? maintenanceRenderer : children}
-        </DashboardLayout>
+        <StoreBackofficeProvider>
+          <DashboardLayout
+            sideMenuItems={menuGroups}
+            notifications={notifications}
+            lng={lng}
+            translations={translations}
+            blockActions={maintenance ? false : maintenance}
+            user={user}
+          >
+            {maintenance ? maintenanceRenderer : children}
+          </DashboardLayout>
+        </StoreBackofficeProvider>
       </Suspense>
     </HydrateClient>
   );

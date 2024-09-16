@@ -15,15 +15,20 @@
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/auth": "workspace:*",
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
+    "@descope/node-sdk": "catalog:",
     "@trpc/server": "catalog:",
-    "superjson": "catalog:",
     "@vercel/edge-config": "catalog:vercel",
+    "date-fns": "catalog:",
+    "sort-package-json": "catalog:",
+    "superjson": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -33,6 +38,5 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

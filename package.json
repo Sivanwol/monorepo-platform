@@ -1,45 +1,50 @@
 {
   "name": "monorepo-platform-monorepo",
   "private": true,
-  "engines": {
-    "node": ">=20.12.0"
-  },
-  "packageManager": "pnpm@9.5.0",
   "scripts": {
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
-    "uuid": "openssl rand -base64 32",
     "db:migrate": "turbo -F @app/db migrate",
     "db:push": "turbo -F @app/db push",
     "db:studio": "turbo -F @app/db studio",
     "dev": "turbo watch dev --concurrency=20",
-    "dev:platform": "turbo watch dev -F @app/platform",
     "dev:backoffice": "turbo watch dev -F @app/backoffice",
+    "dev:platform": "turbo watch dev -F @app/platform",
     "format": "turbo run format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "postinstall": "pnpm lint:ws",
     "lint": "turbo run lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
-    "typecheck": "turbo run typecheck",
     "prepare": "husky",
-    "ui-add": "turbo run ui-add"
-  },
-  "devDependencies": {
-    "@app/prettier-config": "workspace:*",
-    "@turbo/gen": "^2.0.8",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^9.0.11",
-    "prettier": "catalog:",
-    "turbo": "^2.0.14",
-    "typescript": "catalog:"
+    "sort:packages": "turbo run sort:packages",
+    "typecheck": "turbo run typecheck",
+    "ui-add": "turbo run ui-add",
+    "uuid": "openssl rand -base64 32"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "prettier": "@app/prettier-config"
+  "prettier": "@app/prettier-config",
+  "devDependencies": {
+    "@app/prettier-config": "workspace:*",
+    "@manypkg/cli": "^0.20.0",
+    "@turbo/gen": "^2.0.8",
+    "@types/prettier": "^2.7.2",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "catalog:",
+    "husky": "^9.0.11",
+    "prettier": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
+    "turbo": "^2.1.1",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }

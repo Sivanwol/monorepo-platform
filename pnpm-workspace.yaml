@@ -9,11 +9,18 @@ catalog:
   "@trpc/client": ^11.0.0-rc.466
   "@trpc/react-query": ^11.0.0-rc.466
   "@trpc/server": ^11.0.0-rc.466
+  "@logtail/node": ^0.5.0
+  "@logtail/winston": ^0.5.0
+  winston: ^3.14.2
   eslint: ^9.6.0
   prettier: ^3.3.2
   typescript: ^5.5.3
   zod: ^3.23.8
   next: ^14.2.4
+  "usehooks-ts": ^3.1.0
+  "next-transpile-modules": ^9.0.0
+  "@ianvs/prettier-plugin-sort-imports": ^4.3.0
+  "prettier-plugin-tailwindcss": ^0.6.5
   "bcrypt-edge": ^0.0.6
   uuid: ^10.0.0
   "@types/uuid": ^10.0.0
@@ -30,10 +37,11 @@ catalog:
   inngest: ^3.21.1
   "date-fns": ^3.6.0
   "next-plausible": ^3.12.0
+  "sort-package-json": ^2.10.1
 catalogs:
   store:
-    "@reduxjs/toolkit": ^2.2.0
-    "react-redux": ^9.1.0
+    "zukeeper": ^1.0.2
+    "zustand": ^4.5.2
   uploadthing:
     "@uploadthing": ^6.10.4
     "@uploadthing/react": ^6.5.
@@ -67,9 +75,9 @@ catalogs:
     "postcss": ^8
     "autoprefixer": ^10.4.19
     "react-icons": ^5.2.1
-    "@tanstack/react-table": ^8.19.2
-    "flowbite": 1.7.0
-    "flowbite-react": ^0.10.1
+    "@tanstack/react-table": ^8.20.5
+    "@tanstack/zod-form-adapter": ^0.31.0
+    "@tanstack/react-form": ^0.31.0
     "@mui/material": ^5.16.4
     "@mui/material-nextjs": ^5.16.4
     "@mui/icons-material": ^5.16.4
@@ -77,3 +85,10 @@ catalogs:
     "@emotion/styled": ^11.13.0
     "@emotion/react": ^11.13.0
     "@emotion/cache": ^11.13.0
+    "@dnd-kit/core": ^6.1.0
+    "@dnd-kit/modifiers": ^7.0.0
+    "@dnd-kit/sortable": ^8.0.0
+    "@dnd-kit/utilities": ^3.2.2
+    "classnames": ^2.5.1
+    "react-resizable": ^3.0.5
+    "@types/react-resizable": ^3.0.8

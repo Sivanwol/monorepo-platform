@@ -43,7 +43,7 @@ export const DropdownNotification = ({
             setNotifying(false);
             setDropdownOpen(!dropdownOpen);
           }}
-          href="javascript:void(0)"
+          href="#"
           className="border-stroke bg-gray-2 text-dark dark:border-dark-4 dark:bg-dark-3 relative flex h-12 w-12 items-center justify-center rounded-full border hover:text-primary dark:text-white dark:hover:text-white"
         >
           <span className="relative">
@@ -62,7 +62,7 @@ export const DropdownNotification = ({
 
         {dropdownOpen && (
           <div
-            className={`-right-27 mt-7.5 w-75 border-stroke px-5.5 pb-5.5 shadow-default dark:border-dark-3 dark:bg-gray-dark absolute flex h-[550px] flex-col rounded-xl border-[0.5px] bg-white pt-5 sm:right-0 sm:w-[364px]`}
+            className={`-right-27 mt-7.5 w-75 border-stroke px-5.5 pb-5.5 shadow-default dark:border-dark-3 dark:bg-gray-dark absolute flex flex-col rounded-xl border-[0.5px] bg-white pt-5 sm:right-0 sm:w-[364px]`}
           >
             <div className="mb-5 flex items-center justify-between">
               <h5 className="text-dark text-lg font-medium dark:text-white">

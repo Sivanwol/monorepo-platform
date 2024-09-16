@@ -13,7 +13,9 @@ import {
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const genderEnum = pgEnum("gender", ["male", "female", "other"]);
+import { genders } from "@app/utils";
+
+export const genderEnum = pgEnum("gender", genders);
 
 export const daysEnum = pgEnum("days", [
   "monday",
@@ -44,10 +46,9 @@ export const Media = pgTable("media", {
   mineType: varchar("mine_type", { length: 100 }).notNull(),
   size: bigint("size", { mode: "number" }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", {
-    mode: "date",
-    withTimezone: true,
-  }).$onUpdateFn(() => sql`now()`),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const CreateMediaSchema = createInsertSchema(Media, {
@@ -81,12 +82,12 @@ export const User = pgTable("user", {
   state: varchar("state", { length: 4 }),
   city: varchar("city", { length: 255 }),
   address: varchar("address", { length: 255 }),
-  onboarding: boolean("onboarding"),
+  onboardingAt: timestamp("onboarding_at"),
+  verifyPhoneAt: timestamp("verify_phone_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", {
-    mode: "date",
-    withTimezone: true,
-  }).$onUpdateFn(() => sql`now()`),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const CreateUserSchema = createInsertSchema(User, {
@@ -98,9 +99,59 @@ export const CreateUserSchema = createInsertSchema(User, {
   phone: z.string().min(2).max(20).optional().or(z.literal("")),
 }).omit({
   id: true,
+  externalId: true,
+  clientId: true,
+  IsWorker: true,
+  IsPrivate: true,
   createdAt: true,
   updatedAt: true,
-  onboarding: true,
+  onboardingAt: true,
+});
+
+export const OnBoardAdminUserSchema = createInsertSchema(User, {
+  firstName: z.string().min(2).max(100),
+  lastName: z.string().min(2).max(100),
+  gender: z.enum(genders),
+  aboutMe: z.string().min(2).max(500).optional().or(z.literal("")),
+  avatar: z.string().min(5).max(500).optional().or(z.literal("")),
+  phone: z.string().min(2).max(20).optional().or(z.literal("")),
+}).omit({
+  id: true,
+  externalId: true,
+  clientId: true,
+  IsWorker: true,
+  IsPrivate: true,
+  createdAt: true,
+  updatedAt: true,
+  onboardingAt: true,
+});
+
+export const UpdateUserProfileSchema = createInsertSchema(User, {
+  firstName: z.string().min(2).max(100),
+  lastName: z.string().min(2).max(100),
+  gender: z.enum(genders),
+  aboutMe: z.string().min(2).max(500),
+}).omit({
+  id: true,
+  externalId: true,
+  email: true,
+  clientId: true,
+  IsWorker: true,
+  IsPrivate: true,
+  avatar: true,
+  createdAt: true,
+  updatedAt: true,
+  onboardingAt: true,
+});
+
+export const ActivityLog = pgTable("activity_log", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  action: varchar("action", { length: 255 }).notNull(),
+  entity: varchar("entity", { length: 255 }).notNull(),
+  entityId: integer("entity_id").notNull(),
+  metaData: json("meta_data").default({}),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const Notification = pgTable("notification", {
@@ -116,10 +167,6 @@ export const Notification = pgTable("notification", {
   body: varchar("body", { length: 500 }).notNull(),
   read: boolean("read").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt", {
-    mode: "date",
-    withTimezone: true,
-  }).$onUpdateFn(() => sql`now()`),
 });
 
 export const CreateNotificationSchema = createInsertSchema(Notification, {
@@ -132,7 +179,6 @@ export const CreateNotificationSchema = createInsertSchema(Notification, {
 }).omit({
   id: true,
   createdAt: true,
-  updatedAt: true,
 });
 
 export const Client = pgTable("client", {
@@ -143,8 +189,7 @@ export const Client = pgTable("client", {
   lang_code: varchar("lang_code", { length: 2 }).default("en"),
   deleted: boolean("deleted").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", {
-    mode: "date",
-    withTimezone: true,
-  }).$onUpdateFn(() => sql`now()`),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });

@@ -6,6 +6,9 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "*"
+      ],
       "outputs": [
         "node_modules/.cache/tsbuildinfo.json",
         "dist/**"
@@ -56,6 +59,10 @@
       "persistent": true
     },
     "ui-add": {
+      "cache": false,
+      "interactive": true
+    },
+    "sort:packages": {
       "cache": false,
       "interactive": true
     }

@@ -1,5 +1,5 @@
 {
-  "id": "ba20b66e-c9da-4bb6-b86c-3e71887ddb77",
+  "id": "68c257af-313c-4bf2-8fc9-abe3bc89c58b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -53,11 +53,12 @@
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp with time zone",
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -118,13 +119,98 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp with time zone",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.notification": {
+      "name": "notification",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "affected_entity": {
+          "name": "affected_entity",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "affected_entity_id": {
+          "name": "affected_entity_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_data": {
+          "name": "meta_data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::json"
+        },
+        "type": {
+          "name": "type",
+          "type": "notification_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "read": {
+          "name": "read",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notification_user_id_user_id_fk": {
+          "name": "notification_user_id_user_id_fk",
+          "tableFrom": "notification",
+          "tableTo": "user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -180,11 +266,11 @@
           "primaryKey": false,
           "notNull": false
         },
-        "avatar_media_id": {
-          "name": "avatar_media_id",
-          "type": "integer",
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar(500)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "is_worker": {
           "name": "is_worker",
@@ -240,9 +326,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "onboarding": {
-          "name": "onboarding",
-          "type": "boolean",
+        "onboarding_at": {
+          "name": "onboarding_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verify_phone_at": {
+          "name": "verify_phone_at",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -253,11 +345,12 @@
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp with time zone",
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -267,15 +360,6 @@
           "tableFrom": "user",
           "tableTo": "client",
           "columnsFrom": ["client_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "user_avatar_media_id_media_id_fk": {
-          "name": "user_avatar_media_id_media_id_fk",
-          "tableFrom": "user",
-          "tableTo": "media",
-          "columnsFrom": ["avatar_media_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -309,6 +393,16 @@
       "name": "gender",
       "schema": "public",
       "values": ["male", "female", "other"]
+    },
+    "public.notification_type": {
+      "name": "notification_type",
+      "schema": "public",
+      "values": [
+        "UpdateUserProfile",
+        "CreateEntry",
+        "UpdateEntry",
+        "DeleteEntry"
+      ]
     }
   },
   "schemas": {},

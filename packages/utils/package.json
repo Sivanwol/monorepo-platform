@@ -1,7 +1,7 @@
 {
   "name": "@app/utils",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "exports": {
     ".": {
@@ -15,21 +15,30 @@
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
-    "bcrypt-edge": "catalog:",
     "@descope/nextjs-sdk": "catalog:",
-    "@reduxjs/toolkit": "catalog:store",
-    "react-redux": "catalog:store"
+    "@descope/node-sdk": "catalog:",
+    "@faker-js/faker": "^8.4.1",
+    "@logtail/node": "catalog:",
+    "@logtail/winston": "catalog:",
+    "winston": "catalog:"
   },
   "devDependencies": {
     "@app/eslint-config": "workspace:*",
     "@app/prettier-config": "workspace:*",
     "@app/tsconfig": "workspace:*",
+    "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "react": "catalog:react18",
+    "sort-package-json": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@app/prettier-config"
+  "peerDependencies": {
+    "react": "catalog:react18"
+  }
 }

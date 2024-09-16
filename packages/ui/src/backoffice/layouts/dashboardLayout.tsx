@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { Header, SidebarArea } from "@app/ui";
+import { Breadcrumb, Header, SidebarArea } from "@app/ui";
 
 import type { DashboardLayoutProps } from "./type";
 
@@ -16,7 +16,6 @@ export function DashboardLayout({
   translations,
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  console.log("translations", translations);
   return (
     <>
       {/* <!-- ===== Page Wrapper Star ===== --> */}
@@ -47,7 +46,8 @@ export function DashboardLayout({
 
           {/* <!-- ===== Main Content Star ===== --> */}
           <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <Breadcrumb homepageTitle={translations.homepageTitle ?? ""} />
+            <div className="mx-auto max-w-screen-2xl p-4 md:w-full md:p-6 2xl:p-10">
               {children}
             </div>
           </main>

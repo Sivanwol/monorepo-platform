@@ -1,10 +1,9 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod";
 
+import { protectedProcedure, publicProcedure } from "@app/auth";
 import { desc, eq } from "@app/db";
 import { CreateMediaSchema, Media } from "@app/db/schema";
-
-import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const postRouter = {
   all: publicProcedure.query(({ ctx }) => {

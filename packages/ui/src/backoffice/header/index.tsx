@@ -18,7 +18,10 @@ export const Header = ({
   user,
 }: HeaderProps) => {
   return (
-    <header className="z-999 border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white">
+    <header
+      className="border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex w-full border-b bg-white"
+      style={{ zIndex: 8 }}
+    >
       <div className="shadow-2 flex flex-grow items-center justify-between px-4 py-5 md:px-5 2xl:px-10">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -31,7 +34,7 @@ export const Header = ({
               setSidebarOpen(!sidebarOpen && !blockActions);
             }}
             title={translations.toggleSidebar}
-            className="z-99999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
+            className="z-999 border-stroke dark:border-dark-3 dark:bg-dark-2 block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
           >
             <span className="h-5.5 w-5.5 relative block cursor-pointer">
               <span className="du-block absolute right-0 h-full w-full">

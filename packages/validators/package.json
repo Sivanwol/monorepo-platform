@@ -1,7 +1,7 @@
 {
   "name": "@app/validators",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "exports": {
     ".": {
@@ -15,8 +15,10 @@
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "zod": "catalog:"
   },
@@ -26,7 +28,7 @@
     "@app/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "sort-package-json": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

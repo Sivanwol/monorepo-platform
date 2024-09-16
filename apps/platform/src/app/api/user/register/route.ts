@@ -4,8 +4,6 @@ import { Avatar } from "@mui/material";
 
 import { repositories } from "@app/db/client";
 
-export const runtime = "edge";
-
 export async function POST(_req: NextRequest) {
   const formData = await _req.json();
   const externalId = formData.externalId as string;

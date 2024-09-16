@@ -15,8 +15,10 @@
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "sort:packages": "sort-package-json",
     "typecheck": "tsc --noEmit"
   },
+  "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/db": "workspace:*",
     "@app/utils": "workspace:*",
@@ -41,7 +43,7 @@
     "@types/gravatar": "^1.8.6",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "sort-package-json": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@app/prettier-config"
+  }
 }

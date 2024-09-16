@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 
-import { protectedProcedure } from "../trpc";
+import { protectedProcedure, publicProcedure } from "@app/auth";
+import { logger } from "@app/utils";
 
 export const NotificationEvent = new EventEmitter();
 export interface NotificationEventModel {
@@ -9,15 +10,14 @@ export interface NotificationEventModel {
 }
 export const NotificationRouter = {
   getLastNotification: protectedProcedure.query(async ({ ctx }) => {
-    console.log("getting last notification");
+    logger.info("getting last notification");
     try {
       const res = await ctx.repositories.notification.GetLastNotification(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ctx.session.user!.id,
+        ctx.session.user.id,
       );
       return { items: res };
     } catch (error) {
-      console.error("Error getting last notification:", error);
+      logger.error("Error getting last notification:", { error });
       return { items: [] };
     }
   }),

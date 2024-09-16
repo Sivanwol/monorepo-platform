@@ -1,6 +1,4 @@
 import type { Config } from "tailwindcss";
-import { theme } from "flowbite-react";
-import flowbite from "flowbite-react/tailwind";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 import baseConfig from "@app/tailwind-config/web";
@@ -8,11 +6,7 @@ import baseConfig from "@app/tailwind-config/web";
 export default {
   // We need to append the path to the UI package to the content array so that
   // those classes are included correctly.
-  content: [
-    flowbite.content(),
-    ...baseConfig.content,
-    "../../packages/ui/**/*.{ts,tsx}",
-  ],
+  content: [...baseConfig.content, "../../packages/ui/**/*.{ts,tsx}"],
   presets: [baseConfig],
   theme: {
     container: {
@@ -63,9 +57,10 @@ export default {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xl: `calc(var(--radius) + 4px)`,
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
+        sm: `calc(var(--radius) - 4px)`,
       },
       keyframes: {
         "accordion-down": {
@@ -86,8 +81,6 @@ export default {
     },
   },
   plugins: [
-    require("flowbite/plugin"),
-    flowbite.plugin(),
     require("tailwindcss-animate"),
     // require("./plugins/tailwind/softShadow"),
   ],

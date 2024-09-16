@@ -13,6 +13,7 @@ export const env = createEnv({
     AUTH_DESCOPE_SECRET: z.string().min(1),
     AUTH_DESCOPE_ISSUER: z.string().min(1),
     AUTH_DESCOPE_MGT_KEY: z.string().min(1),
+    AUTH_DESCOPE_MAIN_TENANT_ID: z.string().min(1),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
@@ -21,9 +22,11 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_AUTH_DESCOPE_ID: z.string().min(1),
+    NEXT_PUBLIC_BETTER_LOGS_TOKEN: z.string().min(1),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_AUTH_DESCOPE_ID: process.env.NEXT_PUBLIC_AUTH_DESCOPE_ID,
+    NEXT_PUBLIC_BETTER_LOGS_TOKEN: process.env.NEXT_PUBLIC_BETTER_LOGS_TOKEN,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",

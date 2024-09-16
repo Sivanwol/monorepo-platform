@@ -62,7 +62,7 @@ packages
   ├─ validators
   |   └─ all validators both platform and backoffice
   └─ ui
-      └─ Start of a UI package for the webapp using shadcn-ui(will be removed later) , flowbite-react and mui (some element not existed in the first so use both)
+      └─ Start of a UI package for the webapp using shadcn-ui(will be removed later) , tailwind and mui (some element not existed in the first so use both)
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets
@@ -75,7 +75,44 @@ tooling
 ```
 
 > In this template, we use `@app` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@app` to something like `@my-company` or `@project-name`.
+## Docker
 
+To get it running with docker, follow the steps below:
+
+Inside `next.config.mjs` set, you can read more about why we need to set this here: https://nextjs.org/docs/advanced-features/output-file-tracing
+
+```diff
+output: "standalone",
+```
+
+Option 1:
+
+1. Build and run the images with:
+
+   ```bash
+      docker compose up --build
+      # You can specify a specific service: docker compose up nextjs --build
+   ```
+
+2. Visit `http://localhost:3000` to see your app.
+
+Option 2:
+
+1. Build the images
+
+   ```bash
+      docker compose build
+      # You can specify a specific service: docker compose build nextjs
+   ```
+
+2. Run the images
+
+   ```bash
+      docker compose up
+      # You can specify a specific service: docker compose up nextjs
+   ```
+
+3. Visit `http://localhost:3000` to see your app.
 ## Quick Start
 
 > **Note**
