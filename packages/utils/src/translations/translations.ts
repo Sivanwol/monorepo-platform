@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type { Namespaces, Translations } from "./type";
 
 const locales = ["en"];
 // Remove the duplicate declaration of 'defaultLng'
 const defaultLng = "en";
-
-let currentLng: string = defaultLng;
 const translations: Translations = {
   en: {
     home: {},
@@ -14,6 +11,7 @@ const translations: Translations = {
     support: {},
   },
 } as Record<string, Record<string, any>>;
+let currentLng: string = defaultLng;
 export let translationsLoaded = false;
 export const initTranslation = async (lng: string) => {
   if (!locales.includes(lng)) {
