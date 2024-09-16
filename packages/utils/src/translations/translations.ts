@@ -47,7 +47,6 @@ export const t = (
     console.warn("Language or namespace not initialized");
     return key; // Return the key if any part of the nested path is not found
   }
-
   const translationsForLng = translations[currentLng];
   if (!translationsForLng) {
     console.warn(`No translations found for language ${currentLng}`);
