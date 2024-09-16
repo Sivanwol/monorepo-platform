@@ -2,7 +2,7 @@
   "name": "monorepo-platform-monorepo",
   "private": true,
   "scripts": {
-    "build": "cross-env SENTRY_RELEASE=$(git rev-parse --short HEAD) turbo run build",
+    "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:migrate": "turbo -F @app/db migrate",
@@ -35,6 +35,7 @@
     "@turbo/gen": "^2.0.8",
     "@types/prettier": "^2.7.2",
     "commitizen": "^4.3.0",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "catalog:",
     "husky": "^9.0.11",
