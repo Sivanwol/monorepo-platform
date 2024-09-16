@@ -41,6 +41,7 @@
     "@opentelemetry/api-logs": "catalog:vercel",
     "@opentelemetry/instrumentation": "catalog:vercel",
     "@opentelemetry/sdk-logs": "catalog:vercel",
+    "@sentry/nextjs": "^8",
     "@svgr/webpack": "catalog:",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "catalog:",
