@@ -6,7 +6,7 @@ import { handlers, isSecureContext } from "@app/auth";
 const EXPO_COOKIE_NAME = "__monorepo-backoffice-redirect-state";
 const AUTH_COOKIE_PATTERN = /sabo\.session-token=([^;]+)/;
 
-// export const runtime = "edge";
+export const runtime = "edge";
 /**
  * Noop in production.
  *
