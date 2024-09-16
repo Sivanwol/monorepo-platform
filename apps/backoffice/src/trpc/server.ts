@@ -4,7 +4,6 @@ import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import type { AppRouter } from "@app/backoffice-api";
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
-
 import { createQueryClient } from "./query-client";
 
 /**
