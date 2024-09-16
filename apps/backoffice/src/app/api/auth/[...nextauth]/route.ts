@@ -67,7 +67,7 @@ export const GET = async (
     if (!match)
       throw new Error(
         "Unable to find session cookie: " +
-        JSON.stringify(authResponse.headers.getSetCookie()),
+          JSON.stringify(authResponse.headers.getSetCookie()),
       );
 
     const url = new URL(isExpoCallback.value);
