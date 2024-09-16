@@ -5,6 +5,7 @@ import { Auth } from "@auth/core";
 import Descope from "@auth/core/providers/descope";
 import { eventHandler, toWebRequest } from "h3";
 
+export const runtime = "edge";
 export default eventHandler(async (event) =>
   Auth(toWebRequest(event), {
     basePath: "/r",

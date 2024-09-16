@@ -5,6 +5,7 @@ import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 import { createCaller, createTRPCContext } from "@app/backoffice-api";
 import { logger } from "@app/utils";
 
+export const runtime = "edge";
 export async function POST(req: Request) {
   logger.info(`${req.method} /api/user/update-profile`, {
     payload: req.body,
