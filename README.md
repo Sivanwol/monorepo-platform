@@ -1,7 +1,4 @@
 ## About
-
-This template use create-t3-app app as based but heavily modify it in some aspects.
-
 it has 2 main parts:
 backoffice - where admin and any activity that need that not expose to normal user will found here
 platform - where normal user lived
@@ -299,9 +296,3 @@ Deploying your Expo application works slightly differently compared to Next.js o
    > Your OTA (Over The Air) updates must always follow the app store's rules. You can't change your app's primary functionality without getting app store approval. But this is a fast way to update your app for minor changes and bug fixes.
 
 9. Done! Now that you have created your production build, submitted it to the stores, and installed EAS Update, you are ready for anything!
-
-## References
-
-The stack originates from [create-t3-app](https://github.com/t3-oss/create-t3-app).
-
-A [blog post](https://jumr.dev/blog/t3-turbo) where I wrote how to migrate a T3 app into this.
