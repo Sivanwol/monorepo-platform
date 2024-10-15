@@ -30,7 +30,7 @@
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "geist": "^1.3.0",
-    "next": "^14.2.4",
+    "next": "^14.2.15",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "superjson": "2.2.1",
