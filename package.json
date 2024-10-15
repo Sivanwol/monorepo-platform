@@ -8,14 +8,14 @@
     "db:migrate": "turbo -F @app/db migrate",
     "db:push": "turbo -F @app/db push",
     "db:studio": "turbo -F @app/db studio",
-    "dev": "turbo watch dev --concurrency=20",
+    "dev": "cross-env SENTRY_RELEASE=$(git rev-parse --short HEAD) turbo watch dev --concurrency=20",
     "dev:backoffice": "turbo watch dev -F @app/backoffice",
     "dev:platform": "turbo watch dev -F @app/platform",
     "format": "turbo run format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "format:fix": "cross-env SENTRY_RELEASE=$(git rev-parse --short HEAD) turbo run format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "postinstall": "pnpm lint:ws",
     "lint": "turbo run lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:fix": "cross-env SENTRY_RELEASE=$(git rev-parse --short HEAD) turbo run lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
     "prepare": "husky",
     "sort:packages": "turbo run sort:packages",
@@ -35,6 +35,7 @@
     "@turbo/gen": "^2.0.8",
     "@types/prettier": "^2.7.2",
     "commitizen": "^4.3.0",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "catalog:",
     "husky": "^9.0.11",
@@ -45,6 +46,9 @@
   },
   "packageManager": "pnpm@9.9.0",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.0.0",
+    "npm": "Please use pnpm to install dependencies",
+    "yarn": "Please use pnpm to install dependencies",
+    "bun": "Please use pnpm to install dependencies"
   }
 }

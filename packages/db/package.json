@@ -19,7 +19,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run sentry:sourcemaps",
     "clean": "rm -rf .turbo dist node_modules",
     "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
@@ -29,11 +29,13 @@
     "sort:packages": "sort-package-json",
     "studio": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org testing-zone --project mono-repo ./dist && sentry-cli --url https://sentry.io/ sourcemaps upload --org testing-zone --project mono-repo ./dist"
   },
   "prettier": "@app/prettier-config",
   "dependencies": {
     "@app/utils": "workspace:*",
+    "@sentry/cli": "^2.36.1",
     "@t3-oss/env-core": "^0.10.1",
     "@vercel/kv": "catalog:vercel",
     "@vercel/postgres": "^0.9.0",

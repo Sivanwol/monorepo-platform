@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import NextError from "next/error";
 import Link from "next/link";
 import { CssBaseline } from "@mui/material";
 import * as Sentry from "@sentry/nextjs";
@@ -31,16 +32,13 @@ function ArrowRightIcon(
 }
 export default function GlobalError({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
-  // get the error status code
-  console.error(error);
+
   return (
     <html lang="en">
       <head>

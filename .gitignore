@@ -27,6 +27,7 @@ apps/expo/android
 # production
 build
 
+.sentryclirc
 # misc
 .DS_Store
 *.pem
