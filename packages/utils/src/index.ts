@@ -6,4 +6,4 @@ export * from "./translations";
 export * from "./types";
 export * from "./constraints";
 export * from "./mock";
-export * from "./logs";
+export * from "./logger";

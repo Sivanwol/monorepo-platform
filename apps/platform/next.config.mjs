@@ -20,7 +20,6 @@ const config = {
   webpack(config, { isServer }) {
     if (!isServer) {
       config.resolve.fallback = {
-        ...config.resolve.fallback,
         fs: false,
         os: false,
         path: false,

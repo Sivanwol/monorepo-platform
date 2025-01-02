@@ -6,6 +6,7 @@ import { handlers, isSecureContext } from "@app/auth";
 const EXPO_COOKIE_NAME = "__monorepo-platform-redirect-state";
 const AUTH_COOKIE_PATTERN = /monorepo-platform\.session-token=([^;]+)/;
 
+export const runtime = "edge";
 /**
  * Noop in production.
  *
